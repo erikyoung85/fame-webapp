@@ -1,0 +1,7 @@
+{
+  "name": "Cha Ching",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
