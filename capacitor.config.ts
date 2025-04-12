@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'app.chaching.starter',
   appName: 'Cha Ching',
-  webDir: 'www'
+  webDir: 'www',
 };
 
 export default config;

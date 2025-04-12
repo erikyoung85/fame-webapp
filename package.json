@@ -1,10 +1,11 @@
 {
   "name": "cha-ching",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "Erik Young",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
+    "start:ios": "npx cap run ios --target=C454D660-183A-4CA8-A442-C35A39629F9A --live-reload --no-sync --port=8100 --host=192.168.1.160 & ionic serve --no-open --host=192.168.1.160 --port=8100",
     "start:web": "ionic serve",
     "start:web:dev": "ionic serve --configuration=development",
     "start:web:prod": "ionic serve --configuration=production",
@@ -15,8 +16,8 @@
     "lint": "ng lint"
   },
   "engines": {
-    "node": ">=23.11.0",
-    "npm": ">=10.9.2"
+    "node": ">=22.14.0",
+    "npm": ">=11.3.0"
   },
   "private": true,
   "dependencies": {
