@@ -1,11 +1,27 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 @Component({
+  standalone: true,
   selector: 'app-folder',
   templateUrl: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
-  standalone: false,
+  imports: [
+    IonContent,
+    IonTitle,
+    IonButtons,
+    IonToolbar,
+    IonHeader,
+    IonMenuButton,
+  ],
 })
 export class FolderPage implements OnInit {
   public folder!: string;
