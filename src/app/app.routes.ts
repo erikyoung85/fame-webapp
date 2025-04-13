@@ -1,19 +1,32 @@
 import { Routes } from '@angular/router';
 
+export enum AppRoutes {
+  Login = 'login',
+  UserSignup = 'user-signup',
+  Folder = 'folder',
+}
+
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/inbox',
+    redirectTo: `${AppRoutes.Folder}/inbox`,
     pathMatch: 'full',
   },
   {
-    path: 'folder/:id',
+    path: `${AppRoutes.Folder}/:id`,
     loadComponent: () =>
       import('./folder/folder.page').then((m) => m.FolderPage),
   },
   {
-    path: 'login',
+    path: AppRoutes.Login,
     loadComponent: () =>
       import('./pages/login/login.page').then((m) => m.LoginPage),
+  },
+  {
+    path: AppRoutes.UserSignup,
+    loadComponent: () =>
+      import('./pages/user-signup/user-signup.page').then(
+        (m) => m.UserSignupPage
+      ),
   },
 ];

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-progress-bar type="indeterminate" *ngIf="isLoginLoading$ | async"></ion-progress-bar>
+    <ion-progress-bar type="indeterminate" *ngIf="isUserSignupLoading$ | async"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
@@ -13,25 +13,39 @@
     <ion-row>
       <ion-col class="ion-text-center">
         <img src="assets/icon/favicon.png" alt="Logo" />
-        <ion-text><h1 class="ion-text-xl">Welcome Back</h1></ion-text>
-        <ion-text><p>Log in to continue</p></ion-text>
+        <ion-text><h1 class="ion-text-xl">Create Account</h1></ion-text>
+        <ion-text><p>Sign up to get started</p></ion-text>
       </ion-col>
     </ion-row>
 
 
-    <!-- Email/Password login (optional) -->
+    <!-- Registration form -->
     <ion-row>
       <ion-col>
-        <form (ngSubmit)="loginWithEmail()">
+        <form (ngSubmit)="signupWithEmail()">
           <ion-row>
             <ion-col>
               <ion-input
-                [formControl]="loginForm.controls.email"
+                [formControl]="userSignupForm.controls.fullName"
+                name="full name"
+                label="Full Name"
+                labelPlacement="stacked"
+                placeholder="Full Name"
+                errorText="Name is required"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-input
+                [formControl]="userSignupForm.controls.email"
                 name="email"
                 type="email"
                 label="Email"
                 labelPlacement="stacked"
                 placeholder="Email"
+                errorText="Please enter a valid email"
               ></ion-input>
             </ion-col>
           </ion-row>
@@ -39,12 +53,13 @@
           <ion-row>
             <ion-col>
               <ion-input
-                [formControl]="loginForm.controls.password"
+                [formControl]="userSignupForm.controls.password"
                 name="password"
                 type="password"
                 label="Password"
                 labelPlacement="stacked"
                 placeholder="Password"
+                errorText="'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.'"
               >
                 <ion-input-password-toggle slot="end"></ion-input-password-toggle>
               </ion-input>
@@ -54,7 +69,7 @@
           <ion-row>
             <ion-col>
               <ion-button expand="block" type="submit">
-                Login
+                Create Account
               </ion-button>
             </ion-col>
           </ion-row>
@@ -75,7 +90,7 @@
           <ion-button
             color="light"
             expand="block"
-            (click)="loginWithProvider('google')"
+            (click)="signupWithProvider('google')"
           >
             <ion-icon slot="start" name="logo-google"></ion-icon>
             Continue with Google
@@ -87,16 +102,16 @@
           <ion-button
             color="dark"
             expand="block"
-            (click)="loginWithProvider('apple')"
+            (click)="signupWithProvider('apple')"
           >
             <ion-icon slot="start" name="logo-apple"></ion-icon>
             Continue with Apple
           </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row class="ion-justify-content-center">
+    <ion-row>
       <ion-col class="ion-text-center">
-        <ion-text><ion-note>Don't have an account yet? </ion-note><a (click)="onRegisterClicked()">Register</a></ion-text>
+        <ion-text><ion-note>Already have an account? </ion-note><a (click)="onLoginClicked()">Log in</a></ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>

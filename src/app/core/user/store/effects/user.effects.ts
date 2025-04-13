@@ -2,7 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SignInWithPasswordCredentials } from '@supabase/supabase-js';
+import {
+  SignInWithPasswordCredentials,
+  SignUpWithPasswordCredentials,
+} from '@supabase/supabase-js';
 import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { SupabaseService } from 'src/app/core/services/supabase.service';
 import { userActions } from '../actions/user.actions';
@@ -13,6 +16,29 @@ export class UserEffects {
   private readonly supabaseService = inject(SupabaseService);
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
+
+  authFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          userActions.loadSessionFailure,
+          userActions.loginFailure,
+          userActions.signupFailure
+        ),
+        tap(async (action) => {
+          if (action.message !== undefined) {
+            await this.toastController
+              .create({
+                message: action.message,
+                duration: 2000,
+                color: 'danger',
+              })
+              .then((toast) => toast.present());
+          }
+        })
+      ),
+    { dispatch: false }
+  );
 
   loadSession$ = createEffect(() =>
     this.actions$.pipe(
@@ -92,18 +118,52 @@ export class UserEffects {
     { dispatch: false }
   );
 
-  loginFailure$ = createEffect(
+  signupWithPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.signupWithPassword),
+      switchMap((action) => {
+        const request: SignUpWithPasswordCredentials = {
+          email: action.email,
+          password: action.password,
+        };
+
+        return from(this.supabaseService.client.auth.signUp(request)).pipe(
+          map((response) => {
+            if (response.error || !response.data.session) {
+              return userActions.signupFailure({
+                message: response.error?.message || 'Sign up failed',
+              });
+            }
+            return userActions.signupSuccess({
+              session: response.data.session,
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.signupFailure({
+                message: error?.message || 'Sign up failed',
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  signupSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(userActions.loginFailure),
-        tap(async (action) => {
+        ofType(userActions.signupSuccess),
+        tap(async () => {
           await this.toastController
             .create({
-              message: action.message,
+              message: 'Successfully created your account!',
               duration: 2000,
-              color: 'danger',
+              color: 'success',
             })
             .then((toast) => toast.present());
+
+          await this.router.navigate(['']);
         })
       ),
     { dispatch: false }

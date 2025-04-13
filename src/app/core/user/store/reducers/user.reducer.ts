@@ -6,6 +6,18 @@ import { UserState } from '../state/user.state';
 
 export const userReducer = createReducer(
   INITIAL_USER_STATE,
+  on(
+    userActions.loadSessionFailure,
+    userActions.loginFailure,
+    userActions.signupFailure,
+    (state, action): UserState => {
+      return {
+        ...state,
+        session: wrapAsAsyncData(state.session.data, false, action.message),
+      };
+    }
+  ),
+
   on(userActions.loadSession, (state): UserState => {
     return {
       ...state,
@@ -16,12 +28,6 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
-    };
-  }),
-  on(userActions.loadSessionFailure, (state, action): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(state.session.data, false, action.message),
     };
   }),
 
@@ -37,10 +43,17 @@ export const userReducer = createReducer(
       session: wrapAsAsyncData(action.session, false),
     };
   }),
-  on(userActions.loginFailure, (state, action): UserState => {
+
+  on(userActions.signupWithPassword, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(state.session.data, false, action.message),
+      session: wrapAsAsyncData(undefined, true),
+    };
+  }),
+  on(userActions.signupSuccess, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(action.session, false),
     };
   })
 );

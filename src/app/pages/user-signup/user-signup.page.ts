@@ -31,9 +31,9 @@ import { userFeature } from 'src/app/core/user/store/feature/user.feature';
 import { DividerComponent } from '../../components/divider/divider.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-user-signup',
+  templateUrl: './user-signup.page.html',
+  styleUrls: ['./user-signup.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonNote,
@@ -57,41 +57,46 @@ import { DividerComponent } from '../../components/divider/divider.component';
     DividerComponent,
   ],
 })
-export class LoginPage {
+export class UserSignupPage {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
   private readonly fb = inject(NonNullableFormBuilder);
 
-  readonly isLoginLoading$ = this.store.select(
+  readonly isUserSignupLoading$ = this.store.select(
     userFeature.selectIsLoginLoading
   );
 
-  readonly loginForm = this.fb.group({
-    email: this.fb.control('', [Validators.required]),
-    password: this.fb.control('', [Validators.required]),
+  readonly userSignupForm = this.fb.group({
+    fullName: this.fb.control('', [Validators.required]),
+    email: this.fb.control('', [Validators.required, Validators.email]),
+    password: this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/),
+    ]),
   });
 
-  async loginWithEmail() {
-    if (this.loginForm.invalid) {
+  async signupWithEmail() {
+    if (this.userSignupForm.invalid) {
       return;
     }
 
-    const formValue = this.loginForm.getRawValue();
+    const formValue = this.userSignupForm.getRawValue();
 
     this.store.dispatch(
-      userActions.loginWithPassword({
+      userActions.signupWithPassword({
+        fullName: formValue.fullName,
         email: formValue.email,
         password: formValue.password,
       })
     );
   }
 
-  loginWithProvider(provider: 'google' | 'apple') {
-    console.log('Login with provider:', provider);
+  signupWithProvider(provider: 'google' | 'apple') {
+    console.log('Signup with provider:', provider);
     // window.location.href = `http://localhost:3000/auth/${provider}`;
   }
 
-  onRegisterClicked() {
-    this.router.navigate([AppRoutes.UserSignup]);
+  onLoginClicked() {
+    this.router.navigate([AppRoutes.Login]);
   }
 }
