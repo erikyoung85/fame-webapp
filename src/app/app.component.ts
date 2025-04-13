@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonApp,
+  IonAvatar,
   IonContent,
   IonIcon,
   IonItem,
@@ -10,12 +17,14 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
   IonRouterOutlet,
   IonSplitPane,
 } from '@ionic/angular/standalone';
+import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
+import { userActions } from './core/user/store/actions/user.actions';
+import { userFeature } from './core/user/store/feature/user.feature';
 
 @Component({
   standalone: true,
@@ -24,6 +33,8 @@ import * as ionIcons from 'ionicons/icons';
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CommonModule,
+    IonAvatar,
     RouterLink,
     IonItem,
     IonContent,
@@ -35,11 +46,14 @@ import * as ionIcons from 'ionicons/icons';
     IonMenu,
     IonList,
     IonListHeader,
-    IonNote,
     IonMenuToggle,
   ],
 })
 export class AppComponent implements OnInit {
+  private readonly store = inject(Store);
+
+  readonly user$ = this.store.select(userFeature.selectUser);
+
   public appPages = [
     { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
     { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
@@ -55,6 +69,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('\n\nHELLO WORLD!!!\n\n');
+    this.store.dispatch(userActions.loadSession());
   }
 }

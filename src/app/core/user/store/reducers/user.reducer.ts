@@ -6,6 +6,25 @@ import { UserState } from '../state/user.state';
 
 export const userReducer = createReducer(
   INITIAL_USER_STATE,
+  on(userActions.loadSession, (state): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(undefined, true),
+    };
+  }),
+  on(userActions.loadSessionSuccess, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(action.session, false),
+    };
+  }),
+  on(userActions.loadSessionFailure, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(state.session.data, false, action.message),
+    };
+  }),
+
   on(userActions.loginWithPassword, (state): UserState => {
     return {
       ...state,

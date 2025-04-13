@@ -14,6 +14,33 @@ export class UserEffects {
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
 
+  loadSession$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.loadSession),
+      switchMap((action) => {
+        return from(this.supabaseService.client.auth.getSession()).pipe(
+          map((response) => {
+            if (response.error || !response.data.session) {
+              return userActions.loadSessionFailure({
+                message: response.error?.message,
+              });
+            }
+            return userActions.loadSessionSuccess({
+              session: response.data.session,
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.loadSessionFailure({
+                message: error?.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
   loginWithPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.loginWithPassword),

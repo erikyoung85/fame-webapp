@@ -24,7 +24,6 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
 import { userActions } from 'src/app/core/user/store/actions/user.actions';
 import { userFeature } from 'src/app/core/user/store/feature/user.feature';
 import { DividerComponent } from '../../components/divider/divider.component';
@@ -58,9 +57,9 @@ import { DividerComponent } from '../../components/divider/divider.component';
 export class LoginPage {
   private readonly store = inject(Store);
 
-  readonly isLoginLoading$ = this.store
-    .select(userFeature.selectSession)
-    .pipe(map((sessionAsync) => sessionAsync.loading));
+  readonly isLoginLoading$ = this.store.select(
+    userFeature.selectIsLoginLoading
+  );
 
   readonly loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
