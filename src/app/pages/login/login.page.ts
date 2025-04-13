@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,18 +18,24 @@ import {
   IonInput,
   IonInputPasswordToggle,
   IonMenuButton,
+  IonProgressBar,
   IonRow,
   IonText,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { SupabaseService } from 'src/app/services/supabase.service';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
+import { userActions } from 'src/app/core/user/store/actions/user.actions';
+import { userFeature } from 'src/app/core/user/store/feature/user.feature';
 import { DividerComponent } from '../../components/divider/divider.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonProgressBar,
     IonText,
     IonCol,
     IonRow,
@@ -50,10 +56,14 @@ import { DividerComponent } from '../../components/divider/divider.component';
   ],
 })
 export class LoginPage {
-  private readonly supabaseService = inject(SupabaseService);
+  private readonly store = inject(Store);
+
+  readonly isLoginLoading$ = this.store
+    .select(userFeature.selectSession)
+    .pipe(map((sessionAsync) => sessionAsync.loading));
 
   readonly loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
@@ -63,21 +73,12 @@ export class LoginPage {
       return;
     }
 
-    const request = {
-      email: this.loginForm.value.email ?? '',
-      password: this.loginForm.value.password ?? '',
-    };
-    console.log('Login request:', request);
-    const response = await this.supabaseService.client.auth.signInWithPassword(
-      request
+    this.store.dispatch(
+      userActions.loginWithPassword({
+        email: this.loginForm.value.email ?? '',
+        password: this.loginForm.value.password ?? '',
+      })
     );
-
-    if (response.error) {
-      console.error('Login error:', response.error.message);
-      return;
-    }
-
-    console.log('Login success:', response.data);
   }
 
   loginWithProvider(provider: 'google' | 'apple') {

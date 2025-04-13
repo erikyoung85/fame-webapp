@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonApp,
@@ -22,6 +22,7 @@ import * as ionIcons from 'ionicons/icons';
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
     IonItem,
