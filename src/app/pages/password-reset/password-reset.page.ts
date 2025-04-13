@@ -16,9 +16,7 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonInputPasswordToggle,
   IonMenuButton,
-  IonNote,
   IonProgressBar,
   IonRow,
   IonText,
@@ -28,15 +26,14 @@ import { Store } from '@ngrx/store';
 import { AppRoutes } from 'src/app/app.routes';
 import { userActions } from 'src/app/core/user/store/actions/user.actions';
 import { userFeature } from 'src/app/core/user/store/feature/user.feature';
-import { DividerComponent } from '../../components/divider/divider.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-password-reset',
+  templateUrl: './password-reset.page.html',
+  styleUrls: ['./password-reset.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonNote,
+    IonIcon,
     IonProgressBar,
     IonText,
     IonCol,
@@ -46,18 +43,15 @@ import { DividerComponent } from '../../components/divider/divider.component';
     ReactiveFormsModule,
     IonButton,
     IonInput,
-    IonIcon,
     IonButtons,
     IonContent,
     IonToolbar,
     CommonModule,
     IonHeader,
     IonMenuButton,
-    IonInputPasswordToggle,
-    DividerComponent,
   ],
 })
-export class LoginPage {
+export class PasswordResetPage {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
   private readonly fb = inject(NonNullableFormBuilder);
@@ -66,36 +60,25 @@ export class LoginPage {
     userFeature.selectIsLoginLoading
   );
 
-  readonly loginForm = this.fb.group({
+  readonly resetPasswordForm = this.fb.group({
     email: this.fb.control('', [Validators.required, Validators.email]),
-    password: this.fb.control('', [Validators.required]),
   });
 
-  async loginWithEmail() {
-    if (this.loginForm.invalid) {
+  async resetPasswordClicked() {
+    if (this.resetPasswordForm.invalid) {
       return;
     }
 
-    const formValue = this.loginForm.getRawValue();
+    const formValue = this.resetPasswordForm.getRawValue();
 
     this.store.dispatch(
-      userActions.loginWithPassword({
+      userActions.resetPassword({
         email: formValue.email,
-        password: formValue.password,
       })
     );
   }
 
-  loginWithProvider(provider: 'google' | 'apple') {
-    console.log('Login with provider:', provider);
-    // window.location.href = `http://localhost:3000/auth/${provider}`;
-  }
-
-  onRegisterClicked() {
-    this.router.navigate([AppRoutes.UserSignup]);
-  }
-
-  onForgotPasswordClicked() {
-    this.router.navigate([AppRoutes.PasswordReset]);
+  onLoginClicked() {
+    this.router.navigate([AppRoutes.Login]);
   }
 }

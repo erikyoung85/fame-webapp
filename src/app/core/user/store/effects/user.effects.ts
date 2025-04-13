@@ -168,4 +168,48 @@ export class UserEffects {
       ),
     { dispatch: false }
   );
+
+  resetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.resetPassword),
+      switchMap((action) => {
+        return from(
+          this.supabaseService.client.auth.resetPasswordForEmail(action.email)
+        ).pipe(
+          map((response) => {
+            if (response.error) {
+              return userActions.resetPasswordFailure({
+                message: response.error?.message || 'Password reset failed',
+              });
+            }
+            return userActions.resetPasswordSuccess();
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.resetPasswordFailure({
+                message: error?.message || 'Password reset failed',
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  resetPasswordSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.resetPasswordSuccess),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'A link has been sent to the provided email address',
+              duration: 4000,
+              color: 'success',
+            })
+            .then((toast) => toast.present());
+        })
+      ),
+    { dispatch: false }
+  );
 }

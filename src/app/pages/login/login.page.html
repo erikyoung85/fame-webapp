@@ -32,6 +32,7 @@
                 label="Email"
                 labelPlacement="stacked"
                 placeholder="Email"
+                errorText="Please enter a valid email"
               ></ion-input>
             </ion-col>
           </ion-row>
@@ -45,9 +46,16 @@
                 label="Password"
                 labelPlacement="stacked"
                 placeholder="Password"
+                errorText="Password is required"
               >
                 <ion-input-password-toggle slot="end"></ion-input-password-toggle>
               </ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-text><a (click)="onForgotPasswordClicked()">Forgot your password?</a></ion-text>
             </ion-col>
           </ion-row>
     
@@ -96,7 +104,7 @@
           </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row class="ion-justify-content-center">
+    <ion-row>
       <ion-col class="ion-text-center">
         <ion-text><ion-note>Don't have an account yet? </ion-note><a (click)="onRegisterClicked()">Register</a></ion-text>
       </ion-col>

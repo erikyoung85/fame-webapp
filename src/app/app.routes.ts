@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 export enum AppRoutes {
   Login = 'login',
   UserSignup = 'user-signup',
+  PasswordReset = 'password-reset',
   Folder = 'folder',
 }
 
@@ -27,6 +28,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/user-signup/user-signup.page').then(
         (m) => m.UserSignupPage
+      ),
+  },
+  {
+    path: AppRoutes.PasswordReset,
+    loadComponent: () =>
+      import('./pages/password-reset/password-reset.page').then(
+        (m) => m.PasswordResetPage
       ),
   },
 ];
