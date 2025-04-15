@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +12,7 @@ import { IonText } from '@ionic/angular/standalone';
   templateUrl: './divider.component.html',
   styleUrls: ['./divider.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonText, CommonModule],
+  imports: [NgIf, IonText],
 })
 export class DividerComponent implements OnInit {
   @Input() height: number = 1;

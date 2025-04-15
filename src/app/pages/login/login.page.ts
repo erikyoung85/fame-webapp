@@ -26,8 +26,8 @@ import {
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { AppRoutes } from 'src/app/app.routes';
-import { userActions } from 'src/app/core/user/store/actions/user.actions';
-import { userFeature } from 'src/app/core/user/store/feature/user.feature';
+import { userActions } from 'src/app/core/store/user/actions/user.actions';
+import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { DividerComponent } from '../../components/divider/divider.component';
 
 @Component({
@@ -36,6 +36,7 @@ import { DividerComponent } from '../../components/divider/divider.component';
   styleUrls: ['./login.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CommonModule,
     IonNote,
     IonProgressBar,
     IonText,
@@ -50,7 +51,6 @@ import { DividerComponent } from '../../components/divider/divider.component';
     IonButtons,
     IonContent,
     IonToolbar,
-    CommonModule,
     IonHeader,
     IonMenuButton,
     IonInputPasswordToggle,
@@ -62,9 +62,7 @@ export class LoginPage {
   private readonly router = inject(Router);
   private readonly fb = inject(NonNullableFormBuilder);
 
-  readonly isLoginLoading$ = this.store.select(
-    userFeature.selectIsLoginLoading
-  );
+  readonly isLoading$ = this.store.select(userFeature.selectIsSessionLoading);
 
   readonly loginForm = this.fb.group({
     email: this.fb.control('', [Validators.required, Validators.email]),

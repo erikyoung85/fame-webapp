@@ -5,10 +5,9 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   IonApp,
-  IonAvatar,
   IonContent,
   IonIcon,
   IonItem,
@@ -23,8 +22,10 @@ import {
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
-import { userActions } from './core/user/store/actions/user.actions';
-import { userFeature } from './core/user/store/feature/user.feature';
+import { map } from 'rxjs';
+import { userActions } from './core/store/user/actions/user.actions';
+import { userFeature } from './core/store/user/feature/user.feature';
+import { UserProfileItemComponent } from './shared/components/user-profile-item/user-profile-item.component';
 
 @Component({
   standalone: true,
@@ -34,7 +35,6 @@ import { userFeature } from './core/user/store/feature/user.feature';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    IonAvatar,
     RouterLink,
     IonItem,
     IonContent,
@@ -47,12 +47,16 @@ import { userFeature } from './core/user/store/feature/user.feature';
     IonList,
     IonListHeader,
     IonMenuToggle,
+    UserProfileItemComponent,
   ],
 })
 export class AppComponent implements OnInit {
   private readonly store = inject(Store);
+  private readonly router = inject(Router);
 
-  readonly user$ = this.store.select(userFeature.selectUser);
+  readonly userProfile$ = this.store
+    .select(userFeature.selectUserProfile)
+    .pipe(map((async) => async.data));
 
   public appPages = [
     { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
@@ -70,5 +74,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(userActions.loadSession());
+  }
+
+  onUserProfileClicked() {
+    this.router.navigate(['/user-profile']);
   }
 }

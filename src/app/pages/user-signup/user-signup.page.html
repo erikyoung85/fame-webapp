@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-progress-bar type="indeterminate" *ngIf="isUserSignupLoading$ | async"></ion-progress-bar>
+    <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
@@ -26,12 +26,22 @@
           <ion-row>
             <ion-col>
               <ion-input
-                [formControl]="userSignupForm.controls.fullName"
-                name="full name"
-                label="Full Name"
+                [formControl]="userSignupForm.controls.firstName"
+                name="first name"
+                label="First Name"
                 labelPlacement="stacked"
-                placeholder="Full Name"
-                errorText="Name is required"
+                placeholder="First Name"
+                errorText="First Name is required"
+              ></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                [formControl]="userSignupForm.controls.lastName"
+                name="last name"
+                label="Last Name"
+                labelPlacement="stacked"
+                placeholder="Last Name"
+                errorText="Last Name is required"
               ></ion-input>
             </ion-col>
           </ion-row>
@@ -44,7 +54,7 @@
                 type="email"
                 label="Email"
                 labelPlacement="stacked"
-                placeholder="Email"
+                placeholder="email@domain.com"
                 errorText="Please enter a valid email"
               ></ion-input>
             </ion-col>

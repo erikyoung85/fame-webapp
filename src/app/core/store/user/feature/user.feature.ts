@@ -4,15 +4,14 @@ import { userReducer } from '../reducers/user.reducer';
 export const userFeature = createFeature({
   name: 'user',
   reducer: userReducer,
-  extraSelectors: ({ selectSession }) => ({
-    selectIsLoginLoading: createSelector(
+  extraSelectors: ({ selectSession, selectUserProfile }) => ({
+    selectIsSessionLoading: createSelector(
       selectSession,
       (session) => session.loading
     ),
     selectIsLoggedIn: createSelector(
-      selectSession,
-      (session) => session.data !== undefined
+      selectUserProfile,
+      (userProfile) => userProfile.data !== undefined
     ),
-    selectUser: createSelector(selectSession, (session) => session.data?.user),
   }),
 });

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormsModule,
@@ -17,15 +16,13 @@ import {
   IonIcon,
   IonInput,
   IonMenuButton,
-  IonProgressBar,
   IonRow,
   IonText,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { AppRoutes } from 'src/app/app.routes';
-import { userActions } from 'src/app/core/user/store/actions/user.actions';
-import { userFeature } from 'src/app/core/user/store/feature/user.feature';
+import { userActions } from 'src/app/core/store/user/actions/user.actions';
 
 @Component({
   selector: 'app-password-reset',
@@ -34,7 +31,6 @@ import { userFeature } from 'src/app/core/user/store/feature/user.feature';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonIcon,
-    IonProgressBar,
     IonText,
     IonCol,
     IonRow,
@@ -46,7 +42,6 @@ import { userFeature } from 'src/app/core/user/store/feature/user.feature';
     IonButtons,
     IonContent,
     IonToolbar,
-    CommonModule,
     IonHeader,
     IonMenuButton,
   ],
@@ -55,10 +50,6 @@ export class PasswordResetPage {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
   private readonly fb = inject(NonNullableFormBuilder);
-
-  readonly isLoginLoading$ = this.store.select(
-    userFeature.selectIsLoginLoading
-  );
 
   readonly resetPasswordForm = this.fb.group({
     email: this.fb.control('', [Validators.required, Validators.email]),

@@ -1,0 +1,62 @@
+<ion-grid>
+  <ion-row>
+    <ion-col>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="auto">
+          <ion-avatar class="profile-picture">
+            <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+
+  <form (ngSubmit)="onUpdateUserProfileClicked()">
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <ion-col>
+            <ion-input
+              [formControl]="form.controls.firstName"
+              name="first name"
+              label="First Name"
+              labelPlacement="stacked"
+              placeholder="First Name"
+              errorText="First Name is required"
+            ></ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-input
+              [formControl]="form.controls.lastName"
+              name="last name"
+              label="Last Name"
+              labelPlacement="stacked"
+              placeholder="Last Name"
+              errorText="Last Name is required"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+  
+        <ion-row>
+          <ion-col>
+            <ion-input
+              [formControl]="form.controls.email"
+              name="email"
+              type="email"
+              label="Email"
+              labelPlacement="stacked"
+              placeholder="email@domain.com"
+              errorText="Please enter a valid email"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" type="submit">Update User</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-grid>

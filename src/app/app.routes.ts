@@ -4,6 +4,7 @@ export enum AppRoutes {
   Login = 'login',
   UserSignup = 'user-signup',
   PasswordReset = 'password-reset',
+  UserProfile = 'user-profile',
   Folder = 'folder',
 }
 
@@ -36,5 +37,13 @@ export const routes: Routes = [
       import('./pages/password-reset/password-reset.page').then(
         (m) => m.PasswordResetPage
       ),
+  },
+  {
+    path: AppRoutes.UserProfile,
+    loadComponent: () =>
+      import('./pages/user-profile/user-profile.page').then(
+        (m) => m.UserProfilePage
+      ),
+    loadChildren: () => import('./pages/user-profile/user-profile.routes'),
   },
 ];

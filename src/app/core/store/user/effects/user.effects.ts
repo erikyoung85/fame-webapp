@@ -2,18 +2,19 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  SignInWithPasswordCredentials,
-  SignUpWithPasswordCredentials,
-} from '@supabase/supabase-js';
 import { catchError, from, map, of, switchMap, tap } from 'rxjs';
+import { AppRoutes } from 'src/app/app.routes';
+import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { SupabaseService } from 'src/app/core/services/supabase.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { UserProfileRoutes } from 'src/app/pages/user-profile/user-profile.routes';
 import { userActions } from '../actions/user.actions';
 
 @Injectable()
 export class UserEffects {
   private readonly actions$ = inject(Actions);
   private readonly supabaseService = inject(SupabaseService);
+  private readonly userService = inject(UserService);
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
 
@@ -23,7 +24,8 @@ export class UserEffects {
         ofType(
           userActions.loadSessionFailure,
           userActions.loginFailure,
-          userActions.signupFailure
+          userActions.signupFailure,
+          userActions.updateUserProfileFailure
         ),
         tap(async (action) => {
           if (action.message !== undefined) {
@@ -53,6 +55,9 @@ export class UserEffects {
             }
             return userActions.loadSessionSuccess({
               session: response.data.session,
+              userProfile: UserProfileFactory.fromSupabaseUser(
+                response.data.session.user
+              ),
             });
           }),
           catchError((error: Error) => {
@@ -71,30 +76,34 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(userActions.loginWithPassword),
       switchMap((action) => {
-        const request: SignInWithPasswordCredentials = {
-          email: action.email,
-          password: action.password,
-        };
-
-        return from(
-          this.supabaseService.client.auth.signInWithPassword(request)
-        ).pipe(
-          map((response) => {
-            if (response.error || !response.data.session) {
-              return userActions.loginFailure({
-                message: response.error?.message || 'Login failed',
+        return this.userService
+          .loginWithPassword(action.email, action.password)
+          .pipe(
+            map((response) => {
+              if (
+                response.error ||
+                !response.data.session ||
+                !response.data.user
+              ) {
+                return userActions.loginFailure({
+                  message: response.error?.message || 'Login failed',
+                });
+              }
+              return userActions.loginSuccess({
+                session: response.data.session,
+                userProfile: UserProfileFactory.fromSupabaseUser(
+                  response.data.user
+                ),
               });
-            }
-            return userActions.loginSuccess({ session: response.data.session });
-          }),
-          catchError((error: Error) => {
-            return of(
-              userActions.loginFailure({
-                message: error?.message || 'Login failed',
-              })
-            );
-          })
-        );
+            }),
+            catchError((error: Error) => {
+              return of(
+                userActions.loginFailure({
+                  message: error?.message || 'Login failed',
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -103,10 +112,10 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(userActions.loginSuccess),
-        tap(async () => {
+        tap(async (action) => {
           await this.toastController
             .create({
-              message: 'Login successful!',
+              message: `Welcome back ${action.userProfile.firstName}!`,
               duration: 2000,
               color: 'success',
             })
@@ -122,20 +131,23 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(userActions.signupWithPassword),
       switchMap((action) => {
-        const request: SignUpWithPasswordCredentials = {
-          email: action.email,
-          password: action.password,
-        };
-
-        return from(this.supabaseService.client.auth.signUp(request)).pipe(
+        return this.userService.signupWithPassword(action.request).pipe(
           map((response) => {
-            if (response.error || !response.data.session) {
+            if (
+              response.error ||
+              !response.data.session ||
+              !response.data.user
+            ) {
               return userActions.signupFailure({
                 message: response.error?.message || 'Sign up failed',
               });
             }
+
             return userActions.signupSuccess({
               session: response.data.session,
+              userProfile: UserProfileFactory.fromSupabaseUser(
+                response.data.user
+              ),
             });
           }),
           catchError((error: Error) => {
@@ -173,9 +185,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(userActions.resetPassword),
       switchMap((action) => {
-        return from(
-          this.supabaseService.client.auth.resetPasswordForEmail(action.email)
-        ).pipe(
+        return this.userService.resetPasswordForEmail(action.email).pipe(
           map((response) => {
             if (response.error) {
               return userActions.resetPasswordFailure({
@@ -208,6 +218,58 @@ export class UserEffects {
               color: 'success',
             })
             .then((toast) => toast.present());
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.updateUserProfile),
+      switchMap((action) => {
+        return this.userService.updateUserProfile(action.userProfile).pipe(
+          map((response) => {
+            if (response.error) {
+              return userActions.updateUserProfileFailure({
+                message: response.error.message || 'Failed to update profile',
+              });
+            }
+
+            return userActions.updateUserProfileSuccess({
+              userProfile: UserProfileFactory.fromSupabaseUser(
+                response.data.user
+              ),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.updateUserProfileFailure({
+                message: error?.message || 'Failed to update profile',
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  updateUserProfileSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.updateUserProfileSuccess),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'Successfully updated your profile!',
+              duration: 2000,
+              color: 'success',
+            })
+            .then((toast) => toast.present());
+
+          await this.router.navigate([
+            AppRoutes.UserProfile,
+            UserProfileRoutes.View,
+          ]);
         })
       ),
     { dispatch: false }

@@ -14,6 +14,11 @@ export const userReducer = createReducer(
       return {
         ...state,
         session: wrapAsAsyncData(state.session.data, false, action.message),
+        userProfile: wrapAsAsyncData(
+          state.userProfile.data,
+          false,
+          action.message
+        ),
       };
     }
   ),
@@ -22,12 +27,14 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(undefined, true),
+      userProfile: wrapAsAsyncData(undefined, true),
     };
   }),
   on(userActions.loadSessionSuccess, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
+      userProfile: wrapAsAsyncData(action.userProfile, false),
     };
   }),
 
@@ -35,12 +42,14 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(undefined, true),
+      userProfile: wrapAsAsyncData(undefined, true),
     };
   }),
   on(userActions.loginSuccess, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
+      userProfile: wrapAsAsyncData(action.userProfile, false),
     };
   }),
 
@@ -48,12 +57,37 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(undefined, true),
+      userProfile: wrapAsAsyncData(undefined, true),
     };
   }),
   on(userActions.signupSuccess, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
+      userProfile: wrapAsAsyncData(action.userProfile, false),
+    };
+  }),
+
+  on(userActions.updateUserProfile, (state): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(state.userProfile.data, true),
+    };
+  }),
+  on(userActions.updateUserProfileSuccess, (state, action): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(action.userProfile, false),
+    };
+  }),
+  on(userActions.updateUserProfileFailure, (state, action): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(
+        state.userProfile.data,
+        false,
+        action.message
+      ),
     };
   })
 );

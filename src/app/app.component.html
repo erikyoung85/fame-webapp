@@ -3,15 +3,9 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-item *ngIf="(user$ | async) as user">
-            <ion-avatar slot="start">
-              <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-            </ion-avatar>
-            <ion-label>
-              <h1>{{ user.role }}</h1>
-              <p>{{ user.email }}</p>
-            </ion-label>
-          </ion-item>
+          <ng-container *ngIf="(userProfile$ | async) as userProfile">
+            <app-user-profile-item button [userProfile]="userProfile" (onClick)="onUserProfileClicked()"></app-user-profile-item>
+          </ng-container>
 
           @for (p of appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">

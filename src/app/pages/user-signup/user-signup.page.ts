@@ -26,8 +26,9 @@ import {
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { AppRoutes } from 'src/app/app.routes';
-import { userActions } from 'src/app/core/user/store/actions/user.actions';
-import { userFeature } from 'src/app/core/user/store/feature/user.feature';
+import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/dtos/requests/signup-with-password.request.dto.v1';
+import { userActions } from 'src/app/core/store/user/actions/user.actions';
+import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { DividerComponent } from '../../components/divider/divider.component';
 
 @Component({
@@ -36,6 +37,7 @@ import { DividerComponent } from '../../components/divider/divider.component';
   styleUrls: ['./user-signup.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    CommonModule,
     IonNote,
     IonProgressBar,
     IonText,
@@ -50,7 +52,6 @@ import { DividerComponent } from '../../components/divider/divider.component';
     IonButtons,
     IonContent,
     IonToolbar,
-    CommonModule,
     IonHeader,
     IonMenuButton,
     IonInputPasswordToggle,
@@ -62,12 +63,11 @@ export class UserSignupPage {
   private readonly router = inject(Router);
   private readonly fb = inject(NonNullableFormBuilder);
 
-  readonly isUserSignupLoading$ = this.store.select(
-    userFeature.selectIsLoginLoading
-  );
+  readonly isLoading$ = this.store.select(userFeature.selectIsSessionLoading);
 
   readonly userSignupForm = this.fb.group({
-    fullName: this.fb.control('', [Validators.required]),
+    firstName: this.fb.control('', [Validators.required]),
+    lastName: this.fb.control('', [Validators.required]),
     email: this.fb.control('', [Validators.required, Validators.email]),
     password: this.fb.control('', [
       Validators.required,
@@ -82,13 +82,14 @@ export class UserSignupPage {
 
     const formValue = this.userSignupForm.getRawValue();
 
-    this.store.dispatch(
-      userActions.signupWithPassword({
-        fullName: formValue.fullName,
-        email: formValue.email,
-        password: formValue.password,
-      })
-    );
+    const request: SignupWithPasswordRequestDtoV1 = {
+      email: formValue.email,
+      password: formValue.password,
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+    };
+
+    this.store.dispatch(userActions.signupWithPassword({ request: request }));
   }
 
   signupWithProvider(provider: 'google' | 'apple') {
