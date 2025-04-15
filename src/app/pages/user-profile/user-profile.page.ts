@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import {
   IonButtons,
   IonChip,
@@ -44,7 +44,6 @@ import { UserProfileRoutes } from './user-profile.routes';
 })
 export class UserProfilePage {
   private readonly store = inject(Store);
-  private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
   readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
@@ -56,8 +55,6 @@ export class UserProfilePage {
         return routeSegment === FormMode.Edit;
       })
     );
-
-  isEditMode = false;
 
   onEditClicked() {
     this.router.navigate([AppRoutes.UserProfile, UserProfileRoutes.Edit]);
