@@ -48,12 +48,9 @@ export class UserProfilePage {
 
   readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
   readonly isEditMode$ = this.store
-    .select(routerSelectors.selectUrlWithoutQueryParams)
+    .select(routerSelectors.selectUrl)
     .pipe(
-      map((url) => {
-        const routeSegment = url.split('/').pop();
-        return routeSegment === FormMode.Edit;
-      })
+      map((url) => url.includes(`${AppRoutes.UserProfile}/${FormMode.Edit}`))
     );
 
   onEditClicked() {

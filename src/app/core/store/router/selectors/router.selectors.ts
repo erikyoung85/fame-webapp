@@ -1,37 +1,20 @@
-import { convertToParamMap } from '@angular/router';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { getRouterSelectors, RouterReducerState } from '@ngrx/router-store';
+import { createFeatureSelector } from '@ngrx/store';
 import { RootStateKey } from '../../root.state';
-import { RouterState } from '../state/router.state';
 
-export const selectRouterState = createFeatureSelector<RouterState>(
+export const selectRouter = createFeatureSelector<RouterReducerState>(
   RootStateKey.ROUTER
 );
 
-export const selectRouterUrlState = createSelector(
-  selectRouterState,
-  (state) => state.state
-);
-
-export const selectUrl = createSelector(
-  selectRouterUrlState,
-  (state) => state.url
-);
-
-export const selectUrlWithoutQueryParams = createSelector(
-  selectUrl,
-  (url) => url.split('?')[0]
-);
-
-export const selectPreviousUrl = createSelector(
-  selectRouterUrlState,
-  (state) => state.previousUrl
-);
-
-export const selectParamMap = createSelector(selectRouterUrlState, (state) =>
-  convertToParamMap(state.params)
-);
-
-export const selectQueryParamMap = createSelector(
-  selectRouterUrlState,
-  (state) => convertToParamMap(state.queryParams)
-);
+export const {
+  selectCurrentRoute, // select the current route
+  selectFragment, // select the current route fragment
+  selectQueryParams, // select the current route query params
+  selectQueryParam, // factory function to select a query param
+  selectRouteParams, // select the current route params
+  selectRouteParam, // factory function to select a route param
+  selectRouteData, // select the current route data
+  selectRouteDataParam, // factory function to select a route data param
+  selectUrl, // select the current url
+  selectTitle, // select the title if available
+} = getRouterSelectors();

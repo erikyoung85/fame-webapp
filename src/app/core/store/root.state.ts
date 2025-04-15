@@ -1,9 +1,9 @@
-import { RouterState } from './router/state/router.state';
+import { RouterReducerState } from '@ngrx/router-store';
 
 export enum RootStateKey {
   ROUTER = 'router',
 }
 
 export type RootState = {
-  [RootStateKey.ROUTER]: RouterState;
+  [RootStateKey.ROUTER]: RouterReducerState<any>;
 };

@@ -10,9 +10,6 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { getMetaReducers } from './app/core/store/meta-reducers/meta-reducers';
 import { rootReducer } from './app/core/store/root.reducer';
-import { RootStateKey } from './app/core/store/root.state';
-import { CustomRouteSerializer } from './app/core/store/router/state/custom-route-serializer';
-import { INITIAL_ROUTER_STATE } from './app/core/store/router/state/router.initial-state';
 import { UserEffects } from './app/core/store/user/effects/user.effects';
 import { userFeature } from './app/core/store/user/feature/user.feature';
 import { environment } from './environments/environment';
@@ -28,12 +25,10 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideStore(rootReducer, {
       metaReducers: getMetaReducers(),
-      initialState: {
-        [RootStateKey.ROUTER]: INITIAL_ROUTER_STATE,
-      },
+      initialState: {},
     }),
     provideState(userFeature),
     provideEffects(UserEffects),
-    provideRouterStore({ serializer: CustomRouteSerializer }),
+    provideRouterStore(),
   ],
 }).catch(console.error);
