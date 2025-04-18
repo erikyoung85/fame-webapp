@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
-  IonAvatar,
   IonCol,
   IonGrid,
   IonIcon,
@@ -14,6 +13,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
 @Component({
@@ -26,7 +26,6 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     IonLabel,
     IonItem,
     IonList,
-    IonAvatar,
     IonNote,
     IonText,
     IonCol,
@@ -34,6 +33,7 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     IonGrid,
     IonIcon,
     UnwrapAsyncPipe,
+    UserProfileAvatarComponent,
   ],
 })
 export class UserProfileViewComponent {

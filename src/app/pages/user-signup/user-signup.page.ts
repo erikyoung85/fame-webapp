@@ -22,6 +22,7 @@ import {
   IonProgressBar,
   IonRow,
   IonText,
+  IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
@@ -37,6 +38,7 @@ import { DividerComponent } from '../../components/divider/divider.component';
   styleUrls: ['./user-signup.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonTitle,
     CommonModule,
     IonNote,
     IonProgressBar,

@@ -1,5 +1,6 @@
 <ion-header>
   <ion-toolbar>
+    <ion-title>Login</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -7,20 +8,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding="ion-padding">
+<ion-content [fullscreen]="true" padding="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Login</ion-title>
+    </ion-toolbar>
+  </ion-header>
   <ion-grid>
     <!-- Top text -->
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <img src="assets/icon/favicon.png" alt="Logo" />
-        <ion-text><h1 class="ion-text-xl">Welcome Back</h1></ion-text>
-        <ion-text><p>Log in to continue</p></ion-text>
+    <ion-row class="ion-margin-bottom">
+      <ion-col>
+        <ion-text><ion-note>Please sign in to continue</ion-note></ion-text>
       </ion-col>
     </ion-row>
 
 
     <!-- Email/Password login (optional) -->
-    <ion-row>
+    <ion-row class="ion-margin-vertical">
       <ion-col>
         <form (ngSubmit)="loginWithEmail()">
           <ion-row>
@@ -31,7 +35,7 @@
                 type="email"
                 label="Email"
                 labelPlacement="stacked"
-                placeholder="Email"
+                placeholder="email@domain.com"
                 errorText="Please enter a valid email"
               ></ion-input>
             </ion-col>
@@ -45,17 +49,11 @@
                 type="password"
                 label="Password"
                 labelPlacement="stacked"
-                placeholder="Password"
+                placeholder="password"
                 errorText="Password is required"
               >
-                <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                <ion-button slot="end" fill="clear" size="small" (click)="onForgotPasswordClicked()">FORGOT</ion-button>
               </ion-input>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col class="ion-text-center">
-              <ion-text><a (click)="onForgotPasswordClicked()">Forgot your password?</a></ion-text>
             </ion-col>
           </ion-row>
     
@@ -70,44 +68,47 @@
       </ion-col>
     </ion-row>
 
-    <!-- Divider -->
-     <ion-row class="ion-margin-vertical">
-      <ion-col>
-        <shared-divider text="or"></shared-divider>
-      </ion-col>
-     </ion-row>
-
-    <!-- Social Logins -->
-    <ion-row>
-      <ion-col>
-          <ion-button
-            disabled
-            color="light"
-            expand="block"
-            (click)="loginWithProvider('google')"
-          >
-            <ion-icon slot="start" name="logo-google"></ion-icon>
-            Continue with Google
-          </ion-button>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-          <ion-button
-            disabled
-            color="dark"
-            expand="block"
-            (click)="loginWithProvider('apple')"
-          >
-            <ion-icon slot="start" name="logo-apple"></ion-icon>
-            Continue with Apple
-          </ion-button>
-      </ion-col>
-    </ion-row>
+    <ng-container *ngIf="false">
+      <!-- Divider -->
+       <ion-row class="ion-margin-vertical">
+        <ion-col>
+          <shared-divider text="or"></shared-divider>
+        </ion-col>
+       </ion-row>
+  
+      <!-- Social Logins -->
+      <ion-row>
+        <ion-col>
+            <ion-button
+              disabled
+              color="light"
+              expand="block"
+              (click)="loginWithProvider('google')"
+            >
+              <ion-icon slot="start" name="logo-google"></ion-icon>
+              Continue with Google
+            </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+            <ion-button
+              disabled
+              color="dark"
+              expand="block"
+              (click)="loginWithProvider('apple')"
+            >
+              <ion-icon slot="start" name="logo-apple"></ion-icon>
+              Continue with Apple
+            </ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
     <ion-row>
       <ion-col class="ion-text-center">
         <ion-text><ion-note>Don't have an account yet? </ion-note><a (click)="onRegisterClicked()">Register</a></ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
+
 </ion-content>

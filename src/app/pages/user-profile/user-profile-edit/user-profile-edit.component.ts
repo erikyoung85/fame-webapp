@@ -12,7 +12,6 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  IonAvatar,
   IonButton,
   IonCol,
   IonGrid,
@@ -24,6 +23,7 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 
 @Component({
   selector: 'app-user-profile-edit',
@@ -32,13 +32,13 @@ import { userFeature } from 'src/app/core/store/user/feature/user.feature';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonButton,
-    IonAvatar,
     IonCol,
     IonRow,
     IonGrid,
     FormsModule,
     ReactiveFormsModule,
     IonInput,
+    UserProfileAvatarComponent,
   ],
 })
 export class UserProfileEditComponent implements OnInit, OnDestroy {
@@ -50,6 +50,7 @@ export class UserProfileEditComponent implements OnInit, OnDestroy {
   readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
 
   readonly form = this.fb.group({
+    avatarSrc: this.fb.control<string | undefined>(undefined),
     firstName: this.fb.control('', [Validators.required]),
     lastName: this.fb.control('', [Validators.required]),
     email: this.fb.control({ value: '', disabled: true }),
@@ -65,6 +66,10 @@ export class UserProfileEditComponent implements OnInit, OnDestroy {
           this.form.patchValue(userProfile.data);
         }
       });
+
+    this.form.controls.avatarSrc.valueChanges.subscribe((value) => {
+      console.log('Avatar source changed:', value);
+    });
   }
 
   ngOnDestroy(): void {

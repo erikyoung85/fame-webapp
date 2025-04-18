@@ -13,7 +13,6 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonListHeader,
   IonMenu,
   IonMenuToggle,
   IonRouterOutlet,
@@ -45,7 +44,6 @@ import { UserProfileItemComponent } from './shared/components/user-profile-item/
     IonRouterOutlet,
     IonMenu,
     IonList,
-    IonListHeader,
     IonMenuToggle,
     UserProfileItemComponent,
   ],
@@ -53,6 +51,10 @@ import { UserProfileItemComponent } from './shared/components/user-profile-item/
 export class AppComponent implements OnInit {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
+
+  constructor() {
+    addIcons({ ...ionIcons });
+  }
 
   readonly userProfile$ = this.store
     .select(userFeature.selectUserProfile)
@@ -67,10 +69,6 @@ export class AppComponent implements OnInit {
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
     { title: 'Login', url: '/login', icon: 'warning' },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {
-    addIcons({ ...ionIcons });
-  }
 
   ngOnInit(): void {
     this.store.dispatch(userActions.loadSession());

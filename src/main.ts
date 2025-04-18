@@ -3,6 +3,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, RouteReuseStrategy } from '@angular/router';
 import { IonicRouteStrategy } from '@ionic/angular';
 import { provideIonicAngular } from '@ionic/angular/standalone';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore } from '@ngrx/router-store';
 import { provideState, provideStore } from '@ngrx/store';
@@ -13,6 +14,8 @@ import { rootReducer } from './app/core/store/root.reducer';
 import { UserEffects } from './app/core/store/user/effects/user.effects';
 import { userFeature } from './app/core/store/user/feature/user.feature';
 import { environment } from './environments/environment';
+
+defineCustomElements(window);
 
 if (environment.production) {
   enableProdMode();

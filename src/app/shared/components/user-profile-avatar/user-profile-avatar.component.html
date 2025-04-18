@@ -1,0 +1,14 @@
+<div class="avatar-wrapper">
+  <ion-avatar class="avatar {{size}}">
+    <img [src]="_value() ?? DEFAULT_AVATAR_SRC" />
+  </ion-avatar>
+  <ion-fab-button 
+    *ngIf="editMode" 
+    class="edit-avatar-btn" 
+    size="small" 
+    [disabled]="_isDisabled()"
+    (click)="editImageClicked()" 
+  >
+    <ion-icon name="pencil"></ion-icon>
+  </ion-fab-button>
+</div>

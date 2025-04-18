@@ -16,12 +16,12 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonInputPasswordToggle,
   IonMenuButton,
   IonNote,
   IonProgressBar,
   IonRow,
   IonText,
+  IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
@@ -36,6 +36,7 @@ import { DividerComponent } from '../../components/divider/divider.component';
   styleUrls: ['./login.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonTitle,
     CommonModule,
     IonNote,
     IonProgressBar,
@@ -53,7 +54,6 @@ import { DividerComponent } from '../../components/divider/divider.component';
     IonToolbar,
     IonHeader,
     IonMenuButton,
-    IonInputPasswordToggle,
     DividerComponent,
   ],
 })

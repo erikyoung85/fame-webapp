@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
+  IonBackButton,
   IonButton,
   IonButtons,
   IonCol,
@@ -15,7 +16,6 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonMenuButton,
   IonRow,
   IonText,
   IonToolbar,
@@ -30,6 +30,7 @@ import { userActions } from 'src/app/core/store/user/actions/user.actions';
   styleUrls: ['./password-reset.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonBackButton,
     IonIcon,
     IonText,
     IonCol,
@@ -43,7 +44,6 @@ import { userActions } from 'src/app/core/store/user/actions/user.actions';
     IonContent,
     IonToolbar,
     IonHeader,
-    IonMenuButton,
   ],
 })
 export class PasswordResetPage {
