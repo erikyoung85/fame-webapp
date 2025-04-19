@@ -1,7 +1,5 @@
-<ion-item button [detail]="false" lines="none" color="light">
-  <ion-avatar slot="start">
-    <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-  </ion-avatar>
+<ion-item button color="light">
+  <app-user-profile-avatar size="small" slot="start" [avatarSrc]="athlete.profilePictureUrl"></app-user-profile-avatar>
   <ion-label>
     <ion-text><b>{{ athlete.name }}</b></ion-text><br />
     <ion-text><ion-note color="medium">{{ athlete.team }}</ion-note></ion-text>

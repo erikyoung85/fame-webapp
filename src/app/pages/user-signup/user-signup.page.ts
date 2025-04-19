@@ -30,7 +30,7 @@ import { AppRoutes } from 'src/app/app.routes';
 import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/requests/signup-with-password.request.dto.v1';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
-import { DividerComponent } from '../../components/divider/divider.component';
+import { DividerComponent } from '../../shared/components/divider/divider.component';
 
 @Component({
   selector: 'app-user-signup',

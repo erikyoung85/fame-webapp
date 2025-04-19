@@ -5,11 +5,14 @@ import {
   Component,
   forwardRef,
   Input,
+  OnChanges,
   signal,
+  SimpleChanges,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonAvatar, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import { IsNilOrEmptyPipe } from '../../pipes/is-nil-or-empty/is-nil-or-empty.pipe';
 
 @Component({
   selector: 'app-user-profile-avatar',
@@ -23,9 +26,12 @@ import { IonAvatar, IonFabButton, IonIcon } from '@ionic/angular/standalone';
       multi: true,
     },
   ],
-  imports: [NgIf, IonIcon, IonFabButton, IonAvatar],
+  imports: [NgIf, IonIcon, IonFabButton, IonAvatar, IsNilOrEmptyPipe],
 })
-export class UserProfileAvatarComponent implements ControlValueAccessor {
+export class UserProfileAvatarComponent
+  implements ControlValueAccessor, OnChanges
+{
+  @Input() avatarSrc: string | undefined = undefined;
   @Input({ transform: booleanAttribute }) editMode: boolean = false;
   @Input() size: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'auto' =
     'auto';
@@ -61,8 +67,14 @@ export class UserProfileAvatarComponent implements ControlValueAccessor {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['avatarSrc'] && this.avatarSrc !== this._value()) {
+      this.writeValue(this.avatarSrc);
+    }
+  }
+
   // ControlValueAccessor methods
-  writeValue(newValue: string): void {
+  writeValue(newValue: string | undefined): void {
     this._value.set(newValue);
   }
 

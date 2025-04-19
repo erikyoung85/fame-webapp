@@ -3,7 +3,7 @@ export interface Athlete {
   name: string;
   sport: string;
   team: string;
-  profilePictureUrl: string;
+  profilePictureUrl: string | undefined;
   position: string;
   jerseyNumber: string;
   favorited: boolean;

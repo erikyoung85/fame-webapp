@@ -28,7 +28,7 @@ import { Store } from '@ngrx/store';
 import { AppRoutes } from 'src/app/app.routes';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
-import { DividerComponent } from '../../components/divider/divider.component';
+import { DividerComponent } from '../../shared/components/divider/divider.component';
 
 @Component({
   selector: 'app-login',

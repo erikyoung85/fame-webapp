@@ -1,5 +1,3 @@
-.item-card-background {
-  ion-item::part(native) {
-    background: var(--ion-card-background);
-  }
+ion-item::part(native) {
+  background: var(--ion-card-background);
 }
