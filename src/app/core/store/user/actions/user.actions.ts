@@ -11,13 +11,13 @@ export const userActions = createActionGroup({
     'Load Session Failure': props<{ message?: string }>(),
 
     'Login With Password': props<{ email: string; password: string }>(),
-    'Login Success': props<{ session: Session; userProfile: UserProfile }>(),
+    'Login Success': props<{ session: Session }>(),
     'Login Failure': props<{ message: string }>(),
 
     'Signup With Password': props<{
       request: SignupWithPasswordRequestDtoV1;
     }>(),
-    'Signup Success': props<{ session: Session; userProfile: UserProfile }>(),
+    'Signup Success': props<{ session: Session }>(),
     'Signup Failure': props<{ message: string }>(),
 
     'Reset Password': props<{ email: string }>(),
@@ -28,6 +28,7 @@ export const userActions = createActionGroup({
     'Get User Profile Success': props<{ userProfile: UserProfile }>(),
     'Get User Profile Failure': props<{ message: string }>(),
 
+    'Clear User Profile': emptyProps(),
     'Update User Profile': props<{
       userProfile: UserProfile;
     }>(),

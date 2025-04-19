@@ -11,7 +11,7 @@ export interface UserProfile {
 }
 
 export class UserProfileFactory {
-  /** @deprecated use  */
+  /** @deprecated  */
   static fromSupabaseUser(user: AuthUser): UserProfile {
     return {
       id: user.id,

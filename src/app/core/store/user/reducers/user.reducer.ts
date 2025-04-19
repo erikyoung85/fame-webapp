@@ -23,7 +23,6 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(undefined, false, action.message),
-      userProfile: wrapAsAsyncData(undefined, false, action.message),
     };
   }),
 
@@ -31,25 +30,18 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(undefined, true),
-      userProfile: wrapAsAsyncData(undefined, true),
     };
   }),
   on(userActions.loginSuccess, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
-      userProfile: wrapAsAsyncData(action.userProfile, false),
     };
   }),
   on(userActions.loginFailure, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(state.session.data, false, action.message),
-      userProfile: wrapAsAsyncData(
-        state.userProfile.data,
-        false,
-        action.message
-      ),
     };
   }),
 
@@ -64,18 +56,12 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
-      userProfile: wrapAsAsyncData(action.userProfile, false),
     };
   }),
   on(userActions.signupFailure, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(state.session.data, false, action.message),
-      userProfile: wrapAsAsyncData(
-        state.userProfile.data,
-        false,
-        action.message
-      ),
     };
   }),
 

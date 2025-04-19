@@ -105,9 +105,6 @@ export class UserEffects {
               }
               return userActions.loginSuccess({
                 session: response.data.session,
-                userProfile: UserProfileFactory.fromSupabaseUser(
-                  response.data.user
-                ),
               });
             }),
             catchError((error: Error) => {
@@ -129,7 +126,7 @@ export class UserEffects {
         tap(async (action) => {
           await this.toastController
             .create({
-              message: `Welcome back ${action.userProfile.firstName}!`,
+              message: `Login Successful!`,
               duration: 2000,
               color: 'success',
             })
@@ -159,9 +156,6 @@ export class UserEffects {
 
             return userActions.signupSuccess({
               session: response.data.session,
-              userProfile: UserProfileFactory.fromSupabaseUser(
-                response.data.user
-              ),
             });
           }),
           catchError((error: Error) => {
@@ -342,9 +336,10 @@ export class UserEffects {
 
   getProfileOnUserIdChange$ = createEffect(() =>
     this.store.select(userFeature.selectUserId).pipe(
-      filter((userId) => userId !== undefined),
       map((userId) => {
-        return userActions.getUserProfile({ userId: userId });
+        return userId === undefined
+          ? userActions.clearUserProfile()
+          : userActions.getUserProfile({ userId: userId });
       })
     )
   );
