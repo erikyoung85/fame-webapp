@@ -6,35 +6,24 @@ import { UserState } from '../state/user.state';
 
 export const userReducer = createReducer(
   INITIAL_USER_STATE,
-  on(
-    userActions.loadSessionFailure,
-    userActions.loginFailure,
-    userActions.signupFailure,
-    (state, action): UserState => {
-      return {
-        ...state,
-        session: wrapAsAsyncData(state.session.data, false, action.message),
-        userProfile: wrapAsAsyncData(
-          state.userProfile.data,
-          false,
-          action.message
-        ),
-      };
-    }
-  ),
 
   on(userActions.loadSession, (state): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(undefined, true),
-      userProfile: wrapAsAsyncData(undefined, true),
     };
   }),
   on(userActions.loadSessionSuccess, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(action.session, false),
-      userProfile: wrapAsAsyncData(action.userProfile, false),
+    };
+  }),
+  on(userActions.loadSessionFailure, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(undefined, false, action.message),
+      userProfile: wrapAsAsyncData(undefined, false, action.message),
     };
   }),
 
@@ -52,6 +41,17 @@ export const userReducer = createReducer(
       userProfile: wrapAsAsyncData(action.userProfile, false),
     };
   }),
+  on(userActions.loginFailure, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(state.session.data, false, action.message),
+      userProfile: wrapAsAsyncData(
+        state.userProfile.data,
+        false,
+        action.message
+      ),
+    };
+  }),
 
   on(userActions.signupWithPassword, (state): UserState => {
     return {
@@ -65,6 +65,36 @@ export const userReducer = createReducer(
       ...state,
       session: wrapAsAsyncData(action.session, false),
       userProfile: wrapAsAsyncData(action.userProfile, false),
+    };
+  }),
+  on(userActions.signupFailure, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(state.session.data, false, action.message),
+      userProfile: wrapAsAsyncData(
+        state.userProfile.data,
+        false,
+        action.message
+      ),
+    };
+  }),
+
+  on(userActions.getUserProfile, (state): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(undefined, true),
+    };
+  }),
+  on(userActions.getUserProfileSuccess, (state, action): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(action.userProfile, false),
+    };
+  }),
+  on(userActions.getUserProfileFailure, (state, action): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(undefined, false, action.message),
     };
   }),
 

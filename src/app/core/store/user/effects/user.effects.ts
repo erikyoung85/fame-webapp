@@ -2,30 +2,47 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, from, map, of, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {
+  catchError,
+  filter,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { AppRoutes } from 'src/app/app.routes';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
-import { SupabaseService } from 'src/app/core/services/supabase.service';
-import { UserService } from 'src/app/core/services/user.service';
+import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
+import { UpdateUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/update-user-profile.request.dto.v1';
+import { UserProfileService } from 'src/app/core/services/user-profile/user-profile.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { UserProfileRoutes } from 'src/app/pages/user-profile/user-profile.routes';
 import { userActions } from '../actions/user.actions';
+import { userFeature } from '../feature/user.feature';
 
 @Injectable()
 export class UserEffects {
   private readonly actions$ = inject(Actions);
+  private readonly store = inject(Store);
   private readonly supabaseService = inject(SupabaseService);
   private readonly userService = inject(UserService);
+  private readonly userProfileService = inject(UserProfileService);
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
 
-  authFailure$ = createEffect(
+  failureMessages$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(
           userActions.loadSessionFailure,
           userActions.loginFailure,
           userActions.signupFailure,
-          userActions.updateUserProfileFailure
+          userActions.updateUserProfileFailure,
+          userActions.getUserProfileFailure,
+          userActions.resetPasswordFailure
         ),
         tap(async (action) => {
           if (action.message !== undefined) {
@@ -55,9 +72,6 @@ export class UserEffects {
             }
             return userActions.loadSessionSuccess({
               session: response.data.session,
-              userProfile: UserProfileFactory.fromSupabaseUser(
-                response.data.session.user
-              ),
             });
           }),
           catchError((error: Error) => {
@@ -223,32 +237,83 @@ export class UserEffects {
     { dispatch: false }
   );
 
-  updateUserProfile$ = createEffect(() =>
+  getUserProfile$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(userActions.updateUserProfile),
-      switchMap((action) => {
-        return this.userService.updateUserProfile(action.userProfile).pipe(
+      ofType(userActions.getUserProfile),
+      withLatestFrom(
+        this.store.select(userFeature.selectSession).pipe(
+          map((async) => async.data),
+          filter((session) => session !== undefined)
+        )
+      ),
+      switchMap(([action, session]) => {
+        return this.userProfileService.getUserProfile(action.userId).pipe(
           map((response) => {
             if (response.error) {
-              return userActions.updateUserProfileFailure({
-                message: response.error.message || 'Failed to update profile',
+              return userActions.getUserProfileFailure({
+                message: response.error.message || 'Failed to get profile',
               });
             }
 
-            return userActions.updateUserProfileSuccess({
-              userProfile: UserProfileFactory.fromSupabaseUser(
-                response.data.user
+            return userActions.getUserProfileSuccess({
+              userProfile: UserProfileFactory.fromSessionAndProfileResponseDto(
+                session,
+                response.data
               ),
             });
           }),
           catchError((error: Error) => {
             return of(
-              userActions.updateUserProfileFailure({
-                message: error?.message || 'Failed to update profile',
+              userActions.getUserProfileFailure({
+                message: error?.message || 'Failed to get profile',
               })
             );
           })
         );
+      })
+    )
+  );
+
+  updateUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.updateUserProfile),
+      withLatestFrom(
+        this.store.select(userFeature.selectSession).pipe(
+          map((async) => async.data),
+          filter((session) => session !== undefined)
+        )
+      ),
+      switchMap(([action, session]) => {
+        const request: UpdateUserProfileRequestDtoV1 = {
+          first_name: action.userProfile.firstName,
+          last_name: action.userProfile.lastName,
+        };
+        return this.userProfileService
+          .updateUserProfile(action.userProfile.id, request)
+          .pipe(
+            map((response) => {
+              if (response.error) {
+                return userActions.updateUserProfileFailure({
+                  message: response.error.message || 'Failed to update profile',
+                });
+              }
+
+              return userActions.updateUserProfileSuccess({
+                userProfile:
+                  UserProfileFactory.fromSessionAndProfileResponseDto(
+                    session,
+                    response.data
+                  ),
+              });
+            }),
+            catchError((error: Error) => {
+              return of(
+                userActions.updateUserProfileFailure({
+                  message: error?.message || 'Failed to update profile',
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -273,5 +338,14 @@ export class UserEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  getProfileOnUserIdChange$ = createEffect(() =>
+    this.store.select(userFeature.selectUserId).pipe(
+      filter((userId) => userId !== undefined),
+      map((userId) => {
+        return userActions.getUserProfile({ userId: userId });
+      })
+    )
   );
 }

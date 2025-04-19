@@ -1,16 +1,13 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Session } from '@supabase/supabase-js';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
-import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/dtos/requests/signup-with-password.request.dto.v1';
+import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/requests/signup-with-password.request.dto.v1';
 
 export const userActions = createActionGroup({
   source: 'User',
   events: {
     'Load Session': emptyProps(),
-    'Load Session Success': props<{
-      session: Session;
-      userProfile: UserProfile | undefined;
-    }>(),
+    'Load Session Success': props<{ session: Session }>(),
     'Load Session Failure': props<{ message?: string }>(),
 
     'Login With Password': props<{ email: string; password: string }>(),
@@ -26,6 +23,10 @@ export const userActions = createActionGroup({
     'Reset Password': props<{ email: string }>(),
     'Reset Password Success': emptyProps(),
     'Reset Password Failure': props<{ message: string }>(),
+
+    'Get User Profile': props<{ userId: string }>(),
+    'Get User Profile Success': props<{ userProfile: UserProfile }>(),
+    'Get User Profile Failure': props<{ message: string }>(),
 
     'Update User Profile': props<{
       userProfile: UserProfile;

@@ -13,5 +13,9 @@ export const userFeature = createFeature({
       selectUserProfile,
       (userProfile) => userProfile.data !== undefined
     ),
+    selectUserId: createSelector(
+      selectSession,
+      (session) => session.data?.user?.id
+    ),
   }),
 });

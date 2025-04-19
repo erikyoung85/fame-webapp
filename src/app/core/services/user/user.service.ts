@@ -4,13 +4,10 @@ import {
   AuthTokenResponsePassword,
   SignInWithPasswordCredentials,
   SignUpWithPasswordCredentials,
-  UserAttributes,
-  UserResponse,
 } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
-import { UserProfile } from '../models/UserProfile.model';
+import { SupabaseService } from '../supabase/supabase.service';
 import { SignupWithPasswordRequestDtoV1 } from './dtos/requests/signup-with-password.request.dto.v1';
-import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,15 +44,5 @@ export class UserService {
 
   resetPasswordForEmail(email: string) {
     return from(this.supabaseService.client.auth.resetPasswordForEmail(email));
-  }
-
-  updateUserProfile(userProfile: UserProfile): Observable<UserResponse> {
-    const updateBody: UserAttributes = {
-      data: {
-        first_name: userProfile.firstName,
-        last_name: userProfile.lastName,
-      },
-    };
-    return from(this.supabaseService.client.auth.updateUser(updateBody));
   }
 }
