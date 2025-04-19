@@ -65,6 +65,13 @@ export class AppComponent implements OnInit {
   public appPages = [
     { title: 'Home', url: AppRoutes.Home, icon: 'home-sharp' },
     { title: 'Login', url: AppRoutes.Login, icon: 'person-sharp' },
+    { title: 'Register', url: AppRoutes.UserSignup, icon: 'person-sharp' },
+    {
+      title: 'Password reset',
+      url: AppRoutes.PasswordReset,
+      icon: 'person-sharp',
+    },
+    { title: 'Profile', url: AppRoutes.UserProfile, icon: 'person-sharp' },
   ];
 
   ngOnInit(): void {
