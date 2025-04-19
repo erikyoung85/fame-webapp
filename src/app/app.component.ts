@@ -22,6 +22,7 @@ import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
 import { map } from 'rxjs';
+import { AppRoutes } from './app.routes';
 import { userActions } from './core/store/user/actions/user.actions';
 import { userFeature } from './core/store/user/feature/user.feature';
 import { UserProfileItemComponent } from './shared/components/user-profile-item/user-profile-item.component';
@@ -61,13 +62,8 @@ export class AppComponent implements OnInit {
     .pipe(map((async) => async.data));
 
   public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
-    { title: 'Login', url: '/login', icon: 'warning' },
+    { title: 'Home', url: AppRoutes.Home, icon: 'home-sharp' },
+    { title: 'Login', url: AppRoutes.Login, icon: 'person-sharp' },
   ];
 
   ngOnInit(): void {
@@ -75,6 +71,6 @@ export class AppComponent implements OnInit {
   }
 
   onUserProfileClicked() {
-    this.router.navigate(['/user-profile']);
+    this.router.navigate([AppRoutes.UserProfile]);
   }
 }

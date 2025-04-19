@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
 
 export enum AppRoutes {
+  Home = 'home',
   Login = 'login',
   UserSignup = 'user-signup',
   PasswordReset = 'password-reset',
   UserProfile = 'user-profile',
-  Folder = 'folder',
 }
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: `${AppRoutes.Folder}/inbox`,
+    redirectTo: AppRoutes.Home,
     pathMatch: 'full',
   },
   {
-    path: `${AppRoutes.Folder}/:id`,
+    path: AppRoutes.Home,
     loadComponent: () =>
-      import('./folder/folder.page').then((m) => m.FolderPage),
+      import('./pages/home/home.page').then((m) => m.HomePage),
   },
   {
     path: AppRoutes.Login,

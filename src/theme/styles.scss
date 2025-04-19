@@ -1,11 +1,28 @@
+@use "custom-card";
 
 .icon-xxl {
-    font-size: 4rem;
+  font-size: 4rem;
 }
 
 .ion-safe-area-padding::part(scroll) {
-    padding-top: var(--ion-safe-area-top, 0);
-    padding-bottom: var(--ion-safe-area-bottom, 0);
-    padding-left: var(--ion-safe-area-left, 0);
-    padding-right: var(--ion-safe-area-right, 0);
-  }
+  padding-top: var(--ion-safe-area-top, 0);
+  padding-bottom: var(--ion-safe-area-bottom, 0);
+  padding-left: var(--ion-safe-area-left, 0);
+  padding-right: var(--ion-safe-area-right, 0);
+}
+
+// Hide scrollbar in ion-content for Chrome, Safari and Opera
+ion-content::part(scroll)::-webkit-scrollbar {
+  display: none;
+}
+
+// Hide scrollbar in ion-content for IE, Edge and Firefox
+ion-content::part(scroll) {
+  -ms-overflow-style: none; // IE and Edge
+  scrollbar-width: none; // Firefox
+}
+
+// Hide scrollbar for all other elements
+* ::-webkit-scrollbar {
+  display: none;
+}
