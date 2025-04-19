@@ -4,6 +4,9 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onRegisterClicked()">Sign up</ion-button>
+    </ion-buttons>
     <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
@@ -34,8 +37,7 @@
                 name="email"
                 type="email"
                 label="Email"
-                labelPlacement="stacked"
-                placeholder="email@domain.com"
+                labelPlacement="floating"
                 errorText="Please enter a valid email"
               ></ion-input>
             </ion-col>
@@ -48,16 +50,15 @@
                 name="password"
                 type="password"
                 label="Password"
-                labelPlacement="stacked"
-                placeholder="password"
+                labelPlacement="floating"
                 errorText="Password is required"
               >
-                <ion-button slot="end" fill="clear" size="small" (click)="onForgotPasswordClicked()">FORGOT</ion-button>
+                <ion-button slot="end" fill="clear" size="small" *ngIf="loginForm.controls.password.dirty" (click)="onForgotPasswordClicked()">FORGOT</ion-button>
               </ion-input>
             </ion-col>
           </ion-row>
     
-          <ion-row>
+          <ion-row class="ion-margin-vertical">
             <ion-col>
               <ion-button expand="block" type="submit">
                 Login
@@ -104,11 +105,5 @@
         </ion-col>
       </ion-row>
     </ng-container>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <ion-text><ion-note>Don't have an account yet? </ion-note><a (click)="onRegisterClicked()">Register</a></ion-text>
-      </ion-col>
-    </ion-row>
   </ion-grid>
-
 </ion-content>

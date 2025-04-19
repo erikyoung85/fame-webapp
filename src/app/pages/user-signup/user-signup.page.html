@@ -4,6 +4,9 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="onLoginClicked()">Login</ion-button>
+    </ion-buttons>
     <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
@@ -33,8 +36,7 @@
                 [formControl]="userSignupForm.controls.firstName"
                 name="first name"
                 label="First Name"
-                labelPlacement="stacked"
-                placeholder="First Name"
+                labelPlacement="floating"
                 errorText="First Name is required"
               ></ion-input>
             </ion-col>
@@ -43,8 +45,7 @@
                 [formControl]="userSignupForm.controls.lastName"
                 name="last name"
                 label="Last Name"
-                labelPlacement="stacked"
-                placeholder="Last Name"
+                labelPlacement="floating"
                 errorText="Last Name is required"
               ></ion-input>
             </ion-col>
@@ -57,8 +58,7 @@
                 name="email"
                 type="email"
                 label="Email"
-                labelPlacement="stacked"
-                placeholder="email@domain.com"
+                labelPlacement="floating"
                 errorText="Please enter a valid email"
               ></ion-input>
             </ion-col>
@@ -71,11 +71,25 @@
                 name="password"
                 type="password"
                 label="Password"
-                labelPlacement="stacked"
-                placeholder="password"
-                errorText="'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.'"
+                labelPlacement="floating"
+                errorText="Password must be at least 8 characters long and include uppercase, lowercase, number, and special character"
               >
-                <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+                <ion-input-password-toggle *ngIf="userSignupForm.controls.password.dirty" slot="end"></ion-input-password-toggle>
+              </ion-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-input
+                [formControl]="userSignupForm.controls.password"
+                name="confirm password"
+                type="password"
+                label="Confirm Password"
+                labelPlacement="floating"
+                errorText="Passwords must match"
+              >
+                <ion-input-password-toggle *ngIf="userSignupForm.controls.password.dirty" slot="end"></ion-input-password-toggle>
               </ion-input>
             </ion-col>
           </ion-row>
@@ -128,11 +142,5 @@
         </ion-col>
       </ion-row>
     </div>
-
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <ion-text><ion-note>Already have an account? </ion-note><a (click)="onLoginClicked()">Log in</a></ion-text>
-      </ion-col>
-    </ion-row>
   </ion-grid>
 </ion-content>
