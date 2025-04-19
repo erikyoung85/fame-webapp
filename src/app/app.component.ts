@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
   readonly userProfile$ = this.store
     .select(userFeature.selectUserProfile)
     .pipe(map((async) => async.data));
+  readonly isLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
   public appPages = [
     { title: 'Home', url: AppRoutes.Home, icon: 'home-sharp' },
@@ -72,5 +73,9 @@ export class AppComponent implements OnInit {
 
   onUserProfileClicked() {
     this.router.navigate([AppRoutes.UserProfile]);
+  }
+
+  onLogoutClicked() {
+    this.store.dispatch(userActions.logout());
   }
 }

@@ -15,6 +15,12 @@
               </ion-item>
             </ion-menu-toggle>
           }
+
+          <ion-menu-toggle *ngIf="isLoggedIn$ | async" [autoHide]="false">
+            <ion-item lines="none" detail="false" button (click)="onLogoutClicked()">
+              <ion-label>Logout</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>

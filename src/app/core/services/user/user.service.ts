@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  AuthError,
   AuthResponse,
   AuthTokenResponsePassword,
   SignInWithPasswordCredentials,
@@ -44,5 +45,11 @@ export class UserService {
 
   resetPasswordForEmail(email: string) {
     return from(this.supabaseService.client.auth.resetPasswordForEmail(email));
+  }
+
+  logout(): Observable<{
+    error: AuthError | null;
+  }> {
+    return from(this.supabaseService.client.auth.signOut());
   }
 }

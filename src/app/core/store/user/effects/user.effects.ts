@@ -42,7 +42,8 @@ export class UserEffects {
           userActions.signupFailure,
           userActions.updateUserProfileFailure,
           userActions.getUserProfileFailure,
-          userActions.resetPasswordFailure
+          userActions.resetPasswordFailure,
+          userActions.logoutFailure
         ),
         tap(async (action) => {
           if (action.message !== undefined) {
@@ -342,5 +343,50 @@ export class UserEffects {
           : userActions.getUserProfile({ userId: userId });
       })
     )
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.logout),
+      switchMap(() => {
+        return this.userService.logout().pipe(
+          map((response) => {
+            if (response.error) {
+              return userActions.logoutFailure({
+                message: response.error.message || 'Failed to logout',
+              });
+            }
+
+            return userActions.logoutSuccess();
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.logoutFailure({
+                message: error.message || 'Failed to logout',
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  logoutSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.logoutSuccess),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'Logout Successful!',
+              duration: 2000,
+              color: 'success',
+            })
+            .then((toast) => toast.present());
+
+          await this.router.navigate([AppRoutes.Home]);
+        })
+      ),
+    { dispatch: false }
   );
 }

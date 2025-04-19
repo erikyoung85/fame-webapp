@@ -14,6 +14,10 @@ export const userActions = createActionGroup({
     'Login Success': props<{ session: Session }>(),
     'Login Failure': props<{ message: string }>(),
 
+    Logout: emptyProps(),
+    'Logout Success': emptyProps(),
+    'Logout Failure': props<{ message: string }>(),
+
     'Signup With Password': props<{
       request: SignupWithPasswordRequestDtoV1;
     }>(),

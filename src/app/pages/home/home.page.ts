@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   IonButton,
   IonButtons,
@@ -17,6 +18,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
+import { AppRoutes } from 'src/app/app.routes';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { Athlete } from '../models/athlete.model';
@@ -55,8 +57,10 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
 })
 export class HomePage {
   private readonly store = inject(Store);
+  private readonly router = inject(Router);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);
+  isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
   mockRaffles: Raffle[] = [
     {
@@ -161,4 +165,8 @@ export class HomePage {
       favorited: false,
     },
   ];
+
+  onLoginClicked() {
+    this.router.navigate([AppRoutes.Login]);
+  }
 }

@@ -105,5 +105,31 @@ export const userReducer = createReducer(
         action.message
       ),
     };
+  }),
+
+  on(userActions.logout, (state): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(state.session.data, true),
+    };
+  }),
+  on(userActions.logoutSuccess, (state): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(undefined, false),
+    };
+  }),
+  on(userActions.updateUserProfileFailure, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(state.session.data, false, action.message),
+    };
+  }),
+
+  on(userActions.clearUserProfile, (state): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(undefined, false),
+    };
   })
 );
