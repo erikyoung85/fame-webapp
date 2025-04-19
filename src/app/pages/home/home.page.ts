@@ -20,8 +20,10 @@ import { Store } from '@ngrx/store';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { Athlete } from '../models/athlete.model';
+import { Raffle } from '../models/raffle.model';
 import { Team } from '../models/team.model';
 import { AthletePreviewItemComponent } from './athlete-preview-item/athlete-preview-item.component';
+import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
 
 @Component({
@@ -48,12 +50,27 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     UnwrapAsyncPipe,
     TeamPreviewCardComponent,
     AthletePreviewItemComponent,
+    RafflePreviewCardComponent,
   ],
 })
 export class HomePage {
   private readonly store = inject(Store);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);
+
+  mockRaffles: Raffle[] = [
+    {
+      id: '0',
+      name: 'Raffle 1',
+      description: 'Lorem ipsum dolor sit amet.',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+      sport: 'Basketball',
+      team: 'University of Iowa',
+      athlete: 'John Doe',
+      favorited: true,
+    },
+  ];
 
   mockTeams: Team[] = [
     {
@@ -62,7 +79,7 @@ export class HomePage {
       sport: 'Basketball',
       logoUrl: '',
       description: 'Lorem ipsum dolor sit amet.',
-      favorite: true,
+      favorited: true,
     },
     {
       id: '1',
@@ -71,7 +88,7 @@ export class HomePage {
       logoUrl: '',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorite: false,
+      favorited: false,
     },
     {
       id: '2',
@@ -80,7 +97,7 @@ export class HomePage {
       logoUrl: '',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorite: false,
+      favorited: false,
     },
     {
       id: '3',
@@ -89,7 +106,7 @@ export class HomePage {
       logoUrl: '',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorite: false,
+      favorited: false,
     },
     {
       id: '4',
@@ -98,7 +115,7 @@ export class HomePage {
       logoUrl: '',
       description:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorite: false,
+      favorited: false,
     },
   ];
 

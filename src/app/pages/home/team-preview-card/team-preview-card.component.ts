@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   IonButton,
   IonCard,
-  IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
@@ -18,7 +17,6 @@ import { Team } from '../../models/team.model';
   imports: [
     IonIcon,
     IonButton,
-    IonCardContent,
     IonCardSubtitle,
     IonCardTitle,
     IonCardHeader,

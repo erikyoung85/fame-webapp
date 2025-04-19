@@ -4,5 +4,5 @@ export interface Team {
   sport: string;
   logoUrl: string;
   description: string;
-  favorite: boolean;
+  favorited: boolean;
 }
