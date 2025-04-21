@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
@@ -14,7 +15,8 @@ import {
   IonCardTitle,
   IonText,
 } from '@ionic/angular/standalone';
-import { Raffle } from '../../models/raffle.model';
+import { interval, Subject, takeUntil, takeWhile } from 'rxjs';
+import { Raffle } from 'src/app/core/models/Raffle.model';
 
 @Component({
   selector: 'app-raffle-preview-card',
@@ -31,7 +33,9 @@ import { Raffle } from '../../models/raffle.model';
     IonCard,
   ],
 })
-export class RafflePreviewCardComponent implements OnInit {
+export class RafflePreviewCardComponent implements OnInit, OnDestroy {
+  private readonly unsubscribe$ = new Subject<void>();
+
   @Input() raffle!: Raffle;
 
   countdownSeconds = signal(0);
@@ -39,23 +43,51 @@ export class RafflePreviewCardComponent implements OnInit {
 
   ngOnInit() {
     this.countdownSeconds.set(
-      Math.floor((this.raffle.endDate.getTime() - Date.now()) / 1000)
+      Math.floor(
+        Math.floor((this.raffle.endDate.getTime() - Date.now()) / 1000)
+      )
     );
-    setInterval(() => {
-      this.countdownSeconds.update((seconds) => seconds - 1);
-      this.countdownString.set(this.getDurationString(this.countdownSeconds()));
-    }, 1000);
+
+    interval(1000)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        takeWhile(() => this.countdownSeconds() > 0, true)
+      )
+      .subscribe(() => {
+        this.countdownSeconds.update((seconds) => seconds - 1);
+        this.countdownString.set(
+          this.getDurationString(this.countdownSeconds())
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getDurationString(totalSeconds: number): string {
-    const days = Math.floor(totalSeconds / (24 * 60 * 60));
-    if (days > 0) {
-      return `${days} days`;
+    if (totalSeconds <= 0) {
+      return 'Cannot display a negative duration.';
     }
 
-    const seconds = totalSeconds % 60;
-    const minutes = Math.floor((totalSeconds - seconds) / 60) % 60;
-    const hours = Math.floor((totalSeconds - seconds - minutes * 60) / 60) % 24;
-    return `${hours}:${minutes}:${seconds}`;
+    let remaining = totalSeconds;
+
+    const days = Math.floor(remaining / (24 * 60 * 60));
+    if (days > 0) {
+      return `${days} ${days > 1 ? 'days' : 'day'}`;
+    }
+
+    remaining %= 24 * 60 * 60;
+
+    const hours = Math.floor(remaining / (60 * 60));
+    remaining %= 60 * 60;
+
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+
+    return `${hours < 10 ? '0' + hours : hours}:${
+      minutes < 10 ? '0' + minutes : minutes
+    }:${seconds < 10 ? '0' + seconds : seconds}`;
   }
 }

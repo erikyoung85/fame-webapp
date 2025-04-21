@@ -7,7 +7,7 @@ import {
   IonCardTitle,
   IonIcon,
 } from '@ionic/angular/standalone';
-import { Team } from '../../models/team.model';
+import { Team } from 'src/app/core/models/Team.model';
 
 @Component({
   selector: 'app-team-preview-card',
@@ -25,4 +25,6 @@ import { Team } from '../../models/team.model';
 })
 export class TeamPreviewCardComponent {
   @Input() team!: Team;
+
+  favorited = false;
 }

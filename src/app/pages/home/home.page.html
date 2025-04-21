@@ -89,7 +89,7 @@
             "
           >
             <app-team-preview-card
-              *ngFor="let team of mockTeams"
+              *ngFor="let team of ((allTeams$ | async) ?? [])"
               [team]="team"
             ></app-team-preview-card>
           </ion-col>
@@ -106,7 +106,7 @@
         </ion-list-header>
         <ion-list [inset]="true">
           <app-athlete-preview-item
-            *ngFor="let athlete of mockAthletes"
+            *ngFor="let athlete of ((allAthletes$ | async) ?? [])"
             [athlete]="athlete"
           ></app-athlete-preview-item>
         </ion-list>

@@ -9,6 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      athletes: {
+        Row: {
+          created_at: string
+          date_of_birth: string | null
+          first_name: string
+          gender: string
+          id: number
+          last_name: string
+          school_id: number | null
+        }
+        Insert: {
+          created_at?: string
+          date_of_birth?: string | null
+          first_name: string
+          gender: string
+          id?: number
+          last_name: string
+          school_id?: number | null
+        }
+        Update: {
+          created_at?: string
+          date_of_birth?: string | null
+          first_name?: string
+          gender?: string
+          id?: number
+          last_name?: string
+          school_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "athletes_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -29,6 +67,138 @@ export type Database = {
           last_name?: string
         }
         Relationships: []
+      }
+      roster_entries: {
+        Row: {
+          athlete_id: number
+          created_at: string
+          id: number
+          jersey_number: number | null
+          position: string | null
+          team_id: number
+        }
+        Insert: {
+          athlete_id: number
+          created_at?: string
+          id?: number
+          jersey_number?: number | null
+          position?: string | null
+          team_id: number
+        }
+        Update: {
+          athlete_id?: number
+          created_at?: string
+          id?: number
+          jersey_number?: number | null
+          position?: string | null
+          team_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roster_entries_athlete_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "roster_entries_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schools: {
+        Row: {
+          abbreviation: string | null
+          city: string
+          created_at: string
+          id: number
+          name: string
+          state: string
+        }
+        Insert: {
+          abbreviation?: string | null
+          city: string
+          created_at?: string
+          id?: number
+          name: string
+          state: string
+        }
+        Update: {
+          abbreviation?: string | null
+          city?: string
+          created_at?: string
+          id?: number
+          name?: string
+          state?: string
+        }
+        Relationships: []
+      }
+      sports: {
+        Row: {
+          created_at: string
+          gender: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          gender: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          gender?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      teams: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          school_id: number
+          season_year: number
+          sport_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          school_id: number
+          season_year: number
+          sport_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          school_id?: number
+          season_year?: number
+          sport_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teams_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teams_sport_id_fkey"
+            columns: ["sport_id"]
+            isOneToOne: false
+            referencedRelation: "sports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

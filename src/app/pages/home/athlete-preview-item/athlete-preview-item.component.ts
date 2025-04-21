@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { IonItem, IonLabel, IonNote, IonText } from '@ionic/angular/standalone';
+import { Athlete } from 'src/app/core/models/Athlete.model';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { Athlete } from '../../models/athlete.model';
 
 @Component({
   selector: 'app-athlete-preview-item',

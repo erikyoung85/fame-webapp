@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IonButton,
@@ -19,11 +24,13 @@ import {
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { AppRoutes } from 'src/app/app.routes';
+import { Raffle } from 'src/app/core/models/Raffle.model';
+import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
+import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
+import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
+import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
-import { Athlete } from '../models/athlete.model';
-import { Raffle } from '../models/raffle.model';
-import { Team } from '../models/team.model';
 import { AthletePreviewItemComponent } from './athlete-preview-item/athlete-preview-item.component';
 import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
@@ -55,114 +62,46 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     RafflePreviewCardComponent,
   ],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   private readonly store = inject(Store);
   private readonly router = inject(Router);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);
   isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
+  allTeams$ = this.store.select(teamsFeature.selectAll);
+  isTeamsLoading$ = this.store.select(teamsFeature.selectIsLoading);
+
+  allAthletes$ = this.store.select(athletesFeature.selectAll);
+  isAthletesLoading$ = this.store.select(athletesFeature.selectIsLoading);
+
+  ngOnInit(): void {
+    this.store.dispatch(teamsActions.fetchTeams());
+    this.store.dispatch(athletesActions.fetchAthletes());
+  }
+
   mockRaffles: Raffle[] = [
     {
       id: '0',
-      name: 'Raffle 1',
+      name: 'Fake Raffle 1',
       description: 'Lorem ipsum dolor sit amet.',
       startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+      endDate: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000), // 1 day from now
       sport: 'Basketball',
       team: 'University of Iowa',
       athlete: 'John Doe',
       favorited: true,
     },
-  ];
-
-  mockTeams: Team[] = [
     {
       id: '0',
-      name: `University of Iowa`,
-      sport: 'Basketball',
-      logoUrl: '',
+      name: 'Fake Raffle 2',
       description: 'Lorem ipsum dolor sit amet.',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
+      sport: 'Basketball',
+      team: 'University of Iowa',
+      athlete: 'John Doe',
       favorited: true,
-    },
-    {
-      id: '1',
-      name: `University of Iowa`,
-      sport: 'Football',
-      logoUrl: '',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorited: false,
-    },
-    {
-      id: '2',
-      name: `University of Iowa`,
-      sport: 'Soccer',
-      logoUrl: '',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorited: false,
-    },
-    {
-      id: '3',
-      name: `University of Iowa`,
-      sport: 'Lacrosse',
-      logoUrl: '',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorited: false,
-    },
-    {
-      id: '4',
-      name: `University of Iowa`,
-      sport: 'Swimming',
-      logoUrl: '',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      favorited: false,
-    },
-  ];
-
-  mockAthletes: Athlete[] = [
-    {
-      id: '0',
-      name: 'John Doe',
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      profilePictureUrl: undefined,
-      position: 'Point Guard',
-      jerseyNumber: '23',
-      favorited: true,
-    },
-    {
-      id: '1',
-      name: 'John Doe',
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      profilePictureUrl: undefined,
-      position: 'Point Guard',
-      jerseyNumber: '23',
-      favorited: false,
-    },
-    {
-      id: '2',
-      name: 'John Doe',
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      profilePictureUrl: undefined,
-      position: 'Point Guard',
-      jerseyNumber: '23',
-      favorited: false,
-    },
-    {
-      id: '3',
-      name: 'John Doe',
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      profilePictureUrl: '',
-      position: 'Point Guard',
-      jerseyNumber: '23',
-      favorited: false,
     },
   ];
 
