@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { TeamFactory } from 'src/app/core/models/Team.model';
+import { TeamDetailFactory } from 'src/app/core/models/TeamDetail.model';
 import { TeamsService } from 'src/app/core/services/teams/teams.service';
 import { teamsActions } from '../actions/teams.actions';
 
@@ -15,7 +16,10 @@ export class TeamsEffects {
   failureMessages$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(teamsActions.fetchTeamsFailure),
+        ofType(
+          teamsActions.fetchTeamsFailure,
+          teamsActions.fetchTeamDetailsFailure
+        ),
         tap(async (action) => {
           if (action.message !== undefined) {
             await this.toastController
@@ -31,7 +35,7 @@ export class TeamsEffects {
     { dispatch: false }
   );
 
-  loadSession$ = createEffect(() =>
+  fetchTeams$ = createEffect(() =>
     this.actions$.pipe(
       ofType(teamsActions.fetchTeams),
       switchMap(() => {
@@ -50,6 +54,34 @@ export class TeamsEffects {
           catchError((error: Error) => {
             return of(
               teamsActions.fetchTeamsFailure({
+                message: error?.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  fetchTeamDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(teamsActions.fetchTeamDetails),
+      switchMap((action) => {
+        return this.teamsService.getTeamDetails(action.teamId).pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return teamsActions.fetchTeamDetailsFailure({
+                message: response.error.message,
+              });
+            }
+
+            return teamsActions.fetchTeamDetailsSuccess({
+              teamDetails: TeamDetailFactory.fromDtoV1(response.data),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              teamsActions.fetchTeamDetailsFailure({
                 message: error?.message,
               })
             );

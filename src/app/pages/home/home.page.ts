@@ -108,4 +108,8 @@ export class HomePage implements OnInit {
   onLoginClicked() {
     this.router.navigate([AppRoutes.Login]);
   }
+
+  onTeamClicked(teamId: number) {
+    this.router.navigate([AppRoutes.TeamDetail, teamId]);
+  }
 }

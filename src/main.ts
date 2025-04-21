@@ -1,6 +1,10 @@
 import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideRouter, RouteReuseStrategy } from '@angular/router';
+import {
+  provideRouter,
+  RouteReuseStrategy,
+  withComponentInputBinding,
+} from '@angular/router';
 import { IonicRouteStrategy } from '@ionic/angular';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
@@ -29,7 +33,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({ mode: 'ios' }),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideStore(rootReducer, {
       metaReducers: getMetaReducers(),
       initialState: {},

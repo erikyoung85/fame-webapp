@@ -116,6 +116,7 @@ export type Database = {
           city: string
           created_at: string
           id: number
+          logo_url: string | null
           name: string
           state: string
         }
@@ -124,6 +125,7 @@ export type Database = {
           city: string
           created_at?: string
           id?: number
+          logo_url?: string | null
           name: string
           state: string
         }
@@ -132,6 +134,7 @@ export type Database = {
           city?: string
           created_at?: string
           id?: number
+          logo_url?: string | null
           name?: string
           state?: string
         }
@@ -163,6 +166,7 @@ export type Database = {
           created_at: string
           id: number
           name: string
+          ncaa_team_id: number | null
           school_id: number
           season_year: number
           sport_id: number
@@ -171,6 +175,7 @@ export type Database = {
           created_at?: string
           id?: number
           name: string
+          ncaa_team_id?: number | null
           school_id: number
           season_year: number
           sport_id: number
@@ -179,6 +184,7 @@ export type Database = {
           created_at?: string
           id?: number
           name?: string
+          ncaa_team_id?: number | null
           school_id?: number
           season_year?: number
           sport_id?: number

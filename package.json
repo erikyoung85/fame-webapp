@@ -39,6 +39,7 @@
     "@capacitor/status-bar": "7.0.1",
     "@ionic/angular": "^8.0.0",
     "@ionic/pwa-elements": "^3.3.0",
+    "@ngrx/component": "^19.1.0",
     "@ngrx/effects": "^19.1.0",
     "@ngrx/entity": "^19.1.0",
     "@ngrx/operators": "^19.1.0",

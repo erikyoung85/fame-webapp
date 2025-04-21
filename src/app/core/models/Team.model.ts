@@ -2,7 +2,7 @@ import { TeamResponseDtoV1 } from '../services/teams/dtos/responses/team.respons
 
 export interface Team {
   id: number;
-  season_year: number;
+  seasonYear: number;
   name: string;
   school: {
     id: number;
@@ -10,6 +10,7 @@ export interface Team {
     abbreviation: string | undefined;
     city: string;
     state: string;
+    logoUrl: string | undefined;
   };
   sport: {
     id: number;
@@ -23,13 +24,14 @@ export class TeamFactory {
     return {
       id: dto.id,
       name: dto.name,
-      season_year: dto.season_year,
+      seasonYear: dto.season_year,
       school: {
         id: dto.schools.id,
         name: dto.schools.name,
         abbreviation: dto.schools.abbreviation ?? undefined,
         city: dto.schools.city,
         state: dto.schools.state,
+        logoUrl: dto.schools.logo_url ?? undefined,
       },
       sport: {
         id: dto.sports.id,

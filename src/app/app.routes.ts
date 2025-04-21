@@ -6,6 +6,7 @@ export enum AppRoutes {
   UserSignup = 'user-signup',
   PasswordReset = 'password-reset',
   UserProfile = 'user-profile',
+  TeamDetail = 'team-detail',
 }
 
 export const routes: Routes = [
@@ -45,5 +46,12 @@ export const routes: Routes = [
         (m) => m.UserProfilePage
       ),
     loadChildren: () => import('./pages/user-profile/user-profile.routes'),
+  },
+  {
+    path: `${AppRoutes.TeamDetail}/:id`,
+    loadComponent: () =>
+      import('./pages/team-detail/team-detail.page').then(
+        (m) => m.TeamDetailPage
+      ),
   },
 ];

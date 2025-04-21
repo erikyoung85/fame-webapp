@@ -91,6 +91,7 @@
             <app-team-preview-card
               *ngFor="let team of ((allTeams$ | async) ?? [])"
               [team]="team"
+              (click)="onTeamClicked(team.id)"
             ></app-team-preview-card>
           </ion-col>
         </ion-row>

@@ -1,3 +1,4 @@
+import { SchoolYear } from '../enums/SchoolYear.enum';
 import { AthleteResponseDtoV1 } from '../services/athletes/dtos/responses/athletes.response.dto.v1';
 
 export interface Athlete {
@@ -10,11 +11,11 @@ export interface Athlete {
   jerseyNumber: number | undefined;
   schoolName: string | undefined;
   teamName: string | undefined;
+  schoolYear: string;
 }
 
 export class AthleteFactory {
   static fromDtoV1(dto: AthleteResponseDtoV1): Athlete {
-    const rosterEntry = dto.roster_entries[0];
     return {
       id: dto.id,
       firstName: dto.first_name,
@@ -25,6 +26,7 @@ export class AthleteFactory {
       jerseyNumber: dto.roster_entries[0]?.jersey_number ?? undefined,
       schoolName: dto.schools?.name ?? undefined,
       teamName: dto.roster_entries[0]?.teams.name ?? undefined,
+      schoolYear: SchoolYear.Junior,
     };
   }
 }
