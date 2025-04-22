@@ -1,32 +1,16 @@
 <ion-header>
+  <ion-toolbar></ion-toolbar>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-searchbar 
+      animated 
+      show-cancel-button="focus"
+      placeholder="Search for teams or athletes"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
-<ion-content
-  [fullscreen]="true"
-  padding="ion-padding"
->
+<ion-content padding="ion-padding">
   <ion-grid>
-    <!-- Top text -->
-    <ion-row>
-      <ion-col>
-        <h1>
-          <ion-text>Welcome</ion-text>
-          <ion-text *ngIf="(userProfile$ | async | unwrapAsync) as userProfile">
-            back, {{ userProfile.firstName }}
-          </ion-text>
-        </h1>
-        <p>
-          <ion-text color="medium">
-            Easily access your favorite athletes and teams, discover new
-            players, and support their collegiate journey.
-          </ion-text>
-        </p>
-      </ion-col>
-    </ion-row>
-
     <!-- Trending Raffles -->
     <ion-row>
       <ion-col class="ion-no-padding">

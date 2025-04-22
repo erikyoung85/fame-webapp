@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import {
   IonButton,
   IonButtons,
@@ -17,7 +16,6 @@ import {
   IonIcon,
   IonInput,
   IonInputPasswordToggle,
-  IonMenuButton,
   IonNote,
   IonProgressBar,
   IonRow,
@@ -26,14 +24,14 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
-import { AppRoutes } from 'src/app/app.routes';
+import { PageRoutes } from 'src/app/app.routes';
 import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/requests/signup-with-password.request.dto.v1';
+import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { DividerComponent } from '../../shared/components/divider/divider.component';
 
 @Component({
-  selector: 'app-user-signup',
   templateUrl: './user-signup.page.html',
   styleUrls: ['./user-signup.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,14 +53,12 @@ import { DividerComponent } from '../../shared/components/divider/divider.compon
     IonContent,
     IonToolbar,
     IonHeader,
-    IonMenuButton,
     IonInputPasswordToggle,
     DividerComponent,
   ],
 })
 export class UserSignupPage {
   private readonly store = inject(Store);
-  private readonly router = inject(Router);
   private readonly fb = inject(NonNullableFormBuilder);
 
   readonly isLoading$ = this.store.select(userFeature.selectIsSessionLoading);
@@ -96,10 +92,11 @@ export class UserSignupPage {
 
   signupWithProvider(provider: 'google' | 'apple') {
     console.log('Signup with provider:', provider);
-    // window.location.href = `http://localhost:3000/auth/${provider}`;
   }
 
   onLoginClicked() {
-    this.router.navigate([AppRoutes.Login]);
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({ url: PageRoutes.Login })
+    );
   }
 }

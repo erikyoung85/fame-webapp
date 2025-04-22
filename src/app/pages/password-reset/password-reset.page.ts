@@ -21,10 +21,10 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
-import { AppRoutes } from 'src/app/app.routes';
+import { PageRoutes } from 'src/app/app.routes';
+import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 @Component({
-  selector: 'app-password-reset',
   templateUrl: './password-reset.page.html',
   styleUrls: ['./password-reset.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,6 +69,11 @@ export class PasswordResetPage {
   }
 
   onLoginClicked() {
-    this.navController.navigateBack([AppRoutes.Login]);
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [PageRoutes.Login],
+        direction: 'back',
+      })
+    );
   }
 }

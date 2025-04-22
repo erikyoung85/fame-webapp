@@ -71,17 +71,20 @@ export class TeamsEffects {
           map((response) => {
             if (response.error !== null) {
               return teamsActions.fetchTeamDetailsFailure({
+                teamId: action.teamId,
                 message: response.error.message,
               });
             }
 
             return teamsActions.fetchTeamDetailsSuccess({
+              teamId: action.teamId,
               teamDetails: TeamDetailFactory.fromDtoV1(response.data),
             });
           }),
           catchError((error: Error) => {
             return of(
               teamsActions.fetchTeamDetailsFailure({
+                teamId: action.teamId,
                 message: error?.message,
               })
             );

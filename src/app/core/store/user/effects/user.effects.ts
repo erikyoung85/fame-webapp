@@ -13,13 +13,14 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { AppRoutes } from 'src/app/app.routes';
+import { PageRoutes } from 'src/app/app.routes';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
 import { UpdateUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/update-user-profile.request.dto.v1';
 import { UserProfileService } from 'src/app/core/services/user-profile/user-profile.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { UserProfileRoutes } from 'src/app/pages/user-profile/user-profile.routes';
+import { RouterActions } from '../../router/actions/router.actions';
 import { userActions } from '../actions/user.actions';
 import { userFeature } from '../feature/user.feature';
 
@@ -313,26 +314,23 @@ export class UserEffects {
     )
   );
 
-  updateUserProfileSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(userActions.updateUserProfileSuccess),
-        tap(async () => {
-          await this.toastController
-            .create({
-              message: 'Successfully updated your profile!',
-              duration: 2000,
-              color: 'success',
-            })
-            .then((toast) => toast.present());
+  updateUserProfileSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.updateUserProfileSuccess),
+      switchMap(async () => {
+        await this.toastController
+          .create({
+            message: 'Successfully updated your profile!',
+            duration: 2000,
+            color: 'success',
+          })
+          .then((toast) => toast.present());
 
-          await this.router.navigate([
-            AppRoutes.UserProfile,
-            UserProfileRoutes.View,
-          ]);
-        })
-      ),
-    { dispatch: false }
+        return RouterActions.routeInCurrentTab({
+          url: [PageRoutes.UserProfile, UserProfileRoutes.View],
+        });
+      })
+    )
   );
 
   getProfileOnUserIdChange$ = createEffect(() =>
@@ -384,7 +382,7 @@ export class UserEffects {
             })
             .then((toast) => toast.present());
 
-          await this.router.navigate([AppRoutes.Home]);
+          await this.router.navigateByUrl('/');
         })
       ),
     { dispatch: false }

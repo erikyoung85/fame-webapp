@@ -9,9 +9,11 @@ export const teamsActions = createActionGroup({
     'Fetch Teams Success': props<{ teams: Team[] }>(),
     'Fetch Teams Failure': props<{ message?: string }>(),
 
-    'Clear Team Details': emptyProps(),
     'Fetch Team Details': props<{ teamId: number }>(),
-    'Fetch Team Details Success': props<{ teamDetails: TeamDetail }>(),
-    'Fetch Team Details Failure': props<{ message?: string }>(),
+    'Fetch Team Details Success': props<{
+      teamId: number;
+      teamDetails: TeamDetail;
+    }>(),
+    'Fetch Team Details Failure': props<{ teamId: number; message?: string }>(),
   },
 });

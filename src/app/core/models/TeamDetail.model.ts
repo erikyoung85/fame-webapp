@@ -1,3 +1,4 @@
+import { Gender } from '../enums/Gender.enum';
 import { SchoolYear } from '../enums/SchoolYear.enum';
 import { TeamDetailResponseDtoV1 } from '../services/teams/dtos/responses/team-detail.response.dto.v1';
 
@@ -16,13 +17,13 @@ export interface TeamDetail {
   sport: {
     id: number;
     name: string;
-    gender: string;
+    gender: Gender;
   };
   rosterAthletes: {
     id: number;
     firstName: string;
     lastName: string;
-    gender: string;
+    gender: Gender;
     position: string | undefined;
     jerseyNumber: number | undefined;
     schoolYear: SchoolYear;
@@ -46,13 +47,14 @@ export class TeamDetailFactory {
       sport: {
         id: dto.sports.id,
         name: dto.sports.name,
-        gender: dto.sports.gender,
+        gender: dto.sports.gender === 'Male' ? Gender.Male : Gender.Female,
       },
       rosterAthletes: dto.roster_entries.map((athlete) => ({
         id: athlete.athletes.id,
         firstName: athlete.athletes.first_name,
         lastName: athlete.athletes.last_name,
-        gender: athlete.athletes.gender,
+        gender:
+          athlete.athletes.gender === 'Male' ? Gender.Male : Gender.Female,
         position: athlete.position ?? undefined,
         jerseyNumber: athlete.jersey_number ?? undefined,
         schoolYear: SchoolYear.Junior, // TODO: Map to actual school year

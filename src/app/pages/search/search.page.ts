@@ -15,8 +15,7 @@ import {
   IonList,
   IonListHeader,
   IonRow,
-  IonText,
-  IonTitle,
+  IonSearchbar,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
@@ -28,36 +27,33 @@ import { RouterActions } from 'src/app/core/store/router/actions/router.actions'
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
-import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { AthletePreviewItemComponent } from './athlete-preview-item/athlete-preview-item.component';
 import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
 
 @Component({
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  templateUrl: './search.page.html',
+  styleUrls: ['./search.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonSearchbar,
     IonList,
     IonLabel,
     IonListHeader,
     IonButton,
-    IonText,
     IonCol,
     IonRow,
     IonGrid,
     IonContent,
-    IonTitle,
     IonToolbar,
     IonHeader,
     CommonModule,
-    UnwrapAsyncPipe,
     TeamPreviewCardComponent,
     AthletePreviewItemComponent,
     RafflePreviewCardComponent,
   ],
 })
-export class HomePage implements OnInit {
+export class SearchPage implements OnInit {
   private readonly store = inject(Store);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);

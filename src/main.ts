@@ -17,6 +17,7 @@ import { AthletesEffects } from './app/core/store/athletes/effects/athletes.effe
 import { athletesFeature } from './app/core/store/athletes/feature/athletes.feature';
 import { getMetaReducers } from './app/core/store/meta-reducers/meta-reducers';
 import { rootReducer } from './app/core/store/root.reducer';
+import { RouterEffects } from './app/core/store/router/effects/router.effects';
 import { TeamsEffects } from './app/core/store/teams/effects/teams.effects';
 import { teamsFeature } from './app/core/store/teams/feature/teams.feature';
 import { UserEffects } from './app/core/store/user/effects/user.effects';
@@ -38,6 +39,7 @@ bootstrapApplication(AppComponent, {
       metaReducers: getMetaReducers(),
       initialState: {},
     }),
+    provideEffects(RouterEffects),
     provideState(userFeature),
     provideEffects(UserEffects),
     provideState(teamsFeature),

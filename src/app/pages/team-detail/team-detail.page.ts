@@ -4,10 +4,9 @@ import {
   Component,
   inject,
   Input,
-  OnDestroy,
-  OnInit,
   signal,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import {
   IonBackButton,
   IonButtons,
@@ -27,15 +26,15 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { LetDirective, PushPipe } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
+import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
 
 @Component({
-  selector: 'app-team-detail-page',
   templateUrl: './team-detail.page.html',
   styleUrls: ['./team-detail.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,29 +58,25 @@ import { UserProfileAvatarComponent } from '../../shared/components/user-profile
     IonHeader,
     CommonModule,
     LetDirective,
-    PushPipe,
     UserProfileAvatarComponent,
+    UnwrapAsyncPipe,
   ],
 })
-export class TeamDetailPage implements OnInit, OnDestroy {
+export class TeamDetailPage {
   private readonly store = inject(Store);
 
   @Input() set id(teamId: string) {
     const parsedId = parseInt(teamId, 10);
+    this.teamId.set(parsedId);
     this.store.dispatch(teamsActions.fetchTeamDetails({ teamId: parsedId }));
   }
+
   readonly teamId = signal<number | undefined>(undefined);
 
-  teamDetails$ = this.store
-    .select(teamsFeature.selectTeamDetails)
-    .pipe(map((async) => async.data));
-  isLoading$ = this.store
-    .select(teamsFeature.selectTeamDetails)
-    .pipe(map((async) => async.loading));
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.store.dispatch(teamsActions.clearTeamDetails());
-  }
+  teamDetails$ = toObservable(this.teamId).pipe(
+    filter((teamId) => teamId !== undefined),
+    switchMap((teamId) =>
+      this.store.select(teamsFeature.selectTeamDetails(teamId))
+    )
+  );
 }

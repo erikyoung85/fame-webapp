@@ -1,0 +1,26 @@
+<ion-card 
+  class="custom-card"
+  style="
+    --card-width: 10rem;
+    --card-padding: 0.75rem;
+    --card-items-gap: 0.5rem;
+    --card-title-size: 1rem;
+    --card-content-size: 0.875rem;
+  "
+>
+  <ion-card-header>
+    <ion-card-title>{{ raffle.name }}</ion-card-title>
+    <ion-card-subtitle>{{ raffle.sport }}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-text>Enter to win a signed jersey and a case of gatorade!</ion-text>
+  </ion-card-content>
+
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <ion-button size="small" [fill]="'solid'">Join</ion-button>
+    <ion-text color="dark">
+      {{ countdownString() }}
+    </ion-text>
+  </div>
+</ion-card>

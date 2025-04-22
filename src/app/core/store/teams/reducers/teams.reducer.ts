@@ -28,28 +28,31 @@ export const teamsReducer = createReducer(
     };
   }),
 
-  on(teamsActions.clearTeamDetails, (state): TeamsState => {
+  on(teamsActions.fetchTeamDetails, (state, action): TeamsState => {
     return {
       ...state,
-      teamDetails: wrapAsAsyncData(undefined, false),
-    };
-  }),
-  on(teamsActions.fetchTeamDetails, (state): TeamsState => {
-    return {
-      ...state,
-      teamDetails: wrapAsAsyncData(undefined, true),
+      teamDetailsDict: {
+        ...state.teamDetailsDict,
+        [action.teamId]: wrapAsAsyncData(undefined, true),
+      },
     };
   }),
   on(teamsActions.fetchTeamDetailsSuccess, (state, action): TeamsState => {
     return {
       ...state,
-      teamDetails: wrapAsAsyncData(action.teamDetails, false),
+      teamDetailsDict: {
+        ...state.teamDetailsDict,
+        [action.teamId]: wrapAsAsyncData(action.teamDetails, false),
+      },
     };
   }),
   on(teamsActions.fetchTeamDetailsFailure, (state, action): TeamsState => {
     return {
       ...state,
-      teamDetails: wrapAsAsyncData(undefined, false, action.message),
+      teamDetailsDict: {
+        ...state.teamDetailsDict,
+        [action.teamId]: wrapAsAsyncData(undefined, false, action.message),
+      },
     };
   })
 );

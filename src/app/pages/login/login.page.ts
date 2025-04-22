@@ -16,7 +16,6 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonMenuButton,
   IonNote,
   IonProgressBar,
   IonRow,
@@ -25,13 +24,13 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
-import { AppRoutes } from 'src/app/app.routes';
+import { PageRoutes } from 'src/app/app.routes';
+import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { DividerComponent } from '../../shared/components/divider/divider.component';
 
 @Component({
-  selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,7 +52,6 @@ import { DividerComponent } from '../../shared/components/divider/divider.compon
     IonContent,
     IonToolbar,
     IonHeader,
-    IonMenuButton,
     DividerComponent,
   ],
 })
@@ -90,10 +88,14 @@ export class LoginPage {
   }
 
   onRegisterClicked() {
-    this.router.navigate([AppRoutes.UserSignup]);
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({ url: [PageRoutes.Register] })
+    );
   }
 
   onForgotPasswordClicked() {
-    this.router.navigate([AppRoutes.PasswordReset]);
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({ url: [PageRoutes.PasswordReset] })
+    );
   }
 }
