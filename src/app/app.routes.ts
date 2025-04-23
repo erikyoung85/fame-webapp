@@ -6,7 +6,7 @@ export enum AppRoutes {
 }
 
 export enum TabRoutes {
-  Tab1 = 'tab1',
+  MyTeam = 'my-team',
   Search = 'search',
   Account = 'account',
 }
@@ -33,11 +33,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: TabRoutes.Tab1,
+        redirectTo: TabRoutes.MyTeam,
         pathMatch: 'full',
       },
       {
-        path: TabRoutes.Tab1,
+        path: TabRoutes.MyTeam,
         children: [
           {
             path: '',

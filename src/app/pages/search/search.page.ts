@@ -3,30 +3,45 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
   IonButton,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
+  IonItem,
   IonLabel,
   IonList,
   IonListHeader,
+  IonNote,
+  IonProgressBar,
   IonRow,
   IonSearchbar,
+  IonText,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { PageRoutes } from 'src/app/app.routes';
 import { Raffle } from 'src/app/core/models/Raffle.model';
+import {
+  SearchItem,
+  SearchItemType,
+} from 'src/app/core/models/SearchItem.model';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
+import { searchActions } from 'src/app/core/store/search/actions/search.actions';
+import { searchFeature } from 'src/app/core/store/search/feature/search.feature';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
 import { AthletePreviewItemComponent } from './athlete-preview-item/athlete-preview-item.component';
 import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
@@ -36,6 +51,10 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
   styleUrls: ['./search.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonProgressBar,
+    IonNote,
+    IonText,
+    IonItem,
     IonSearchbar,
     IonList,
     IonLabel,
@@ -51,10 +70,20 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     TeamPreviewCardComponent,
     AthletePreviewItemComponent,
     RafflePreviewCardComponent,
+    UserProfileAvatarComponent,
+    ReactiveFormsModule,
+    LetDirective,
+    PushPipe,
   ],
 })
-export class SearchPage implements OnInit {
+export class SearchPage implements OnInit, OnDestroy {
+  private readonly unsubscribe$ = new Subject<void>();
+
   private readonly store = inject(Store);
+
+  searchFormControl = new FormControl<string>('', { nonNullable: true });
+  allSearchItems$ = this.store.select(searchFeature.selectAllSearchItems);
+  isSearchLoading$ = this.store.select(searchFeature.selectAnyPagesLoading);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);
   isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
@@ -68,6 +97,22 @@ export class SearchPage implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(teamsActions.fetchTeams());
     this.store.dispatch(athletesActions.fetchAthletes());
+
+    this.searchFormControl.valueChanges
+      .pipe(takeUntil(this.unsubscribe$), debounceTime(500))
+      .subscribe((searchQuery) => {
+        this.store.dispatch(
+          searchActions.fetchGlobalSearch({
+            searchQuery,
+            paging: { page: 1, size: 10 },
+          })
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   mockRaffles: Raffle[] = [
@@ -101,5 +146,20 @@ export class SearchPage implements OnInit {
     );
   }
 
-  onSearchClicked() {}
+  onSearchItemClicked(searchItem: SearchItem) {
+    if (searchItem.type === SearchItemType.Team) {
+      this.store.dispatch(
+        RouterActions.routeInCurrentTab({
+          url: [PageRoutes.TeamDetail, searchItem.id],
+        })
+      );
+    }
+    // else if (searchItem.type === SearchItemType.Athlete) {
+    //   this.store.dispatch(
+    //     RouterActions.routeInCurrentTab({
+    //       url: [PageRoutes.AthleteDetail, searchItem.id],
+    //     })
+    //   );
+    // }
+  }
 }

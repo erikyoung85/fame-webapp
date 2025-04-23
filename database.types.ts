@@ -17,6 +17,8 @@ export type Database = {
           gender: string
           id: number
           last_name: string
+          ncaa_player_id: number | null
+          popularity_score: number
           school_id: number | null
         }
         Insert: {
@@ -26,6 +28,8 @@ export type Database = {
           gender: string
           id?: number
           last_name: string
+          ncaa_player_id?: number | null
+          popularity_score?: number
           school_id?: number | null
         }
         Update: {
@@ -35,6 +39,8 @@ export type Database = {
           gender?: string
           id?: number
           last_name?: string
+          ncaa_player_id?: number | null
+          popularity_score?: number
           school_id?: number | null
         }
         Relationships: [
@@ -167,6 +173,7 @@ export type Database = {
           id: number
           name: string
           ncaa_team_id: number | null
+          popularity_score: number
           school_id: number
           season_year: number
           sport_id: number
@@ -176,6 +183,7 @@ export type Database = {
           id?: number
           name: string
           ncaa_team_id?: number | null
+          popularity_score?: number
           school_id: number
           season_year: number
           sport_id: number
@@ -185,6 +193,7 @@ export type Database = {
           id?: number
           name?: string
           ncaa_team_id?: number | null
+          popularity_score?: number
           school_id?: number
           season_year?: number
           sport_id?: number
@@ -211,10 +220,54 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      gtrgm_compress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: { "": unknown }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      search_all_entities_v2: {
+        Args: { query: string; page_limit?: number; page_offset?: number }
+        Returns: {
+          entity_type: string
+          id: number
+          display_title: string
+          display_subtitle: string
+          display_img_src: string
+          popularity_score: number
+          similarity_score: number
+          final_score: number
+        }[]
+      }
+      set_limit: {
+        Args: { "": number }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: { "": string }
+        Returns: string[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      Sex: "Male" | "Female"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -329,6 +382,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      Sex: ["Male", "Female"],
+    },
   },
 } as const

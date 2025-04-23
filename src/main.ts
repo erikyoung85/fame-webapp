@@ -18,6 +18,8 @@ import { athletesFeature } from './app/core/store/athletes/feature/athletes.feat
 import { getMetaReducers } from './app/core/store/meta-reducers/meta-reducers';
 import { rootReducer } from './app/core/store/root.reducer';
 import { RouterEffects } from './app/core/store/router/effects/router.effects';
+import { SearchEffects } from './app/core/store/search/effects/search.effects';
+import { searchFeature } from './app/core/store/search/feature/search.feature';
 import { TeamsEffects } from './app/core/store/teams/effects/teams.effects';
 import { teamsFeature } from './app/core/store/teams/feature/teams.feature';
 import { UserEffects } from './app/core/store/user/effects/user.effects';
@@ -46,6 +48,8 @@ bootstrapApplication(AppComponent, {
     provideEffects(TeamsEffects),
     provideState(athletesFeature),
     provideEffects(AthletesEffects),
+    provideState(searchFeature),
+    provideEffects(SearchEffects),
     provideRouterStore(),
   ],
 }).catch(console.error);

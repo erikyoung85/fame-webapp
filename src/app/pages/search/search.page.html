@@ -1,16 +1,37 @@
 <ion-header>
-  <ion-toolbar></ion-toolbar>
+  <ion-toolbar>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-searchbar 
       animated 
       show-cancel-button="focus"
       placeholder="Search for teams or athletes"
+      [formControl]="searchFormControl"
     ></ion-searchbar>
   </ion-toolbar>
+  <ion-progress-bar type="indeterminate" *ngIf="isSearchLoading$ | ngrxPush"></ion-progress-bar>
 </ion-header>
 
-<ion-content padding="ion-padding">
-  <ion-grid>
+<ion-content padding="ion-padding" *ngrxLet="allSearchItems$ as allSearchItems">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Search Results</ion-label>
+    </ion-list-header>
+
+    <ion-item
+      *ngFor="let searchItem of allSearchItems"
+      button
+      (click)="onSearchItemClicked(searchItem)"
+    >
+      <app-user-profile-avatar slot="start" size="small" [avatarSrc]="searchItem.imgSrc"></app-user-profile-avatar>
+      <ion-label>
+        <ion-text><b>{{ searchItem.title }}</b></ion-text><br />
+        <ion-text><ion-note color="medium">{{ searchItem.subtitle }}</ion-note></ion-text>      
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid *ngIf="false">
     <!-- Trending Raffles -->
     <ion-row>
       <ion-col class="ion-no-padding">
@@ -65,7 +86,7 @@
             "
           >
             <app-team-preview-card
-              *ngFor="let team of ((allTeams$ | async) ?? [])"
+              *ngFor="let team of ((allTeams$ | ngrxPush) ?? [])"
               [team]="team"
               (click)="onTeamClicked(team.id)"
             ></app-team-preview-card>
@@ -83,7 +104,7 @@
         </ion-list-header>
         <ion-list [inset]="true">
           <app-athlete-preview-item
-            *ngFor="let athlete of ((allAthletes$ | async) ?? [])"
+            *ngFor="let athlete of ((allAthletes$ | ngrxPush) ?? [])"
             [athlete]="athlete"
           ></app-athlete-preview-item>
         </ion-list>

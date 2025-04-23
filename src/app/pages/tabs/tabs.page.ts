@@ -9,6 +9,12 @@ import {
 } from '@ionic/angular/standalone';
 import { TabRoutes } from 'src/app/app.routes';
 
+type TabConfig = {
+  label: string;
+  icon: string;
+  route: TabRoutes;
+};
+
 @Component({
   templateUrl: './tabs.page.html',
   styleUrls: ['./tabs.page.scss'],
@@ -16,20 +22,20 @@ import { TabRoutes } from 'src/app/app.routes';
   imports: [IonLabel, IonIcon, IonTabButton, IonTabBar, IonTabs, NgFor],
 })
 export class TabsPage {
-  tabs: { label: string; icon: string; route: TabRoutes }[] = [
+  tabs: TabConfig[] = [
     {
-      label: 'Tab1',
-      icon: 'flash',
-      route: TabRoutes.Tab1,
+      label: 'My Team',
+      icon: 'home-sharp',
+      route: TabRoutes.MyTeam,
     },
     {
       label: 'Search',
-      icon: 'search',
+      icon: 'search-sharp',
       route: TabRoutes.Search,
     },
     {
       label: 'Account',
-      icon: 'person',
+      icon: 'person-sharp',
       route: TabRoutes.Account,
     },
   ];
