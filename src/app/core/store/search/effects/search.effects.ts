@@ -14,6 +14,10 @@ export class SearchEffects {
     this.actions$.pipe(
       ofType(searchActions.fetchGlobalSearch),
       switchMap((action) => {
+        if (action.searchQuery === '') {
+          return of(searchActions.clearGlobalSearch());
+        }
+
         return this.searchService.search(action.searchQuery).pipe(
           map((response) => {
             if (response.error !== null) {

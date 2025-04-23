@@ -5,8 +5,9 @@ import {
   inject,
   OnDestroy,
   OnInit,
+  signal,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   IonButton,
   IonCol,
@@ -74,6 +75,7 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     ReactiveFormsModule,
     LetDirective,
     PushPipe,
+    FormsModule,
   ],
 })
 export class SearchPage implements OnInit, OnDestroy {
@@ -81,7 +83,8 @@ export class SearchPage implements OnInit, OnDestroy {
 
   private readonly store = inject(Store);
 
-  searchFormControl = new FormControl<string>('', { nonNullable: true });
+  searchQueryControl = new FormControl<string>('', { nonNullable: true });
+  isSearchFocused = signal(false);
   allSearchItems$ = this.store.select(searchFeature.selectAllSearchItems);
   isSearchLoading$ = this.store.select(searchFeature.selectAnyPagesLoading);
 
@@ -98,7 +101,7 @@ export class SearchPage implements OnInit, OnDestroy {
     this.store.dispatch(teamsActions.fetchTeams());
     this.store.dispatch(athletesActions.fetchAthletes());
 
-    this.searchFormControl.valueChanges
+    this.searchQueryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(500))
       .subscribe((searchQuery) => {
         this.store.dispatch(

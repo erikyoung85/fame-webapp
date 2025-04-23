@@ -6,6 +6,9 @@ import { SearchState } from '../state/search.state';
 
 export const searchReducer = createReducer(
   INITIAL_SEARCH_STATE,
+  on(searchActions.clearGlobalSearch, (): SearchState => {
+    return INITIAL_SEARCH_STATE;
+  }),
   on(searchActions.fetchGlobalSearch, (state, action): SearchState => {
     return {
       ...state,
@@ -13,7 +16,7 @@ export const searchReducer = createReducer(
       searchItems: {
         ...state.searchItems,
         pages: {
-          ...state.searchItems.pages,
+          ...(action.purgeData === true ? {} : state.searchItems.pages),
           [action.paging.page]: wrapAsAsyncData([], true),
         },
         totalCount: 0,

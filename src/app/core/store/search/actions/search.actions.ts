@@ -1,15 +1,18 @@
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { SearchItem } from 'src/app/core/models/SearchItem.model';
 
 export const searchActions = createActionGroup({
   source: 'Search',
   events: {
+    'Clear Global Search': emptyProps(),
+
     'Fetch Global Search': props<{
       searchQuery: string;
       paging: {
         page: number;
         size: number;
       };
+      purgeData?: boolean;
     }>(),
     'Fetch Global Search Success': props<{
       searchItems: SearchItem[];

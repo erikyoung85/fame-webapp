@@ -4,16 +4,19 @@
   <ion-toolbar>
     <ion-searchbar 
       animated 
-      show-cancel-button="focus"
+      showCancelButton="focus"
       placeholder="Search for teams or athletes"
-      [formControl]="searchFormControl"
+      [formControl]="searchQueryControl"
+      [maxlength]="50"
+      (ionFocus)="isSearchFocused.set(true)"
+      (ionCancel)="isSearchFocused.set(false)"
     ></ion-searchbar>
   </ion-toolbar>
   <ion-progress-bar type="indeterminate" *ngIf="isSearchLoading$ | ngrxPush"></ion-progress-bar>
 </ion-header>
 
 <ion-content padding="ion-padding" *ngrxLet="allSearchItems$ as allSearchItems">
-  <ion-list>
+  <ion-list *ngIf="isSearchFocused()">
     <ion-list-header>
       <ion-label>Search Results</ion-label>
     </ion-list-header>
@@ -31,7 +34,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-grid *ngIf="false">
+  <ion-grid *ngIf="!isSearchFocused()">
     <!-- Trending Raffles -->
     <ion-row>
       <ion-col class="ion-no-padding">
