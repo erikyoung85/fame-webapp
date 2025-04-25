@@ -1,5 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { wrapAsAsyncData } from 'src/app/core/models/AsyncData.model';
+import {
+  AsyncDataStatus,
+  wrapAsAsyncData,
+} from 'src/app/core/models/AsyncData.model';
 import { searchActions } from '../actions/search.actions';
 import { INITIAL_SEARCH_STATE } from '../state/search.initial-state';
 import { SearchState } from '../state/search.state';
@@ -17,7 +20,7 @@ export const searchReducer = createReducer(
         ...state.searchItems,
         pages: {
           ...(action.purgeData === true ? {} : state.searchItems.pages),
-          [action.paging.page]: wrapAsAsyncData([], true),
+          [action.paging.page]: wrapAsAsyncData([], AsyncDataStatus.Loading),
         },
         totalCount: 0,
       },
@@ -30,7 +33,10 @@ export const searchReducer = createReducer(
         ...state.searchItems,
         pages: {
           ...state.searchItems.pages,
-          [action.paging.page]: wrapAsAsyncData(action.searchItems, false),
+          [action.paging.page]: wrapAsAsyncData(
+            action.searchItems,
+            AsyncDataStatus.Success
+          ),
         },
         totalCount: action.paging.totalCount,
       },
@@ -43,7 +49,11 @@ export const searchReducer = createReducer(
         ...state.searchItems,
         pages: {
           ...state.searchItems.pages,
-          [action.paging.page]: wrapAsAsyncData([], false, action.message),
+          [action.paging.page]: wrapAsAsyncData(
+            [],
+            AsyncDataStatus.Error,
+            action.message
+          ),
         },
       },
     };

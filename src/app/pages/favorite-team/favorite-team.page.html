@@ -1,29 +1,26 @@
 <ng-container *ngrxLet="teamDetails$ as teamDetailsAsync">
-  <ion-header [translucent]="true">
+  <ion-header>
     <ion-toolbar>
-      <ion-title>{{ (teamDetailsAsync | unwrapAsync)?.school?.abbreviation }}</ion-title>
-      <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
+      <ion-title>My team</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="openModal()">Change team</ion-button>
       </ion-buttons>
       <ion-progress-bar type="indeterminate" *ngIf="teamDetailsAsync | isAsyncLoading"></ion-progress-bar>
     </ion-toolbar>
   </ion-header>
   
   <ion-content
-    [fullscreen]="true"
     padding="ion-padding"
-    *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails"
-  >
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title size="large">{{ teamDetails.school.abbreviation }}</ion-title>
-        <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-  
-    <ion-grid>
+  >  
+    <div 
+      *ngIf="!(teamDetailsAsync | isAsyncLoading) && !(teamDetailsAsync | unwrapAsync)"
+      class="h-100 flex-col ion-justify-content-center ion-align-items-center" 
+    >
+      <h2>Choose your favorite team</h2>
+      <ion-button (click)="openModal()">Choose</ion-button>
+    </div>
+
+    <ion-grid *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails">
       <!-- Top text -->
       <ion-row class="ion-align-items-center">
         <ion-col size="auto">

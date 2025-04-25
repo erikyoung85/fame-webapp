@@ -41,7 +41,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: PageRoutes.Home,
+            redirectTo: PageRoutes.TeamDetail,
             pathMatch: 'full',
           },
           {
@@ -50,11 +50,14 @@ export const routes: Routes = [
               import('./pages/home/home.page').then((m) => m.HomePage),
           },
           {
-            path: `${PageRoutes.TeamDetail}/:id`,
+            path: PageRoutes.TeamDetail,
             loadComponent: () =>
-              import('./pages/team-detail/team-detail.page').then(
-                (m) => m.TeamDetailPage
+              import('./pages/favorite-team/favorite-team.page').then(
+                (m) => m.FavoriteTeamPage
               ),
+            data: {
+              teamId: 1,
+            },
           },
         ],
       },
@@ -72,7 +75,7 @@ export const routes: Routes = [
               import('./pages/search/search.page').then((m) => m.SearchPage),
           },
           {
-            path: `${PageRoutes.TeamDetail}/:id`,
+            path: `${PageRoutes.TeamDetail}/:teamId`,
             loadComponent: () =>
               import('./pages/team-detail/team-detail.page').then(
                 (m) => m.TeamDetailPage

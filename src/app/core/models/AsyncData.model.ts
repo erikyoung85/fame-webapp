@@ -1,17 +1,24 @@
+export enum AsyncDataStatus {
+  Idle = 'idle',
+  Loading = 'loading',
+  Success = 'success',
+  Error = 'error',
+}
+
 export interface AsyncData<T> {
-  loading: boolean;
-  error: string | undefined;
   data: T;
+  status: AsyncDataStatus;
+  error: string | undefined;
 }
 
 export function wrapAsAsyncData<T>(
   data: T,
-  loading: boolean = false,
+  status: AsyncDataStatus = AsyncDataStatus.Idle,
   error?: string
 ): AsyncData<T> {
   return {
     data: data,
-    loading: loading,
+    status: status,
     error: error,
   };
 }

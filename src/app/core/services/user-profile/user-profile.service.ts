@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
-import { UpdateUserProfileRequestDtoV1 } from './dtos/requests/update-user-profile.request.dto.v1';
+import { PatchUserProfileRequestDtoV1 } from './dtos/requests/patch-user-profile.request.dto.v1';
 import { UserProfileResponseDtoV1 } from './dtos/responses/user-profile.response.dto.v1';
 
 @Injectable({
@@ -17,22 +17,22 @@ export class UserProfileService {
     return from(
       this.supabaseService.client
         .from('profiles')
-        .select('id, first_name, last_name')
+        .select('id, first_name, last_name, favorite_team_id')
         .eq('id', userId)
         .single()
     );
   }
 
-  updateUserProfile(
+  patchUserProfile(
     userId: string,
-    request: UpdateUserProfileRequestDtoV1
+    request: PatchUserProfileRequestDtoV1
   ): Observable<PostgrestSingleResponse<UserProfileResponseDtoV1>> {
     return from(
       this.supabaseService.client
         .from('profiles')
         .update(request)
         .eq('id', userId)
-        .select('id, first_name, last_name')
+        .select('id, first_name, last_name, favorite_team_id')
         .single()
     );
   }

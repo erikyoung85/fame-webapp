@@ -1,4 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
+import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { searchReducer } from '../reducers/search.reducer';
 
 export const searchFeature = createFeature({
@@ -9,7 +10,7 @@ export const searchFeature = createFeature({
       selectSearchItems,
       (searchItemsPaginated) => {
         return Object.values(searchItemsPaginated.pages)
-          .map((page) => page?.data)
+          .map((pageAsync) => pageAsync?.data)
           .filter((page) => page !== undefined)
           .flat();
       }
@@ -19,7 +20,7 @@ export const searchFeature = createFeature({
       selectSearchItems,
       (searchItemsPaginated) => {
         return Object.values(searchItemsPaginated.pages).some(
-          (page) => page?.loading === true
+          (page) => page?.status === AsyncDataStatus.Loading
         );
       }
     ),

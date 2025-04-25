@@ -9,9 +9,15 @@
   padding: var(--card-padding);
   width: var(--card-width);
 
+  ion-img {
+    margin-bottom: var(--card-items-gap);
+  }
+
   ion-card-header {
     padding: 0;
-    margin-bottom: var(--card-items-gap);
+    &:has(~ ion-card-content) {
+      margin-bottom: var(--card-items-gap);
+    }
   }
 
   ion-card-title {

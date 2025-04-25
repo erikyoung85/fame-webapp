@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Choose your team</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-justify-content-around">
+      <ion-col *ngFor="let team of (teams | ngrxPush)" (click)="selectTeam(team)" size="auto">
+        <ion-card button [color]="team.id === _selectedTeamId() ? 'primary' : 'light'" class="custom-card color-transition" [class.highlight]="team.id === _selectedTeamId()">
+          <ion-ripple-effect></ion-ripple-effect>
+          <ion-img [src]="team.school.logoUrl"></ion-img>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">{{ team.school.name }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

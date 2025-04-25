@@ -1,5 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { wrapAsAsyncData } from 'src/app/core/models/AsyncData.model';
+import {
+  AsyncDataStatus,
+  wrapAsAsyncData,
+} from 'src/app/core/models/AsyncData.model';
 import { teamsActions } from '../actions/teams.actions';
 import { INITIAL_TEAMS_STATE } from '../state/teams.initial-state';
 import { teamsEntityAdapter, TeamsState } from '../state/teams.state';
@@ -33,7 +36,7 @@ export const teamsReducer = createReducer(
       ...state,
       teamDetailsDict: {
         ...state.teamDetailsDict,
-        [action.teamId]: wrapAsAsyncData(undefined, true),
+        [action.teamId]: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
       },
     };
   }),
@@ -42,7 +45,10 @@ export const teamsReducer = createReducer(
       ...state,
       teamDetailsDict: {
         ...state.teamDetailsDict,
-        [action.teamId]: wrapAsAsyncData(action.teamDetails, false),
+        [action.teamId]: wrapAsAsyncData(
+          action.teamDetails,
+          AsyncDataStatus.Success
+        ),
       },
     };
   }),
@@ -51,7 +57,11 @@ export const teamsReducer = createReducer(
       ...state,
       teamDetailsDict: {
         ...state.teamDetailsDict,
-        [action.teamId]: wrapAsAsyncData(undefined, false, action.message),
+        [action.teamId]: wrapAsAsyncData(
+          undefined,
+          AsyncDataStatus.Error,
+          action.message
+        ),
       },
     };
   })

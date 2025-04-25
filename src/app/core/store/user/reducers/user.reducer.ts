@@ -1,5 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { wrapAsAsyncData } from 'src/app/core/models/AsyncData.model';
+import {
+  AsyncDataStatus,
+  wrapAsAsyncData,
+} from 'src/app/core/models/AsyncData.model';
 import { userActions } from '../actions/user.actions';
 import { INITIAL_USER_STATE } from '../state/user.initial-state';
 import { UserState } from '../state/user.state';
@@ -10,126 +13,164 @@ export const userReducer = createReducer(
   on(userActions.loadSession, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, true),
+      session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.loadSessionSuccess, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(action.session, false),
+      session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
     };
   }),
   on(userActions.loadSessionFailure, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, false, action.message),
+      session: wrapAsAsyncData(
+        undefined,
+        AsyncDataStatus.Error,
+        action.message
+      ),
     };
   }),
 
   on(userActions.loginWithPassword, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, true),
+      session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.loginSuccess, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(action.session, false),
+      session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
     };
   }),
   on(userActions.loginFailure, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(state.session.data, false, action.message),
+      session: wrapAsAsyncData(
+        state.session.data,
+        AsyncDataStatus.Error,
+        action.message
+      ),
     };
   }),
 
   on(userActions.signupWithPassword, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, true),
-      userProfile: wrapAsAsyncData(undefined, true),
+      session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
+      userProfile: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.signupSuccess, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(action.session, false),
+      session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
     };
   }),
   on(userActions.signupFailure, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(state.session.data, false, action.message),
+      session: wrapAsAsyncData(
+        state.session.data,
+        AsyncDataStatus.Error,
+        action.message
+      ),
     };
   }),
 
   on(userActions.getUserProfile, (state): UserState => {
     return {
       ...state,
-      userProfile: wrapAsAsyncData(undefined, true),
+      userProfile: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.getUserProfileSuccess, (state, action): UserState => {
     return {
       ...state,
-      userProfile: wrapAsAsyncData(action.userProfile, false),
+      userProfile: wrapAsAsyncData(action.userProfile, AsyncDataStatus.Success),
     };
   }),
   on(userActions.getUserProfileFailure, (state, action): UserState => {
     return {
       ...state,
-      userProfile: wrapAsAsyncData(undefined, false, action.message),
-    };
-  }),
-
-  on(userActions.updateUserProfile, (state): UserState => {
-    return {
-      ...state,
-      userProfile: wrapAsAsyncData(state.userProfile.data, true),
-    };
-  }),
-  on(userActions.updateUserProfileSuccess, (state, action): UserState => {
-    return {
-      ...state,
-      userProfile: wrapAsAsyncData(action.userProfile, false),
-    };
-  }),
-  on(userActions.updateUserProfileFailure, (state, action): UserState => {
-    return {
-      ...state,
       userProfile: wrapAsAsyncData(
-        state.userProfile.data,
-        false,
+        undefined,
+        AsyncDataStatus.Error,
         action.message
       ),
     };
   }),
 
+  on(
+    userActions.updateUserProfile,
+    userActions.patchUserProfile,
+    (state): UserState => {
+      return {
+        ...state,
+        userProfile: wrapAsAsyncData(
+          state.userProfile.data,
+          AsyncDataStatus.Loading
+        ),
+      };
+    }
+  ),
+  on(
+    userActions.updateUserProfileSuccess,
+    userActions.patchUserProfileSuccess,
+    (state, action): UserState => {
+      return {
+        ...state,
+        userProfile: wrapAsAsyncData(
+          action.userProfile,
+          AsyncDataStatus.Success
+        ),
+      };
+    }
+  ),
+  on(
+    userActions.updateUserProfileFailure,
+    userActions.patchUserProfileFailure,
+    (state, action): UserState => {
+      return {
+        ...state,
+        userProfile: wrapAsAsyncData(
+          state.userProfile.data,
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  ),
+
   on(userActions.logout, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(state.session.data, true),
+      session: wrapAsAsyncData(state.session.data, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.logoutSuccess, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, false),
+      session: wrapAsAsyncData(undefined, AsyncDataStatus.Success),
     };
   }),
-  on(userActions.updateUserProfileFailure, (state, action): UserState => {
+  on(userActions.logoutFailure, (state, action): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(state.session.data, false, action.message),
+      session: wrapAsAsyncData(
+        state.session.data,
+        AsyncDataStatus.Error,
+        action.message
+      ),
     };
   }),
 
   on(userActions.clearUserProfile, (state): UserState => {
     return {
       ...state,
-      userProfile: wrapAsAsyncData(undefined, false),
+      userProfile: wrapAsAsyncData(undefined, AsyncDataStatus.Idle),
     };
   })
 );

@@ -56,23 +56,34 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          favorite_team_id: number | null
           first_name: string
           id: string
           last_name: string
         }
         Insert: {
           created_at?: string
+          favorite_team_id?: number | null
           first_name: string
           id?: string
           last_name: string
         }
         Update: {
           created_at?: string
+          favorite_team_id?: number | null
           first_name?: string
           id?: string
           last_name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_favorite_team_id_fkey"
+            columns: ["favorite_team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       roster_entries: {
         Row: {

@@ -16,7 +16,7 @@ import {
 import { PageRoutes } from 'src/app/app.routes';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
-import { UpdateUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/update-user-profile.request.dto.v1';
+import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { UserProfileService } from 'src/app/core/services/user-profile/user-profile.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { UserProfileRoutes } from 'src/app/pages/user-profile/user-profile.routes';
@@ -280,12 +280,13 @@ export class UserEffects {
         )
       ),
       switchMap(([action, session]) => {
-        const request: UpdateUserProfileRequestDtoV1 = {
+        const request: PatchUserProfileRequestDtoV1 = {
           first_name: action.userProfile.firstName,
           last_name: action.userProfile.lastName,
+          favorite_team_id: action.userProfile.favoriteTeamId,
         };
         return this.userProfileService
-          .updateUserProfile(action.userProfile.id, request)
+          .patchUserProfile(action.userProfile.id, request)
           .pipe(
             map((response) => {
               if (response.error) {
@@ -331,6 +332,63 @@ export class UserEffects {
         });
       })
     )
+  );
+
+  patchUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.patchUserProfile),
+      withLatestFrom(
+        this.store.select(userFeature.selectSession).pipe(
+          map((async) => async.data),
+          filter((session) => session !== undefined)
+        )
+      ),
+      switchMap(([action, session]) => {
+        return this.userProfileService
+          .patchUserProfile(session.user.id, action.request)
+          .pipe(
+            map((response) => {
+              if (response.error) {
+                return userActions.patchUserProfileFailure({
+                  message: response.error.message || 'Failed to update profile',
+                });
+              }
+
+              return userActions.patchUserProfileSuccess({
+                userProfile:
+                  UserProfileFactory.fromSessionAndProfileResponseDto(
+                    session,
+                    response.data
+                  ),
+              });
+            }),
+            catchError((error: Error) => {
+              return of(
+                userActions.patchUserProfileFailure({
+                  message: error?.message || 'Failed to update profile',
+                })
+              );
+            })
+          );
+      })
+    )
+  );
+
+  patchUserProfileSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.patchUserProfileSuccess),
+        map(async () => {
+          await this.toastController
+            .create({
+              message: 'Successfully updated your profile!',
+              duration: 2000,
+              color: 'success',
+            })
+            .then((toast) => toast.present());
+        })
+      ),
+    { dispatch: false }
   );
 
   getProfileOnUserIdChange$ = createEffect(() =>

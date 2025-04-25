@@ -1,4 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
+import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { userReducer } from '../reducers/user.reducer';
 
 export const userFeature = createFeature({
@@ -7,7 +8,7 @@ export const userFeature = createFeature({
   extraSelectors: ({ selectSession, selectUserProfile }) => ({
     selectIsSessionLoading: createSelector(
       selectSession,
-      (session) => session.loading
+      (session) => session.status === AsyncDataStatus.Loading
     ),
     selectIsLoggedIn: createSelector(
       selectUserProfile,

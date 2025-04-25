@@ -1,6 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Session } from '@supabase/supabase-js';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
+import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/requests/signup-with-password.request.dto.v1';
 
 export const userActions = createActionGroup({
@@ -40,5 +41,9 @@ export const userActions = createActionGroup({
       userProfile: UserProfile;
     }>(),
     'Update User Profile Failure': props<{ message: string }>(),
+
+    'Patch User Profile': props<{ request: PatchUserProfileRequestDtoV1 }>(),
+    'Patch User Profile Success': props<{ userProfile: UserProfile }>(),
+    'Patch User Profile Failure': props<{ message: string }>(),
   },
 });
