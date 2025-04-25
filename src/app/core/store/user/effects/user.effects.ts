@@ -42,6 +42,7 @@ export class UserEffects {
           userActions.loginFailure,
           userActions.signupFailure,
           userActions.updateUserProfileFailure,
+          userActions.patchUserProfileFailure,
           userActions.getUserProfileFailure,
           userActions.resetPasswordFailure,
           userActions.logoutFailure
@@ -372,23 +373,6 @@ export class UserEffects {
           );
       })
     )
-  );
-
-  patchUserProfileSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(userActions.patchUserProfileSuccess),
-        map(async () => {
-          await this.toastController
-            .create({
-              message: 'Successfully updated your profile!',
-              duration: 2000,
-              color: 'success',
-            })
-            .then((toast) => toast.present());
-        })
-      ),
-    { dispatch: false }
   );
 
   getProfileOnUserIdChange$ = createEffect(() =>
