@@ -1,6 +1,6 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button [tab]="myTeamTab.route">
+    <ion-tab-button *ngrxLet="myTeamTab$ as myTeamTab" [tab]="myTeamTab.route">
       <ion-icon *ngIf="myTeamTab.icon" [name]="myTeamTab.icon"></ion-icon>
       <ion-icon *ngIf="myTeamTab.iconSrc" [src]="myTeamTab.iconSrc"></ion-icon>
       <ion-label>{{ myTeamTab.label }}</ion-label>
