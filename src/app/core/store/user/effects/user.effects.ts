@@ -393,7 +393,7 @@ export class UserEffects {
           map((response) => {
             if (response.error) {
               return userActions.logoutFailure({
-                message: response.error.message || 'Failed to logout',
+                message: response.error.message ?? 'Failed to logout',
               });
             }
 
@@ -402,7 +402,7 @@ export class UserEffects {
           catchError((error: Error) => {
             return of(
               userActions.logoutFailure({
-                message: error.message || 'Failed to logout',
+                message: error.message ?? 'Failed to logout',
               })
             );
           })

@@ -18,5 +18,9 @@ export const userFeature = createFeature({
       selectSession,
       (session) => session.data?.user?.id
     ),
+    selectFavoriteTeamId: createSelector(
+      selectUserProfile,
+      (userProfile) => userProfile.data?.favoriteTeamId
+    ),
   }),
 });

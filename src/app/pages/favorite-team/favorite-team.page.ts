@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
+  IonAvatar,
   IonButton,
   IonButtons,
   IonCol,
@@ -8,6 +9,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonItem,
   IonLabel,
   IonList,
@@ -20,11 +22,12 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
-import { LetDirective } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, of, switchMap } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
+import { TabRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
-import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
+import { TabsService } from 'src/app/core/services/tabs/tabs.service';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
@@ -37,6 +40,8 @@ import { UserProfileAvatarComponent } from '../../shared/components/user-profile
   styleUrls: ['./favorite-team.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonImg,
+    IonAvatar,
     IonButtons,
     IonButton,
     IonNote,
@@ -59,26 +64,19 @@ import { UserProfileAvatarComponent } from '../../shared/components/user-profile
     UserProfileAvatarComponent,
     UnwrapAsyncPipe,
     IsAsyncLoadingPipe,
+    PushPipe,
   ],
 })
 export class FavoriteTeamPage {
   private readonly store = inject(Store);
   private readonly modalController = inject(ModalController);
+  private readonly tabsService = inject(TabsService);
 
   private readonly userProfile$ = this.store.select(
     userFeature.selectUserProfile
   );
-  readonly favoriteTeamId$ = this.userProfile$.pipe(
-    map((profile) => profile?.data?.favoriteTeamId)
-  );
-  readonly teamDetails$ = this.favoriteTeamId$.pipe(
-    switchMap((teamId) => {
-      if (teamId === undefined) return of(undefined);
-
-      this.store.dispatch(teamsActions.fetchTeamDetails({ teamId: teamId }));
-      return this.store.select(teamsFeature.selectTeamDetails(teamId));
-    })
-  );
+  readonly teamDetails$ = this.store.select(teamsFeature.selectFavoriteTeam);
+  readonly isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
   readonly isLoading$ = combineLatest([
     this.teamDetails$,
@@ -99,5 +97,9 @@ export class FavoriteTeamPage {
     modal.present();
 
     const { data, role } = await modal.onWillDismiss();
+  }
+
+  onLoginClicked() {
+    this.tabsService.changeTab(TabRoutes.Account);
   }
 }

@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
+import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
 import { TabsPage } from './pages/tabs/tabs.page';
 
 export enum AppRoutes {
@@ -30,6 +32,10 @@ export const routes: Routes = [
   {
     path: AppRoutes.Tabs,
     component: TabsPage,
+    resolve: {
+      // userProfile: userProfileResolver,
+      favoriteTeam: favoriteTeamResolver,
+    },
     children: [
       {
         path: '',
@@ -99,6 +105,7 @@ export const routes: Routes = [
               ),
             loadChildren: () =>
               import('./pages/user-profile/user-profile.routes'),
+            canActivate: [isLoggedInGuard],
           },
           {
             path: PageRoutes.Login,

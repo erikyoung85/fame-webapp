@@ -9,13 +9,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" padding="ion-padding">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true">
+  <div class="h-100 flex-col">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">Profile</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-  <!-- View and Edit components -->
-  <router-outlet></router-outlet>
+    <!-- View and Edit components -->
+    <router-outlet></router-outlet>
+  
+    <ion-button fill="outline" color="danger" expand="block" (click)="onLogoutClicked()" class="ion-padding" style="margin-top: auto;">Logout</ion-button>
+  </div>
+
 </ion-content>

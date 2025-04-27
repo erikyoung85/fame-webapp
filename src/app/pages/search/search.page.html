@@ -15,7 +15,7 @@
   <ion-progress-bar type="indeterminate" *ngIf="isSearchLoading$ | ngrxPush"></ion-progress-bar>
 </ion-header>
 
-<ion-content padding="ion-padding" *ngrxLet="allSearchItems$ as allSearchItems">
+<ion-content *ngrxLet="allSearchItems$ as allSearchItems">
   <ion-list *ngIf="isSearchFocused()">
     <ion-list-header>
       <ion-label>Search Results</ion-label>

@@ -8,9 +8,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
-import { map } from 'rxjs';
 import { userActions } from './core/store/user/actions/user.actions';
-import { userFeature } from './core/store/user/feature/user.feature';
 
 @Component({
   standalone: true,
@@ -26,11 +24,6 @@ export class AppComponent implements OnInit {
   constructor() {
     addIcons({ ...ionIcons });
   }
-
-  readonly userProfile$ = this.store
-    .select(userFeature.selectUserProfile)
-    .pipe(map((async) => async.data));
-  readonly isLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
   ngOnInit(): void {
     this.store.dispatch(userActions.loadSession());

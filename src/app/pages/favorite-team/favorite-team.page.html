@@ -5,85 +5,107 @@
       <ion-buttons slot="end">
         <ion-button (click)="openModal()">Change team</ion-button>
       </ion-buttons>
-      <ion-progress-bar type="indeterminate" *ngIf="teamDetailsAsync | isAsyncLoading"></ion-progress-bar>
+      <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
     </ion-toolbar>
   </ion-header>
-  
-  <ion-content
-    padding="ion-padding"
-  >  
-    <div 
-      *ngIf="!(teamDetailsAsync | isAsyncLoading) && !(teamDetailsAsync | unwrapAsync)"
-      class="h-100 flex-col ion-justify-content-center ion-align-items-center" 
-    >
-      <h2>Choose your favorite team</h2>
-      <ion-button (click)="openModal()">Choose</ion-button>
-    </div>
 
-    <ion-grid *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails">
-      <!-- Top text -->
-      <ion-row class="ion-align-items-center">
-        <ion-col size="auto">
-          <app-user-profile-avatar size="large" [avatarSrc]="teamDetails.school.logoUrl"></app-user-profile-avatar>
-        </ion-col>
-        <ion-col>
-          <h1>
-            <ion-text>{{ teamDetails.school.name}}</ion-text>
-          </h1>
-          <p>
-            <ion-text color="medium">
-              {{ teamDetails.name }}
-            </ion-text>
-          </p>
-        </ion-col>
-      </ion-row>
+  <ng-container *ngrxLet="isUserLoggedIn$ as isUserLoggedIn">
+    <ion-content *ngIf="!isUserLoggedIn">
+      <div class="h-100 flex-col ion-justify-content-center ion-align-items-center">
+        <h2>Login to choose a favorite team</h2>
+        <ion-button (click)="onLoginClicked()">Login</ion-button>
+      </div>
+    </ion-content>
+
+    <ion-content *ngIf="isUserLoggedIn && !(teamDetailsAsync | isAsyncLoading) && !(teamDetailsAsync | unwrapAsync)">
+      <div class="h-100 flex-col ion-justify-content-center ion-align-items-center">
+        <h2>Choose your favorite team</h2>
+        <ion-button (click)="openModal()">Choose</ion-button>
+      </div>
+    </ion-content>
+    
+    
+    <ion-content *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails">  
   
-      <!-- Team information section -->
-        <ion-row>
-        <ion-col>
-          <ion-list>
-            <ion-list-header class="ion-no-padding">
-              <ion-label>Team Details</ion-label>
-            </ion-list-header>
-            <ion-item>
-              <ion-label>Season</ion-label>
-              <ion-icon slot="start" name="trophy-sharp"></ion-icon>
-              <ion-text slot="end">{{ teamDetails.sport.name }} {{ teamDetails.seasonYear }}</ion-text>
-            </ion-item>
-            <ion-item>
-              <ion-label>Location</ion-label>
-              <ion-icon slot="start" name="location-sharp"></ion-icon>
-              <ion-text slot="end">{{ teamDetails.school.city }}, {{ teamDetails.school.state }}</ion-text>
-            </ion-item>
-            <ion-item>
-              <ion-label>Money raised for players</ion-label>
-              <ion-icon slot="start" name="cash-sharp"></ion-icon>
-              <ion-text slot="end">{{ '$10' }}</ion-text>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-        </ion-row>
+      <div class="profile-page">
   
-        <!-- Roster -->
-        <ion-row>
-        <ion-col>
-          <ion-list>
-            <ion-list-header class="ion-no-padding">
-              <ion-label>{{ teamDetails.seasonYear }} Roster</ion-label>
-            </ion-list-header>
-            <ion-item
-              button
-              *ngFor="let athlete of (teamDetails.rosterAthletes ?? [])"
-            >
-              <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
-              <ion-label>
-                <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
-                <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-        </ion-col>
+        <!-- Banner -->
+        <div class="banner-container">
+          <ion-img src="https://w0.peakpx.com/wallpaper/522/548/HD-wallpaper-south-carolina-gamecocks-american-football-team-emblem-silk-flag-red-black-silk-texture-ncaa-south-carolina-gamecocks-logo-columbia-south-carolina-usa-american-football-university-of-south.jpg" alt="Banner" class="banner-image" />
+        </div>
+        
+        <!-- Profile avatar -->
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img [src]="teamDetails.school.logoUrl" alt="Profile" />
+          </ion-avatar>
+        </div>
+      </div>
+      
+      <ion-grid>
+  
+        <!-- Top text -->
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <h1>
+              <ion-text>{{ teamDetails.school.name}}</ion-text>
+            </h1>
+            <p>
+              <ion-text color="medium">
+                {{ teamDetails.name }}
+              </ion-text>
+            </p>
+          </ion-col>
         </ion-row>
-    </ion-grid>
-  </ion-content>
+    
+        <!-- Team information section -->
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-list-header class="ion-no-padding">
+                <ion-label>Team Details</ion-label>
+              </ion-list-header>
+              <ion-item>
+                <ion-label>Season</ion-label>
+                <ion-icon slot="start" name="trophy-sharp"></ion-icon>
+                <ion-text slot="end">{{ teamDetails.sport.name }} {{ teamDetails.seasonYear }}</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-label>Location</ion-label>
+                <ion-icon slot="start" name="location-sharp"></ion-icon>
+                <ion-text slot="end">{{ teamDetails.school.city }}, {{ teamDetails.school.state }}</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-label>Money raised for players</ion-label>
+                <ion-icon slot="start" name="cash-sharp"></ion-icon>
+                <ion-text slot="end">{{ '$10' }}</ion-text>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+    
+          <!-- Roster -->
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-list-header class="ion-no-padding">
+                <ion-label>{{ teamDetails.seasonYear }} Roster</ion-label>
+              </ion-list-header>
+              <ion-item
+                button
+                *ngFor="let athlete of (teamDetails.rosterAthletes ?? [])"
+              >
+                <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
+                <ion-label>
+                  <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+                  <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ng-container>
+
 </ng-container>

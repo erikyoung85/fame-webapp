@@ -1,10 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import { TeamFactory } from 'src/app/core/models/Team.model';
 import { TeamDetailFactory } from 'src/app/core/models/TeamDetail.model';
 import { TeamsService } from 'src/app/core/services/teams/teams.service';
+import { userFeature } from '../../user/feature/user.feature';
 import { teamsActions } from '../actions/teams.actions';
 
 @Injectable()
@@ -12,6 +14,7 @@ export class TeamsEffects {
   private readonly actions$ = inject(Actions);
   private readonly teamsService = inject(TeamsService);
   private readonly toastController = inject(ToastController);
+  private readonly store = inject(Store);
 
   failureMessages$ = createEffect(
     () =>
@@ -90,6 +93,15 @@ export class TeamsEffects {
             );
           })
         );
+      })
+    )
+  );
+
+  fetchFavoriteTeam$ = createEffect(() =>
+    this.store.select(userFeature.selectFavoriteTeamId).pipe(
+      filter((favoriteTeamId) => favoriteTeamId !== undefined),
+      map((favoriteTeamId) => {
+        return teamsActions.fetchTeamDetails({ teamId: favoriteTeamId });
       })
     )
   );
