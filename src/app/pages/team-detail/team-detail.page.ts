@@ -10,19 +10,9 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import {
   IonBackButton,
   IonButtons,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonNote,
   IonProgressBar,
-  IonRow,
-  IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -31,28 +21,18 @@ import { Store } from '@ngrx/store';
 import { filter, switchMap } from 'rxjs';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
+import { TeamDetailComponent } from 'src/app/shared/components/team-detail/team-detail.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import safeParseInt from 'src/app/shared/utils/safeParseInt.util';
-import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
 
 @Component({
   templateUrl: './team-detail.page.html',
   styleUrls: ['./team-detail.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonNote,
-    IonIcon,
-    IonItem,
-    IonList,
-    IonLabel,
-    IonListHeader,
-    IonText,
     IonProgressBar,
     IonBackButton,
-    IonCol,
-    IonRow,
-    IonGrid,
     IonContent,
     IonButtons,
     IonTitle,
@@ -60,9 +40,9 @@ import { UserProfileAvatarComponent } from '../../shared/components/user-profile
     IonHeader,
     CommonModule,
     LetDirective,
-    UserProfileAvatarComponent,
     UnwrapAsyncPipe,
     IsAsyncLoadingPipe,
+    TeamDetailComponent,
   ],
 })
 export class TeamDetailPage {

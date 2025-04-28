@@ -1,23 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
-  IonAvatar,
   IonButton,
   IonButtons,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonNote,
   IonProgressBar,
-  IonRow,
-  IonText,
   IonTitle,
   IonToolbar,
   ModalController,
@@ -30,41 +18,29 @@ import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { TabsService } from 'src/app/core/services/tabs/tabs.service';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { TeamDetailComponent } from 'src/app/shared/components/team-detail/team-detail.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { PickTeamModalComponent } from '../../modals/pick-team/pick-team.component';
-import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
 
 @Component({
   templateUrl: './favorite-team.page.html',
   styleUrls: ['./favorite-team.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonImg,
-    IonAvatar,
     IonButtons,
     IonButton,
-    IonNote,
-    IonIcon,
-    IonItem,
-    IonList,
-    IonLabel,
-    IonListHeader,
-    IonText,
     IonProgressBar,
-    IonCol,
-    IonRow,
-    IonGrid,
     IonContent,
     IonTitle,
     IonToolbar,
     IonHeader,
     CommonModule,
     LetDirective,
-    UserProfileAvatarComponent,
     UnwrapAsyncPipe,
     IsAsyncLoadingPipe,
     PushPipe,
+    TeamDetailComponent,
   ],
 })
 export class FavoriteTeamPage {
