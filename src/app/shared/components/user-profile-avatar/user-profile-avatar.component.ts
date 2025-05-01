@@ -9,9 +9,10 @@ import {
   signal,
   SimpleChanges,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonAvatar, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control-value-accessor.interface';
 import { IsNilOrEmptyPipe } from '../../pipes/is-nil-or-empty/is-nil-or-empty.pipe';
 
 @Component({
@@ -29,7 +30,7 @@ import { IsNilOrEmptyPipe } from '../../pipes/is-nil-or-empty/is-nil-or-empty.pi
   imports: [NgIf, IonIcon, IonFabButton, IonAvatar, IsNilOrEmptyPipe],
 })
 export class UserProfileAvatarComponent
-  implements ControlValueAccessor, OnChanges
+  implements TypedControlValueAccessor<string | undefined>, OnChanges
 {
   @Input() avatarSrc: string | undefined = undefined;
   @Input({ transform: booleanAttribute }) editMode: boolean = false;
@@ -74,8 +75,9 @@ export class UserProfileAvatarComponent
   }
 
   // ControlValueAccessor methods
-  writeValue(newValue: string | undefined): void {
-    this._value.set(newValue);
+  writeValue(newValue: unknown): void {
+    const parsedValue = newValue?.toString();
+    this._value.set(parsedValue);
   }
 
   private _onChange = (_: string | undefined) => {};
@@ -84,7 +86,7 @@ export class UserProfileAvatarComponent
   }
 
   private _onTouched = () => {};
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this._onTouched = fn;
   }
 

@@ -1,8 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-chip *ngIf="!(isEditMode$ | async)" (click)="onEditClicked()">edit</ion-chip>
-      <ion-chip *ngIf="isEditMode$ | async" (click)="onCancelClicked()">cancel</ion-chip>
+      <ion-chip *ngIf="!(isEditMode$ | async)" (click)="onEditClicked()">Edit</ion-chip>
+      <ion-chip *ngIf="isEditMode$ | async" (click)="onCancelClicked()">Cancel</ion-chip>
     </ion-buttons>
     <ion-title>Profile</ion-title>
     <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | async | isAsyncLoading"></ion-progress-bar>
@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="h-100 flex-col">
+  <div class="full-height flex-col">
     <ion-header collapse="condense">
       <ion-toolbar>
         <ion-title size="large">Profile</ion-title>

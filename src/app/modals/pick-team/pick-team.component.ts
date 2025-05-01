@@ -5,7 +5,6 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  Output,
   signal,
 } from '@angular/core';
 import {
@@ -63,8 +62,6 @@ export class PickTeamModalComponent implements OnInit, OnDestroy {
 
   private readonly store = inject(Store);
   private readonly modalController = inject(ModalController);
-
-  @Output() onWillDismiss = () => null;
 
   readonly teams = this.store.select(teamsFeature.selectAll);
   readonly _selectedTeamId = signal<number | undefined>(undefined);

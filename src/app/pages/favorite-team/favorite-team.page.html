@@ -11,14 +11,14 @@
 
   <ng-container *ngrxLet="isUserLoggedIn$ as isUserLoggedIn">
     <ion-content *ngIf="!isUserLoggedIn">
-      <div class="h-100 flex-col ion-justify-content-center ion-align-items-center">
+      <div class="full-height flex-col ion-justify-content-center ion-align-items-center">
         <h2>Login to choose a favorite team</h2>
         <ion-button (click)="onLoginClicked()">Login</ion-button>
       </div>
     </ion-content>
 
     <ion-content *ngIf="isUserLoggedIn && !(teamDetailsAsync | isAsyncLoading) && !(teamDetailsAsync | unwrapAsync)">
-      <div class="h-100 flex-col ion-justify-content-center ion-align-items-center">
+      <div class="full-height flex-col ion-justify-content-center ion-align-items-center">
         <h2>Choose your favorite team</h2>
         <ion-button (click)="openModal()">Choose</ion-button>
       </div>

@@ -1,0 +1,39 @@
+<ion-grid class="full-height flex-col">
+    <ion-row>
+      <ion-col>
+        <div class="list-item-display">
+          <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
+          <ion-label>
+            <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+            <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
+          </ion-label>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="flex-fill ion-justify-content-center ion-align-items-center">
+        <ion-col size="auto">
+            <app-currency-input [formControl]="form.controls.amount"></app-currency-input>
+        </ion-col>
+    </ion-row>
+
+    <div>
+        <ion-row>
+            <ion-col>
+                <ion-textarea 
+                    mode="md" 
+                    fill="outline" 
+                    label="Message"
+                    labelPlacement="floating"
+                    [autoGrow]="true"
+                    [formControl]="form.controls.message"
+                ></ion-textarea>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-button expand="block">Donate</ion-button>
+            </ion-col>
+        </ion-row>
+    </div>
+</ion-grid>

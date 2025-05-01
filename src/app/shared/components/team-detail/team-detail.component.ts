@@ -1,7 +1,8 @@
 import { NgFor } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   IonAvatar,
+  IonButton,
   IonCol,
   IonGrid,
   IonIcon,
@@ -13,8 +14,10 @@ import {
   IonNote,
   IonRow,
   IonText,
+  ModalController,
 } from '@ionic/angular/standalone';
 import { TeamDetail } from 'src/app/core/models/TeamDetail.model';
+import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-avatar.component';
 
 @Component({
@@ -22,6 +25,7 @@ import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-
   templateUrl: './team-detail.component.html',
   styleUrls: ['./team-detail.component.scss'],
   imports: [
+    IonButton,
     IonNote,
     IonListHeader,
     IonLabel,
@@ -38,8 +42,20 @@ import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-
     NgFor,
   ],
 })
-export class TeamDetailComponent implements OnInit {
+export class TeamDetailComponent {
+  private readonly modalController = inject(ModalController);
+
   @Input() teamDetails!: TeamDetail;
 
-  ngOnInit() {}
+  async onPayClicked() {
+    const modal = await this.modalController.create({
+      component: PaymentModalComponent,
+      componentProps: {
+        athlete: this.teamDetails.rosterAthletes[0],
+      },
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+  }
 }

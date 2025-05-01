@@ -1,0 +1,11 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Make donation</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-safe-area-bottom">
+  <app-send-payment [athlete]="athlete"></app-send-payment>
+</ion-content>

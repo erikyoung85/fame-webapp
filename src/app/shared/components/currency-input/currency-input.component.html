@@ -1,0 +1,12 @@
+<div class="flex-row ion-justify-content-start gap-1">
+  <h2 class="ion-no-margin"><ion-text class="ion-text-start">$</ion-text></h2>
+  <ion-input
+    style="font-size: 2rem;"
+    inputmode="decimal"
+    [value]="_value()"
+    (ionInput)="onInputChange($event.detail.value ?? '')"
+    [IonInputMask]="currencyMask"
+    [disabled]="_isDisabled()"
+    ionInputAutoGrow
+  ></ion-input>
+</div>

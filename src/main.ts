@@ -4,6 +4,7 @@ import {
   provideRouter,
   RouteReuseStrategy,
   withComponentInputBinding,
+  withViewTransitions,
 } from '@angular/router';
 import { IonicRouteStrategy } from '@ionic/angular';
 import { provideIonicAngular } from '@ionic/angular/standalone';
@@ -36,7 +37,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({ mode: 'ios' }),
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
     provideStore(rootReducer, {
       metaReducers: getMetaReducers(),
       initialState: {},
