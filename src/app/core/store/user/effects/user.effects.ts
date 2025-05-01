@@ -134,7 +134,9 @@ export class UserEffects {
           })
           .then((toast) => toast.present());
 
-        return RouterActions.routeInCurrentTab({ url: '' });
+        return RouterActions.routeInCurrentTab({
+          url: [PageRoutes.UserProfile],
+        });
       })
     )
   );

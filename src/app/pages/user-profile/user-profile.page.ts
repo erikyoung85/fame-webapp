@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
 import {
-  IonButton,
   IonButtons,
   IonChip,
   IonContent,
@@ -12,13 +11,13 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { PageRoutes } from 'src/app/app.routes';
 import { FormMode } from 'src/app/core/enums/FormMode.enum';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import * as routerSelectors from 'src/app/core/store/router/selectors/router.selectors';
-import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UserProfileRoutes } from './user-profile.routes';
@@ -28,8 +27,6 @@ import { UserProfileRoutes } from './user-profile.routes';
   styleUrls: ['./user-profile.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonButton,
-    CommonModule,
     IonChip,
     IonTitle,
     IonProgressBar,
@@ -41,6 +38,8 @@ import { UserProfileRoutes } from './user-profile.routes';
     IonHeader,
     IsAsyncLoadingPipe,
     RouterOutlet,
+    PushPipe,
+    NgIf,
   ],
 })
 export class UserProfilePage {
@@ -69,9 +68,5 @@ export class UserProfilePage {
         url: [PageRoutes.UserProfile, UserProfileRoutes.View],
       })
     );
-  }
-
-  onLogoutClicked() {
-    this.store.dispatch(userActions.logout());
   }
 }

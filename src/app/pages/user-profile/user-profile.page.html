@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-chip *ngIf="!(isEditMode$ | async)" (click)="onEditClicked()">Edit</ion-chip>
-      <ion-chip *ngIf="isEditMode$ | async" (click)="onCancelClicked()">Cancel</ion-chip>
+      <ion-chip *ngIf="!(isEditMode$ | ngrxPush)" (click)="onEditClicked()">Edit</ion-chip>
+      <ion-chip *ngIf="isEditMode$ | ngrxPush" (click)="onCancelClicked()">Cancel</ion-chip>
     </ion-buttons>
     <ion-title>Profile</ion-title>
-    <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | async | isAsyncLoading"></ion-progress-bar>
+    <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
@@ -19,8 +19,5 @@
 
     <!-- View and Edit components -->
     <router-outlet></router-outlet>
-  
-    <ion-button fill="outline" color="danger" expand="block" (click)="onLogoutClicked()" class="ion-padding" style="margin-top: auto;">Logout</ion-button>
   </div>
-
 </ion-content>
