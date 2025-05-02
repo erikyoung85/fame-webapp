@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
-  IonBackButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -21,6 +20,7 @@ import { Store } from '@ngrx/store';
 import { filter, switchMap } from 'rxjs';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
+import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { TeamDetailComponent } from 'src/app/shared/components/team-detail/team-detail.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
@@ -32,7 +32,6 @@ import safeParseInt from 'src/app/shared/utils/safeParseInt.util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonProgressBar,
-    IonBackButton,
     IonContent,
     IonButtons,
     IonTitle,
@@ -43,6 +42,7 @@ import safeParseInt from 'src/app/shared/utils/safeParseInt.util';
     UnwrapAsyncPipe,
     IsAsyncLoadingPipe,
     TeamDetailComponent,
+    BackButtonComponent,
   ],
 })
 export class TeamDetailPage {

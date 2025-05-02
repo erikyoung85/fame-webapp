@@ -180,6 +180,7 @@ export type Database = {
       }
       teams: {
         Row: {
+          banner_url: string | null
           created_at: string
           id: number
           name: string
@@ -190,6 +191,7 @@ export type Database = {
           sport_id: number
         }
         Insert: {
+          banner_url?: string | null
           created_at?: string
           id?: number
           name: string
@@ -200,6 +202,7 @@ export type Database = {
           sport_id: number
         }
         Update: {
+          banner_url?: string | null
           created_at?: string
           id?: number
           name?: string

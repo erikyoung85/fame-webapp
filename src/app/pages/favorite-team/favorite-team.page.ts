@@ -22,6 +22,7 @@ import { TeamDetailComponent } from 'src/app/shared/components/team-detail/team-
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { PickTeamModalComponent } from '../../modals/pick-team/pick-team.component';
+import { ToolbarIconButtonComponent } from '../../shared/components/toolbar-icon-button/toolbar-icon-button.component';
 
 @Component({
   templateUrl: './favorite-team.page.html',
@@ -41,6 +42,7 @@ import { PickTeamModalComponent } from '../../modals/pick-team/pick-team.compone
     IsAsyncLoadingPipe,
     PushPipe,
     TeamDetailComponent,
+    ToolbarIconButtonComponent,
   ],
 })
 export class FavoriteTeamPage {

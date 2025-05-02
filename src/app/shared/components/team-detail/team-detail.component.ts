@@ -1,12 +1,11 @@
 import { NgFor } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import {
-  IonAvatar,
   IonButton,
   IonCol,
   IonGrid,
+  IonHeader,
   IonIcon,
-  IonImg,
   IonItem,
   IonLabel,
   IonList,
@@ -14,6 +13,7 @@ import {
   IonNote,
   IonRow,
   IonText,
+  IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
 import { TeamDetail } from 'src/app/core/models/TeamDetail.model';
@@ -25,6 +25,8 @@ import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-
   templateUrl: './team-detail.component.html',
   styleUrls: ['./team-detail.component.scss'],
   imports: [
+    IonToolbar,
+    IonHeader,
     IonButton,
     IonNote,
     IonListHeader,
@@ -36,8 +38,6 @@ import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-
     IonCol,
     IonRow,
     IonGrid,
-    IonAvatar,
-    IonImg,
     UserProfileAvatarComponent,
     NgFor,
   ],

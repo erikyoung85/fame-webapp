@@ -2,6 +2,7 @@ export interface TeamDetailResponseDtoV1 {
   id: number;
   season_year: number;
   name: string;
+  banner_url: string | null;
   schools: {
     id: number;
     name: string;

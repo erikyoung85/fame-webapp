@@ -1,12 +1,15 @@
-<div class="flex-row ion-justify-content-start gap-1">
+<div class="flex-row ion-justify-content-start gap-1" (click)="focusInput()">
   <h2 class="ion-no-margin"><ion-text class="ion-text-start">$</ion-text></h2>
   <ion-input
-    style="font-size: 2rem;"
+    #ionInput
+    style="font-size: 3rem; font-weight: bold;"
     inputmode="decimal"
     [value]="_value()"
     (ionInput)="onInputChange($event.detail.value ?? '')"
     [IonInputMask]="currencyMask"
     [disabled]="_isDisabled()"
+    [readonly]="readonly"
     ionInputAutoGrow
+    forceFocusAtEnd
   ></ion-input>
 </div>

@@ -23,6 +23,10 @@
       width: 8rem;
       height: 8rem;
     }
+
+    &.border {
+      border: 4px solid var(--background);
+    }
   }
 
   .edit-avatar-btn {

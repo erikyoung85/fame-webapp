@@ -6,6 +6,8 @@ export interface TeamDetail {
   id: number;
   seasonYear: number;
   name: string;
+  bannerUrl: string | undefined;
+  logoUrl: string | undefined;
   school: {
     id: number;
     name: string;
@@ -36,6 +38,8 @@ export class TeamDetailFactory {
       id: dto.id,
       name: dto.name,
       seasonYear: dto.season_year,
+      bannerUrl: dto.banner_url ?? undefined,
+      logoUrl: undefined,
       school: {
         id: dto.schools.id,
         name: dto.schools.name,

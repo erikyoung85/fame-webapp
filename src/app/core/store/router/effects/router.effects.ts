@@ -37,10 +37,10 @@ export class RouterEffects {
           url = `${AppRoutes.Tabs}/${currentTabRoute}/${url}`;
 
           if (action.direction === 'back') {
-            return this.navController.navigateBack(url, action.options);
+            return this.navController.navigateBack([url], action.options);
           }
 
-          return this.navController.navigateForward(url, action.options);
+          return this.navController.navigateForward([url], action.options);
         })
       ),
     { dispatch: false }

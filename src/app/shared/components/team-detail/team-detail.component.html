@@ -1,84 +1,93 @@
-<div class="profile-page">
-  
-  <!-- Banner -->
-  <div class="banner-container">
-    <ion-img src="https://w0.peakpx.com/wallpaper/522/548/HD-wallpaper-south-carolina-gamecocks-american-football-team-emblem-silk-flag-red-black-silk-texture-ncaa-south-carolina-gamecocks-logo-columbia-south-carolina-usa-american-football-university-of-south.jpg" alt="Banner" class="banner-image" />
+<div class="top-overhang-container">
+  <div class="top-overhang-element">
+    <app-user-profile-avatar 
+      size="xlarge"
+      [avatarSrc]="teamDetails.school.logoUrl"
+      [border]="true"
+    ></app-user-profile-avatar>
   </div>
   
-  <!-- Profile avatar -->
-  <div class="avatar-container">
-    <ion-avatar class="profile-avatar">
-      <img [src]="teamDetails.school.logoUrl" alt="Profile" />
-    </ion-avatar>
-  </div>
+  <ion-grid class="top-overhang-other-content">
+  
+    <!-- Top text -->
+    <ion-row class="ion-align-items-center">
+      <ion-col>
+        <ion-header collapse="condense">
+          <ion-toolbar>
+            <h1 role="heading" aria-level="1" class="ion-margin-top">
+              <ion-text>{{ teamDetails.school.name}}</ion-text>
+            </h1>
+            <ion-label>
+              <ion-text color="medium">
+                {{ teamDetails.name }}
+              </ion-text>
+            </ion-label>
+          </ion-toolbar>
+        </ion-header>
+      </ion-col>
+    </ion-row>
+  
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="onPayClicked()">Donate to {{ teamDetails.school.abbreviation }}</ion-button>
+      </ion-col>
+    </ion-row>
+  
+    <!-- Team information section -->
+    <ion-row>
+      <ion-col>
+        <ion-list-header class="ion-no-padding">
+          Team Details
+        </ion-list-header>
+        <ion-list>
+          <ion-item>
+            <ion-label>Season</ion-label>
+            <ion-icon slot="start" name="trophy-sharp"></ion-icon>
+            <ion-text slot="end">{{ teamDetails.sport.name }} {{ teamDetails.seasonYear }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Location</ion-label>
+            <ion-icon slot="start" name="location-sharp"></ion-icon>
+            <ion-text slot="end">{{ teamDetails.school.city }}, {{ teamDetails.school.state }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label>Money raised for players</ion-label>
+            <ion-icon slot="start" name="cash-sharp"></ion-icon>
+            <ion-text slot="end">{{ '$10' }}</ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  
+      <!-- Roster -->
+    <ion-row>
+      <ion-col>
+        <ion-list-header class="ion-no-padding">
+          {{ teamDetails.seasonYear }} Roster
+        </ion-list-header>
+        <ion-list>
+          <ion-item
+            button
+            *ngFor="let athlete of (teamDetails.rosterAthletes ?? [])"
+          >
+            <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
+            <ion-label>
+              <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+              <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item
+            button
+            *ngFor="let athlete of (teamDetails.rosterAthletes ?? [])"
+          >
+            <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
+            <ion-label>
+              <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+              <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
-
-<ion-grid>
-
-  <!-- Top text -->
-  <ion-row class="ion-align-items-center">
-    <ion-col>
-      <h1>
-        <ion-text>{{ teamDetails.school.name}}</ion-text>
-      </h1>
-      <p>
-        <ion-text color="medium">
-          {{ teamDetails.name }}
-        </ion-text>
-      </p>
-    </ion-col>
-  </ion-row>
-
-  <ion-row>
-    <ion-col>
-      <ion-button (click)="onPayClicked()">Donate to {{ teamDetails.school.abbreviation }}</ion-button>
-    </ion-col>
-  </ion-row>
-
-  <!-- Team information section -->
-  <ion-row>
-    <ion-col>
-      <ion-list>
-        <ion-list-header class="ion-no-padding">
-          <ion-label>Team Details</ion-label>
-        </ion-list-header>
-        <ion-item>
-          <ion-label>Season</ion-label>
-          <ion-icon slot="start" name="trophy-sharp"></ion-icon>
-          <ion-text slot="end">{{ teamDetails.sport.name }} {{ teamDetails.seasonYear }}</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-label>Location</ion-label>
-          <ion-icon slot="start" name="location-sharp"></ion-icon>
-          <ion-text slot="end">{{ teamDetails.school.city }}, {{ teamDetails.school.state }}</ion-text>
-        </ion-item>
-        <ion-item>
-          <ion-label>Money raised for players</ion-label>
-          <ion-icon slot="start" name="cash-sharp"></ion-icon>
-          <ion-text slot="end">{{ '$10' }}</ion-text>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-
-    <!-- Roster -->
-  <ion-row>
-    <ion-col>
-      <ion-list>
-        <ion-list-header class="ion-no-padding">
-          <ion-label>{{ teamDetails.seasonYear }} Roster</ion-label>
-        </ion-list-header>
-        <ion-item
-          button
-          *ngFor="let athlete of (teamDetails.rosterAthletes ?? [])"
-        >
-          <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
-          <ion-label>
-            <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
-            <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
-</ion-grid>

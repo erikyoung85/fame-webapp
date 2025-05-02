@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
@@ -12,6 +12,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonAvatar, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import * as CSS from 'csstype';
 import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control-value-accessor.interface';
 import { IsNilOrEmptyPipe } from '../../pipes/is-nil-or-empty/is-nil-or-empty.pipe';
 
@@ -27,7 +28,7 @@ import { IsNilOrEmptyPipe } from '../../pipes/is-nil-or-empty/is-nil-or-empty.pi
       multi: true,
     },
   ],
-  imports: [NgIf, IonIcon, IonFabButton, IonAvatar, IsNilOrEmptyPipe],
+  imports: [NgIf, IonIcon, IonFabButton, IonAvatar, IsNilOrEmptyPipe, NgClass],
 })
 export class UserProfileAvatarComponent
   implements TypedControlValueAccessor<string | undefined>, OnChanges
@@ -36,6 +37,8 @@ export class UserProfileAvatarComponent
   @Input({ transform: booleanAttribute }) editMode: boolean = false;
   @Input() size: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'auto' =
     'auto';
+  @Input({ transform: booleanAttribute }) border: boolean = false;
+  @Input() background?: CSS.Properties['background'] = 'white';
 
   protected readonly DEFAULT_AVATAR_SRC = 'assets/images/default-avatar.svg';
 

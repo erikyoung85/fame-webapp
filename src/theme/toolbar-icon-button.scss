@@ -1,0 +1,8 @@
+.toolbar-icon-button {
+  --background: #6f6f6f;
+  --color: white;
+
+  @media (prefers-color-scheme: dark) {
+    --background: #545454;
+  }
+}

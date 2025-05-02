@@ -1,8 +1,13 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   forwardRef,
+  Input,
+  OnChanges,
   signal,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import {
   FormsModule,
@@ -13,6 +18,7 @@ import { IonInput, IonText } from '@ionic/angular/standalone';
 import { MaskitoOptions, maskitoTransform } from '@maskito/core';
 import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control-value-accessor.interface';
 import { IonInputAutoGrowDirective } from '../../directives/ion-input-autogrow.directive';
+import { IonInputForceFocusAtEndDirective } from '../../directives/ion-input-force-focus-at-end.directive';
 import { IonInputMaskDirective } from '../../directives/ion-input-mask.directive';
 import { currencyMaskOptions } from '../../masks/currency.mask';
 import safeParseFloat from '../../utils/safeParseFloat.util';
@@ -36,11 +42,17 @@ import safeParseFloat from '../../utils/safeParseFloat.util';
     ReactiveFormsModule,
     FormsModule,
     IonInputAutoGrowDirective,
+    IonInputForceFocusAtEndDirective,
   ],
 })
 export class CurrencyInputComponent
-  implements TypedControlValueAccessor<number | undefined>
+  implements TypedControlValueAccessor<number | undefined>, OnChanges
 {
+  @ViewChild(IonInput) ionInput!: HTMLIonInputElement;
+
+  @Input() value: number | undefined = undefined;
+  @Input({ transform: booleanAttribute }) readonly = false;
+
   protected readonly currencyMask: MaskitoOptions = currencyMaskOptions;
 
   protected readonly _value = signal<string>('');
@@ -50,6 +62,16 @@ export class CurrencyInputComponent
     this._value.set(newValue);
     const parsedValue = this.parseStringToNumber(newValue);
     this._onChange(parsedValue);
+  }
+
+  protected async focusInput(): Promise<void> {
+    return this.ionInput.setFocus();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['value'] !== undefined) {
+      this.writeValue(this.value);
+    }
   }
 
   // ControlValueAccessor methods

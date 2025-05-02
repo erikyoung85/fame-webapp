@@ -3,16 +3,23 @@
     <ion-toolbar>
       <ion-title>{{ (teamDetailsAsync | unwrapAsync)?.school?.abbreviation }}</ion-title>
       <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
+        <app-back-button></app-back-button>
       </ion-buttons>
       <ion-progress-bar type="indeterminate" *ngIf="teamDetailsAsync | isAsyncLoading"></ion-progress-bar>
     </ion-toolbar>
   </ion-header>
   
-  <ion-content
-    [fullscreen]="true"
-    *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails"
-  >
-    <app-team-detail [teamDetails]="teamDetails"></app-team-detail>
+  <ion-content 
+    *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails" 
+    [fullscreen]="true" 
+    class="scroll-behind-header top-image-container"
+  > 
+    <div class="top-image-wrapper">
+      <img [src]="teamDetails.bannerUrl" class="top-image" />
+    </div>
+
+    <div class="page-content">
+      <app-team-detail [teamDetails]="teamDetails"></app-team-detail>
+    </div>
   </ion-content>
 </ng-container>

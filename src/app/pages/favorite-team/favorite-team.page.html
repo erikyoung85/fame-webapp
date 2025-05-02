@@ -2,8 +2,8 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>My team</ion-title>
-      <ion-buttons slot="end">
-        <ion-button (click)="openModal()">Change team</ion-button>
+      <ion-buttons slot="primary" collapse>
+        <toolbar-icon-button (click)="openModal()" icon="swap-vertical" />
       </ion-buttons>
       <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
     </ion-toolbar>
@@ -23,10 +23,15 @@
         <ion-button (click)="openModal()">Choose</ion-button>
       </div>
     </ion-content>
-    
-    
-    <ion-content *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails">  
-      <app-team-detail [teamDetails]="teamDetails"></app-team-detail>
+
+    <ion-content *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails" [fullscreen]="true" class="scroll-behind-header top-image-container"> 
+      <div class="top-image-wrapper">
+        <img [src]="teamDetails.bannerUrl" class="top-image" />
+      </div>
+
+      <div class="page-content">
+        <app-team-detail [teamDetails]="teamDetails"></app-team-detail>
+      </div>
     </ion-content>
   </ng-container>
 

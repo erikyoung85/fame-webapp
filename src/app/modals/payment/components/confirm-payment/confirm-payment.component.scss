@@ -1,0 +1,10 @@
+.list-item-display {
+  background: var(--ion-item-background);
+  color: var(--ion-text-color);
+  border-radius: 0.5rem;
+
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

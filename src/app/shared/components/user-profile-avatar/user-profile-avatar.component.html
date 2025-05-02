@@ -1,5 +1,9 @@
 <div class="avatar-wrapper">
-  <ion-avatar class="avatar {{size}}">
+  <ion-avatar 
+    class="avatar {{size}}" 
+    [ngClass]="{ border: border }"
+    [style.background]="background"
+  >
     <img [src]="(_value() | isNilOrEmpty) ? DEFAULT_AVATAR_SRC : _value()" />
   </ion-avatar>
   <ion-fab-button 

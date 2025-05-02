@@ -17,9 +17,8 @@ export class IonInputAutoGrowDirective implements AfterViewInit {
 
   private readonly renderer = inject(Renderer2);
 
-  private readonly ionInput: HTMLIonInputElement = inject(
-    ElementRef<HTMLElement>
-  ).nativeElement;
+  private readonly ionInput: HTMLIonInputElement =
+    inject(ElementRef).nativeElement;
   private inputEl!: HTMLInputElement;
   private sizer!: HTMLElement;
 

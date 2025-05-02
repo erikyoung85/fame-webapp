@@ -1,4 +1,5 @@
 import type { CapacitorConfig } from '@capacitor/cli';
+import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
   appId: 'app.chaching.starter',
@@ -10,6 +11,12 @@ const config: CapacitorConfig = {
   },
   ios: {
     buildOptions: {},
+  },
+  plugins: {
+    Keyboard: {
+      resize: KeyboardResize.Ionic,
+      style: KeyboardStyle.Default,
+    },
   },
 };
 

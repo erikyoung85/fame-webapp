@@ -3,9 +3,21 @@
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
-    <ion-title>Make donation</ion-title>
+    <ion-title>{{ paymentSteps[currentStep()].title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-safe-area-bottom">
-  <app-send-payment [athlete]="athlete"></app-send-payment>
+  <app-send-payment
+    *ngIf="currentStep() === PaymentStep.SendPayment"
+    [athlete]="athlete"
+    [payment]="payment"
+    (onPaymentSubmit)="onPaymentCreated($event)"
+  ></app-send-payment>
+  <app-confirm-payment
+    *ngIf="currentStep() === PaymentStep.ConfirmPayment && payment !== undefined"
+    [athlete]="athlete"
+    [payment]="payment"
+    (onConfirmed)="onPaymentConfirmed()"
+    (onCanceled)="goToStep(PaymentStep.SendPayment)"
+  ></app-confirm-payment>
 </ion-content>
