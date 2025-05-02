@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { IonButton, IonIcon } from '@ionic/angular/standalone';
+import * as CSS from 'csstype';
 
 @Component({
   selector: 'toolbar-icon-button',
@@ -19,4 +20,5 @@ export class ToolbarIconButtonComponent {
   @Input() size: 'small' | 'medium' | 'large' = 'small';
   @Input() fill: 'outline' | 'solid' | 'clear' = 'solid';
   @Input() shape: 'round' | 'square' = 'round';
+  @Input() iconStyle?: CSS.Properties;
 }
