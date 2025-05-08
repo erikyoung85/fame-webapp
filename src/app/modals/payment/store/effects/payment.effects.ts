@@ -6,7 +6,7 @@ import { StripePaymentIntentFactory } from 'src/app/core/models/StripePaymentInt
 import { CreatePaymentIntentRequestDtoV1 } from 'src/app/core/services/stripe/dtos/requests/create-payment-intent.request.dto.v1';
 import { StripeApiService } from 'src/app/core/services/stripe/stripe-api.service';
 import { StripeService } from 'src/app/core/services/stripe/stripe.service';
-import { stripeFeature } from 'src/app/core/store/stripe/feature/stripe.feature';
+import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { paymentActions } from '../actions/payment.actions';
 
 @Injectable()
@@ -19,11 +19,20 @@ export class PaymentEffects {
   getPaymentIntent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(paymentActions.getPaymentIntent),
-      withLatestFrom(this.store.select(stripeFeature.selectCustomer)),
-      switchMap(([action, customer]) => {
+      withLatestFrom(this.store.select(userFeature.selectUserProfile).pipe()),
+      switchMap(([action, userProfile]) => {
+        const customerId = userProfile.data?.stripeCustomerId;
+        if (customerId === undefined) {
+          return of(
+            paymentActions.getPaymentIntentFailure({
+              message: 'No customerId found',
+            })
+          );
+        }
+
         const request: CreatePaymentIntentRequestDtoV1 = {
           amount: action.sendPayment.amount,
-          customerId: customer?.data?.id,
+          customerId: customerId,
         };
         return this.stripeApiService.createPaymentIntent(request).pipe(
           map((response) => {
