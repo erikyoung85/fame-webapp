@@ -1,4 +1,4 @@
-<div class="divider-container">
+<div [class]="vertical ? 'divider-container-vertical' : 'divider-container'">
   <div class="line"></div>
   <ion-text *ngIf="text"><span class="divider-text">{{ text }}</span></ion-text>
   <div class="line"></div>

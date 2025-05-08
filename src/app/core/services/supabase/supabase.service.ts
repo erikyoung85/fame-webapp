@@ -10,8 +10,8 @@ export class SupabaseService {
   private supabase: SupabaseClient<Database>;
 
   constructor() {
-    const supabaseUrl = environment.supabaseUrl;
-    const supabaseAnonKey = environment.supabaseAnonKey;
+    const supabaseUrl = environment.supabase.url;
+    const supabaseAnonKey = environment.supabase.anonKey;
 
     if (!supabaseUrl || !supabaseAnonKey) {
       throw new Error(

@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import {
   IonButton,
   IonCol,
@@ -42,10 +42,14 @@ import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-
     NgFor,
   ],
 })
-export class TeamDetailComponent {
+export class TeamDetailComponent implements OnInit {
   private readonly modalController = inject(ModalController);
 
   @Input() teamDetails!: TeamDetail;
+
+  ngOnInit(): void {
+    this.onPayClicked();
+  }
 
   async onPayClicked() {
     const modal = await this.modalController.create({

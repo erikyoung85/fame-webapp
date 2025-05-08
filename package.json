@@ -5,7 +5,8 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start:dev": "ng serve --host=0.0.0.0 --port=$PORT",
+    "start:dev": "ng serve --host=0.0.0.0 --port=4200",
+    "start:vercel:dev": "ng serve --host=0.0.0.0 --port=$PORT",
     "start:web": "ng serve",
     "start:web:dev": "ng serve --configuration=development",
     "start:web:prod": "ng serve --configuration=production",
@@ -30,6 +31,7 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
+    "@capacitor-community/stripe": "^7.1.0",
     "@capacitor/app": "7.0.1",
     "@capacitor/camera": "^7.0.1",
     "@capacitor/core": "7.2.0",

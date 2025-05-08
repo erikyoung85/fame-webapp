@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   appName: 'Cha Ching',
   webDir: 'www/browser',
   server: {
-    url: 'http://192.168.1.162:3000',
+    url: 'http://192.168.1.160:4200',
     cleartext: true,
   },
   ios: {

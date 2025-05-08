@@ -1,23 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    <ion-buttons slot="primary">
+      <ion-button (click)="cancel()">
+        <ion-icon slot="icon-only" color="dark" size="large" name="close-sharp"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>{{ paymentSteps[currentStep()].title }}</ion-title>
+    <ion-title>{{ paymentTabsConfig[currentTab()].title }}</ion-title>
+    <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-safe-area-bottom">
   <app-send-payment
-    *ngIf="currentStep() === PaymentStep.SendPayment"
+    *ngIf="currentTab() === PaymentTab.SendPayment"
     [athlete]="athlete"
     [payment]="payment"
-    (onPaymentSubmit)="onPaymentCreated($event)"
+    (onPaymentCreated)="onPaymentCreated($event)"
   ></app-send-payment>
-  <app-confirm-payment
-    *ngIf="currentStep() === PaymentStep.ConfirmPayment && payment !== undefined"
-    [athlete]="athlete"
-    [payment]="payment"
-    (onConfirmed)="onPaymentConfirmed()"
-    (onCanceled)="goToStep(PaymentStep.SendPayment)"
-  ></app-confirm-payment>
+  <app-add-payment-method
+    *ngIf="currentTab() === PaymentTab.AddPaymentMethod"
+  ></app-add-payment-method>
 </ion-content>

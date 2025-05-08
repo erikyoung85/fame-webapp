@@ -6,6 +6,10 @@ declare interface Env {
   readonly SUPABASE_URL: string;
   readonly SUPABASE_ANON_KEY: string;
 
+  // Stripe environment variables
+  readonly STRIPE_SECRET_KEY: string;
+  readonly STRIPE_PUBLISHABLE_KEY: string;
+
   // Replace the following with your own environment variables.
   // Example: NGX_VERSION: string;
   [key: string]: any;

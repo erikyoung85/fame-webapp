@@ -4,44 +4,45 @@ import {
   Component,
   inject,
   Input,
-  signal,
 } from '@angular/core';
 import {
   IonButton,
   IonButtons,
   IonContent,
   IonHeader,
+  IonIcon,
+  IonProgressBar,
   IonTitle,
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
+import { PushPipe } from '@ngrx/component';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
+import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { Athlete } from 'src/app/core/models/Athlete.model';
-import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
+import { AddPaymentMethodComponent } from './components/add-payment-method/add-payment-method.component';
 import { SendPaymentComponent } from './components/send-payment/send-payment.component';
+import { PaymentTab } from './models/payment-tab.enum';
+import { SendPayment } from './models/send-payment.model';
+import { paymentActions } from './store/actions/payment.actions';
+import { paymentFeature } from './store/feature/payment.feature';
 
-enum PaymentStep {
-  SendPayment = 'SendPayment',
-  ConfirmPayment = 'ConfirmPayment',
-}
-
-type PaymentStepConfig = {
-  [step in PaymentStep]: {
+type PaymentTabConfig = {
+  [step in PaymentTab]: {
     title: string;
     step: step;
     data?: Object;
   };
 };
 
-export interface Payment {
-  amount: number;
-  message: string;
-}
-
 @Component({
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonIcon,
+    IonProgressBar,
     IonButtons,
     IonButton,
     IonContent,
@@ -50,40 +51,50 @@ export interface Payment {
     IonHeader,
     NgIf,
     SendPaymentComponent,
-    ConfirmPaymentComponent,
+    AddPaymentMethodComponent,
+    PushPipe,
   ],
 })
 export class PaymentModalComponent {
   private readonly modalController = inject(ModalController);
+  private readonly store = inject(Store);
 
   @Input({ required: true }) athlete!: Athlete;
 
-  payment: Payment | undefined = undefined;
+  protected readonly currentTab = this.store.selectSignal(
+    paymentFeature.selectCurrentTab
+  );
+  protected readonly isLoading$ = this.store
+    .select(paymentFeature.selectPaymentIntent)
+    .pipe(map((async) => async.status === AsyncDataStatus.Loading));
 
-  currentStep = signal(PaymentStep.SendPayment);
-  PaymentStep = PaymentStep;
-  paymentSteps: PaymentStepConfig = {
-    [PaymentStep.SendPayment]: {
+  payment: SendPayment | undefined = undefined;
+
+  protected readonly PaymentTab = PaymentTab;
+  protected readonly paymentTabsConfig: PaymentTabConfig = {
+    [PaymentTab.SendPayment]: {
       title: 'Send Payment',
-      step: PaymentStep.SendPayment,
+      step: PaymentTab.SendPayment,
     },
-    [PaymentStep.ConfirmPayment]: {
-      title: 'Confirm Payment',
-      step: PaymentStep.ConfirmPayment,
+    [PaymentTab.AddPaymentMethod]: {
+      title: 'Add Payment Method',
+      step: PaymentTab.AddPaymentMethod,
     },
   };
 
-  onPaymentCreated(payment: Payment) {
+  onPaymentCreated(payment: SendPayment) {
     this.payment = payment;
-    this.currentStep.set(PaymentStep.ConfirmPayment);
+    this.store.dispatch(
+      paymentActions.getPaymentIntent({ sendPayment: payment })
+    );
   }
 
   onPaymentConfirmed() {
     console.log('Payment confirmed', this.payment);
   }
 
-  goToStep(step: PaymentStep) {
-    this.currentStep.set(step);
+  goToStep(step: PaymentTab) {
+    this.store.dispatch(paymentActions.setPaymentTab({ tab: step }));
   }
 
   cancel() {

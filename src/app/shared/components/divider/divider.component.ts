@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   Input,
@@ -15,8 +16,8 @@ import { IonText } from '@ionic/angular/standalone';
   imports: [NgIf, IonText],
 })
 export class DividerComponent implements OnInit {
-  @Input() height: number = 1;
   @Input() text?: string;
+  @Input({ transform: booleanAttribute }) vertical?: boolean = false;
 
   constructor() {}
 
