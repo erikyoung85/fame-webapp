@@ -1,0 +1,35 @@
+<ion-grid class="full-height flex-col">
+    <ion-row>
+      <ion-col>
+        <div class="list-item-display">
+          <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
+          <ion-label>
+            <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+            <ion-text><ion-note color="medium">{{ athlete.schoolYear }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>
+          </ion-label>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="flex-fill">
+        <ion-col class="flex-col ion-justify-content-center">
+            <ion-row class="ion-justify-content-center ion-align-items-center">
+                <ion-col size="auto">
+                    <app-currency-input readonly [value]="payment.amount"></app-currency-input>
+                </ion-col>
+            </ion-row>
+    
+            <ion-row>
+                <ion-col class="ion-text-center">
+                    <p><ion-text>"{{ payment.message }}"</ion-text></p>
+                </ion-col>
+            </ion-row>
+        </ion-col>
+    </ion-row>
+
+    <ion-row>
+        <ion-col>
+            <ion-button expand="block" (click)="onConfirmClicked()">Confirm</ion-button>
+        </ion-col>
+    </ion-row>
+</ion-grid>

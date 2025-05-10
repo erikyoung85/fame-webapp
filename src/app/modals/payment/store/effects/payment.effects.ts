@@ -1,12 +1,22 @@
 import { inject, Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, from, map, of, switchMap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  from,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { StripePaymentIntentFactory } from 'src/app/core/models/StripePaymentIntent.model';
 import { CreatePaymentIntentRequestDtoV1 } from 'src/app/core/services/stripe/dtos/requests/create-payment-intent.request.dto.v1';
 import { StripeApiService } from 'src/app/core/services/stripe/stripe-api.service';
 import { StripeService } from 'src/app/core/services/stripe/stripe.service';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { PaymentTab } from '../../payment.routes';
 import { paymentActions } from '../actions/payment.actions';
 
 @Injectable()
@@ -15,16 +25,17 @@ export class PaymentEffects {
   private readonly store = inject(Store);
   private readonly stripeService = inject(StripeService);
   private readonly stripeApiService = inject(StripeApiService);
+  private readonly toastController = inject(ToastController);
 
   getPaymentIntent$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(paymentActions.getPaymentIntent),
+      ofType(paymentActions.createPaymentIntent),
       withLatestFrom(this.store.select(userFeature.selectUserProfile).pipe()),
       switchMap(([action, userProfile]) => {
         const customerId = userProfile.data?.stripeCustomerId;
         if (customerId === undefined) {
           return of(
-            paymentActions.getPaymentIntentFailure({
+            paymentActions.createPaymentIntentFailure({
               message: 'No customerId found',
             })
           );
@@ -36,13 +47,13 @@ export class PaymentEffects {
         };
         return this.stripeApiService.createPaymentIntent(request).pipe(
           map((response) => {
-            return paymentActions.getPaymentIntentSuccess({
+            return paymentActions.createPaymentIntentSuccess({
               paymentIntent: StripePaymentIntentFactory.fromDtoV1(response),
             });
           }),
           catchError((error: Error) => {
             return of(
-              paymentActions.getPaymentIntentFailure({
+              paymentActions.createPaymentIntentFailure({
                 message: error.message,
               })
             );
@@ -51,13 +62,28 @@ export class PaymentEffects {
       })
     )
   );
-
-  showSheetForPaymentIntent$ = createEffect(() =>
+  createPaymentIntentFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(paymentActions.createPaymentIntentFailure),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'Failed to initiate payment.',
+              duration: 2000,
+              color: 'danger',
+            })
+            .then((toast) => toast.present());
+        })
+      ),
+    { dispatch: false }
+  );
+  createPaymentIntentSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(paymentActions.getPaymentIntentSuccess),
-      map((action) =>
-        paymentActions.collectPayment({ paymentIntent: action.paymentIntent })
-      )
+      ofType(paymentActions.createPaymentIntentSuccess),
+      map(() => {
+        return paymentActions.setPaymentTab({ tab: PaymentTab.ConfirmPayment });
+      })
     )
   );
 
@@ -92,5 +118,21 @@ export class PaymentEffects {
         );
       })
     )
+  );
+  collectPaymentFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(paymentActions.collectPaymentFailure),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'Failed to process payment.',
+              duration: 2000,
+              color: 'danger',
+            })
+            .then((toast) => toast.present());
+        })
+      ),
+    { dispatch: false }
   );
 }

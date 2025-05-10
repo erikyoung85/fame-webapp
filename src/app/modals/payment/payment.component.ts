@@ -11,35 +11,31 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonNav,
   IonProgressBar,
   IonTitle,
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
-import { PushPipe } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { Athlete } from 'src/app/core/models/Athlete.model';
-import { AddPaymentMethodComponent } from './components/add-payment-method/add-payment-method.component';
-import { SendPaymentComponent } from './components/send-payment/send-payment.component';
-import { PaymentTab } from './models/payment-tab.enum';
-import { SendPayment } from './models/send-payment.model';
+import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';
+import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
+import { CreatePaymentComponent } from './components/create-payment/create-payment.component';
+import { PaymentSuccessComponent } from './components/payment-success/payment-success.component';
+import { CreatePayment } from './models/create-payment.model';
+import { PaymentTab, paymentTabsConfig } from './payment.routes';
 import { paymentActions } from './store/actions/payment.actions';
 import { paymentFeature } from './store/feature/payment.feature';
-
-type PaymentTabConfig = {
-  [step in PaymentTab]: {
-    title: string;
-    step: step;
-    data?: Object;
-  };
-};
 
 @Component({
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [IonNav],
   imports: [
     IonIcon,
     IonProgressBar,
@@ -50,9 +46,11 @@ type PaymentTabConfig = {
     IonToolbar,
     IonHeader,
     NgIf,
-    SendPaymentComponent,
-    AddPaymentMethodComponent,
+    CreatePaymentComponent,
+    ConfirmPaymentComponent,
+    LetDirective,
     PushPipe,
+    PaymentSuccessComponent,
   ],
 })
 export class PaymentModalComponent {
@@ -67,30 +65,26 @@ export class PaymentModalComponent {
   protected readonly isLoading$ = this.store
     .select(paymentFeature.selectPaymentIntent)
     .pipe(map((async) => async.status === AsyncDataStatus.Loading));
-
-  payment: SendPayment | undefined = undefined;
+  protected readonly paymentIntent$ = this.store.select(
+    paymentFeature.selectPaymentIntent
+  );
 
   protected readonly PaymentTab = PaymentTab;
-  protected readonly paymentTabsConfig: PaymentTabConfig = {
-    [PaymentTab.SendPayment]: {
-      title: 'Send Payment',
-      step: PaymentTab.SendPayment,
-    },
-    [PaymentTab.AddPaymentMethod]: {
-      title: 'Add Payment Method',
-      step: PaymentTab.AddPaymentMethod,
-    },
-  };
+  protected readonly paymentTabsConfig = paymentTabsConfig;
 
-  onPaymentCreated(payment: SendPayment) {
+  payment: CreatePayment | undefined = undefined;
+
+  onPaymentCreated(payment: CreatePayment) {
     this.payment = payment;
     this.store.dispatch(
-      paymentActions.getPaymentIntent({ sendPayment: payment })
+      paymentActions.createPaymentIntent({ sendPayment: payment })
     );
   }
 
-  onPaymentConfirmed() {
-    console.log('Payment confirmed', this.payment);
+  onPaymentConfirmed(paymentIntent: StripePaymentIntent) {
+    this.store.dispatch(
+      paymentActions.collectPayment({ paymentIntent: paymentIntent })
+    );
   }
 
   goToStep(step: PaymentTab) {

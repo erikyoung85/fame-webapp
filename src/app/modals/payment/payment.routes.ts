@@ -1,18 +1,28 @@
-import { Routes } from '@angular/router';
-import { SendPaymentComponent } from './components/send-payment/send-payment.component';
+type PaymentTabConfig = {
+  [step in PaymentTab]: {
+    title: string;
+    step: step;
+    data?: Object;
+  };
+};
 
-export enum PaymentRoutes {
-  SendPayment = 'send-payment',
+export enum PaymentTab {
+  CreatePayment = 'CreatePayment',
+  ConfirmPayment = 'ConfirmPayment',
+  PaymentSuccess = 'PaymentSuccess',
 }
 
-export default [
-  {
-    path: '',
-    redirectTo: PaymentRoutes.SendPayment,
-    pathMatch: 'full',
+export const paymentTabsConfig: PaymentTabConfig = {
+  [PaymentTab.CreatePayment]: {
+    title: 'Send Payment',
+    step: PaymentTab.CreatePayment,
   },
-  {
-    path: PaymentRoutes.SendPayment,
-    component: SendPaymentComponent,
+  [PaymentTab.ConfirmPayment]: {
+    title: 'Confirm Payment',
+    step: PaymentTab.ConfirmPayment,
   },
-] satisfies Routes;
+  [PaymentTab.PaymentSuccess]: {
+    title: 'Success!',
+    step: PaymentTab.PaymentSuccess,
+  },
+};

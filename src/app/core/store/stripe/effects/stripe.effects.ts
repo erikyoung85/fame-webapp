@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { ModalController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { StripeCustomerFactory } from 'src/app/core/models/StripeCustomer.model';
 import { StripeApiService } from 'src/app/core/services/stripe/stripe-api.service';
@@ -10,7 +10,7 @@ import { stripeActions } from '../actions/stripe.actions';
 export class StripeEffects {
   private readonly actions$ = inject(Actions);
   private readonly stripeApiService = inject(StripeApiService);
-  private readonly store = inject(Store);
+  private readonly modalController = inject(ModalController);
 
   loadCustomer$ = createEffect(() =>
     this.actions$.pipe(

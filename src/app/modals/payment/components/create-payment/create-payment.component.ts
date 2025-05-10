@@ -22,15 +22,17 @@ import {
   IonText,
   IonTextarea,
 } from '@ionic/angular/standalone';
+import { Store } from '@ngrx/store';
 import { Athlete } from 'src/app/core/models/Athlete.model';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input/currency-input.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { SendPayment } from '../../models/send-payment.model';
+import { CreatePayment } from '../../models/create-payment.model';
+import { paymentActions } from '../../store/actions/payment.actions';
 
 @Component({
-  selector: 'app-send-payment',
-  templateUrl: './send-payment.component.html',
-  styleUrls: ['./send-payment.component.scss'],
+  selector: 'app-create-payment',
+  templateUrl: './create-payment.component.html',
+  styleUrls: ['./create-payment.component.scss'],
   imports: [
     IonTextarea,
     IonNote,
@@ -45,12 +47,13 @@ import { SendPayment } from '../../models/send-payment.model';
     ReactiveFormsModule,
   ],
 })
-export class SendPaymentComponent implements OnInit, OnDestroy {
+export class CreatePaymentComponent implements OnInit, OnDestroy {
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly store = inject(Store);
 
   @Input({ required: true }) athlete!: Athlete;
-  @Input() payment?: SendPayment;
-  readonly onPaymentCreated = output<SendPayment>();
+  @Input() payment?: CreatePayment;
+  readonly onPaymentCreated = output<CreatePayment>();
 
   readonly form = this.fb.group({
     amount: this.fb.control(0, [
@@ -76,11 +79,13 @@ export class SendPaymentComponent implements OnInit, OnDestroy {
 
   onDonateClicked() {
     if (this.form.valid) {
-      const payment: SendPayment = {
+      const payment: CreatePayment = {
         ...this.form.getRawValue(),
         athleteId: this.athlete.id,
       };
-      this.onPaymentCreated.emit(payment);
+      this.store.dispatch(
+        paymentActions.createPaymentIntent({ sendPayment: payment })
+      );
     }
   }
 }

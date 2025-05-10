@@ -1,19 +1,19 @@
 import { PaymentSheetResultInterface } from '@capacitor-community/stripe';
 import { createActionGroup, props } from '@ngrx/store';
 import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';
-import { PaymentTab } from '../../models/payment-tab.enum';
-import { SendPayment } from '../../models/send-payment.model';
+import { CreatePayment } from '../../models/create-payment.model';
+import { PaymentTab } from '../../payment.routes';
 
 export const paymentActions = createActionGroup({
   source: 'Payment',
   events: {
     'Set Payment Tab': props<{ tab: PaymentTab }>(),
 
-    'Get Payment Intent': props<{ sendPayment: SendPayment }>(),
-    'Get Payment Intent Success': props<{
+    'Create Payment Intent': props<{ sendPayment: CreatePayment }>(),
+    'Create Payment Intent Success': props<{
       paymentIntent: StripePaymentIntent;
     }>(),
-    'Get Payment Intent Failure': props<{ message: string }>(),
+    'Create Payment Intent Failure': props<{ message: string }>(),
 
     'Collect Payment': props<{ paymentIntent: StripePaymentIntent }>(),
     'Collect Payment Success': props<{

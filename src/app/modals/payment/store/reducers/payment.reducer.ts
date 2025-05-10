@@ -16,31 +16,37 @@ export const paymentReducer = createReducer(
     };
   }),
 
-  on(paymentActions.getPaymentIntent, (state): PaymentState => {
+  on(paymentActions.createPaymentIntent, (state): PaymentState => {
     return {
       ...state,
       paymentIntent: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
-  on(paymentActions.getPaymentIntentSuccess, (state, action): PaymentState => {
-    return {
-      ...state,
-      paymentIntent: wrapAsAsyncData(
-        action.paymentIntent,
-        AsyncDataStatus.Success
-      ),
-    };
-  }),
-  on(paymentActions.getPaymentIntentFailure, (state, action): PaymentState => {
-    return {
-      ...state,
-      paymentIntent: wrapAsAsyncData(
-        undefined,
-        AsyncDataStatus.Error,
-        action.message
-      ),
-    };
-  }),
+  on(
+    paymentActions.createPaymentIntentSuccess,
+    (state, action): PaymentState => {
+      return {
+        ...state,
+        paymentIntent: wrapAsAsyncData(
+          action.paymentIntent,
+          AsyncDataStatus.Success
+        ),
+      };
+    }
+  ),
+  on(
+    paymentActions.createPaymentIntentFailure,
+    (state, action): PaymentState => {
+      return {
+        ...state,
+        paymentIntent: wrapAsAsyncData(
+          undefined,
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  ),
 
   on(paymentActions.collectPayment, (state): PaymentState => {
     return {

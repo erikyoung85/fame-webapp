@@ -21,6 +21,7 @@ export enum PageRoutes {
   Register = 'register',
   PasswordReset = 'password-reset',
   Search = 'search',
+  Payment = 'payment',
 }
 
 export const routes: Routes = [

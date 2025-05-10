@@ -47,9 +47,7 @@ export class TeamDetailComponent implements OnInit {
 
   @Input() teamDetails!: TeamDetail;
 
-  ngOnInit(): void {
-    this.onPayClicked();
-  }
+  ngOnInit(): void {}
 
   async onPayClicked() {
     const modal = await this.modalController.create({
@@ -59,7 +57,6 @@ export class TeamDetailComponent implements OnInit {
       },
     });
     modal.present();
-
     const { data, role } = await modal.onWillDismiss();
   }
 }

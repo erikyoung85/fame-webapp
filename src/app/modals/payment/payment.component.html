@@ -1,22 +1,31 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="primary">
-      <ion-button (click)="cancel()">
-        <ion-icon slot="icon-only" color="dark" size="large" name="close-sharp"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>{{ paymentTabsConfig[currentTab()].title }}</ion-title>
-    <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="ion-safe-area-bottom" [scrollY]="false">
-  <app-send-payment
-    *ngIf="currentTab() === PaymentTab.SendPayment"
-    [athlete]="athlete"
-    [payment]="payment"
-    (onPaymentCreated)="onPaymentCreated($event)"
-  ></app-send-payment>
-  <app-add-payment-method
-    *ngIf="currentTab() === PaymentTab.AddPaymentMethod"
-  ></app-add-payment-method>
-</ion-content>
+<ng-container *ngrxLet="paymentIntent$ as paymentIntent">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="cancel()">
+          <ion-icon slot="icon-only" color="dark" size="large" name="close-sharp"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{ paymentTabsConfig[currentTab()].title }}</ion-title>
+      <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-safe-area-bottom" [scrollY]="false">
+    <app-create-payment
+      *ngIf="currentTab() === PaymentTab.CreatePayment"
+      [athlete]="athlete"
+      [payment]="payment"
+      (onPaymentCreated)="onPaymentCreated($event)"
+    ></app-create-payment>
+    <app-confirm-payment
+      *ngIf="currentTab() === PaymentTab.ConfirmPayment && paymentIntent.data !== undefined && payment"
+      [athlete]="athlete"
+      [payment]="payment"
+      [paymentIntent]="paymentIntent.data"
+      (onPaymentConfirmed)="onPaymentConfirmed($event)"
+    ></app-confirm-payment>
+    <app-payment-success
+      *ngIf="currentTab() === PaymentTab.PaymentSuccess"
+    ></app-payment-success>
+  </ion-content>
+</ng-container>

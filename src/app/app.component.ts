@@ -4,7 +4,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { Keyboard } from '@capacitor/keyboard';
+import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(userActions.loadSession());
 
+    Keyboard.setResizeMode({ mode: KeyboardResize.None });
     Keyboard.setAccessoryBarVisible({ isVisible: true });
   }
 }
