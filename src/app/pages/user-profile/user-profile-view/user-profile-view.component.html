@@ -1,4 +1,4 @@
-<ion-grid *ngIf="userProfile$ | async | unwrapAsync as userProfile">
+<ion-grid *ngIf="userProfile$ | async | unwrapAsync as userProfile" class="flex-fill flex-col">
   <ion-row>
     <ion-col>
       <ion-row class="ion-justify-content-center">
@@ -14,7 +14,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row>
+  <ion-row class="flex-fill">
     <ion-col>
       <ion-list>
         <ion-item>

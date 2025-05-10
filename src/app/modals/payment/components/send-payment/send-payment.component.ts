@@ -1,9 +1,17 @@
-import { Component, inject, Input, OnInit, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  output,
+} from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Keyboard } from '@capacitor/keyboard';
 import {
   IonButton,
   IonCol,
@@ -37,7 +45,7 @@ import { SendPayment } from '../../models/send-payment.model';
     ReactiveFormsModule,
   ],
 })
-export class SendPaymentComponent implements OnInit {
+export class SendPaymentComponent implements OnInit, OnDestroy {
   private readonly fb = inject(NonNullableFormBuilder);
 
   @Input({ required: true }) athlete!: Athlete;
@@ -54,10 +62,16 @@ export class SendPaymentComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    Keyboard.setAccessoryBarVisible({ isVisible: false });
+
     const inputPayment = this.payment;
     if (inputPayment !== undefined) {
       this.form.patchValue(inputPayment);
     }
+  }
+
+  ngOnDestroy(): void {
+    Keyboard.setAccessoryBarVisible({ isVisible: true });
   }
 
   onDonateClicked() {

@@ -9,7 +9,7 @@
     <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-safe-area-bottom">
+<ion-content class="ion-safe-area-bottom" [scrollY]="false">
   <app-send-payment
     *ngIf="currentTab() === PaymentTab.SendPayment"
     [athlete]="athlete"
