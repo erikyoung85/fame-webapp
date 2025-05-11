@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
+import { AthleteDetailResponseDtoV1 } from './dtos/responses/athleteDetail.response.dto.v1';
 import { AthleteResponseDtoV1 } from './dtos/responses/athletes.response.dto.v1';
 
 @Injectable({
@@ -19,6 +20,20 @@ export class AthletesService {
         .select(
           'id, first_name, last_name, date_of_birth, gender, schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, sports(id, name)))'
         )
+    );
+  }
+
+  getAthleteDetail(
+    athleteId: number
+  ): Observable<PostgrestSingleResponse<AthleteDetailResponseDtoV1>> {
+    return from(
+      this.supabaseService.client
+        .from('athletes')
+        .select(
+          'id, first_name, last_name, date_of_birth, gender, schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, sports(id, name)))'
+        )
+        .eq('id', athleteId)
+        .single()
     );
   }
 }

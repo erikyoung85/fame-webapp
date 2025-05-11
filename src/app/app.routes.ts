@@ -1,7 +1,8 @@
-import { Routes } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
 import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
 import { sessionResolver } from './core/resolvers/session/session.resolver';
+import { userProfileResolver } from './core/resolvers/user-profile/user-profile.resolver';
 import { TabsPage } from './pages/tabs/tabs.page';
 
 export enum AppRoutes {
@@ -15,8 +16,8 @@ export enum TabRoutes {
 }
 
 export enum PageRoutes {
-  Home = 'home',
   TeamDetail = 'team-detail',
+  AthleteDetail = 'athlete-detail',
   UserProfile = 'user-profile',
   Login = 'login',
   Register = 'register',
@@ -24,6 +25,14 @@ export enum PageRoutes {
   Search = 'search',
   Payment = 'payment',
 }
+
+const athleteDetailPageRoute: Route = {
+  path: `${PageRoutes.AthleteDetail}/:athleteId`,
+  loadComponent: () =>
+    import('./pages/athlete-detail/athlete-detail.page').then(
+      (m) => m.AthleteDetailPage
+    ),
+};
 
 export const routes: Routes = [
   {
@@ -36,7 +45,7 @@ export const routes: Routes = [
     component: TabsPage,
     resolve: {
       session: sessionResolver,
-      // userProfile: userProfileResolver,
+      userProfile: userProfileResolver,
       favoriteTeam: favoriteTeamResolver,
     },
     children: [
@@ -54,20 +63,13 @@ export const routes: Routes = [
             pathMatch: 'full',
           },
           {
-            path: PageRoutes.Home,
-            loadComponent: () =>
-              import('./pages/home/home.page').then((m) => m.HomePage),
-          },
-          {
             path: PageRoutes.TeamDetail,
             loadComponent: () =>
               import('./pages/favorite-team/favorite-team.page').then(
                 (m) => m.FavoriteTeamPage
               ),
-            data: {
-              teamId: 1,
-            },
           },
+          athleteDetailPageRoute,
         ],
       },
       {
@@ -90,6 +92,7 @@ export const routes: Routes = [
                 (m) => m.TeamDetailPage
               ),
           },
+          athleteDetailPageRoute,
         ],
       },
       {

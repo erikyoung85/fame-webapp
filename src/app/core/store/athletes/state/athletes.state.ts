@@ -1,9 +1,15 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { AsyncData } from 'src/app/core/models/AsyncData.model';
 import { Athlete } from 'src/app/core/models/Athlete.model';
+import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
 
 export interface AthletesState extends EntityState<Athlete> {
   isLoading: boolean;
   error: string | undefined;
+
+  athleteDetailsDict: Partial<{
+    [athleteId: number]: AsyncData<AthleteDetail | undefined>;
+  }>;
 }
 
 export const athletesEntityAdapter = createEntityAdapter<Athlete>({

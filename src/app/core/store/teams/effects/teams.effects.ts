@@ -80,7 +80,6 @@ export class TeamsEffects {
             }
 
             return teamsActions.fetchTeamDetailsSuccess({
-              teamId: action.teamId,
               teamDetails: TeamDetailFactory.fromDtoV1(response.data),
             });
           }),

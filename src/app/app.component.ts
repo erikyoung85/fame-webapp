@@ -26,8 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.store.dispatch(userActions.loadSession());
-
     Keyboard.setResizeMode({ mode: KeyboardResize.None });
     Keyboard.setAccessoryBarVisible({ isVisible: true });
   }

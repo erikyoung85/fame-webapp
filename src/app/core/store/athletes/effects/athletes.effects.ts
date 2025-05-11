@@ -3,6 +3,7 @@ import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { AthleteFactory } from 'src/app/core/models/Athlete.model';
+import { AthleteDetailFactory } from 'src/app/core/models/AthleteDetail.model';
 import { AthletesService } from 'src/app/core/services/athletes/athletes.service';
 import { athletesActions } from '../actions/athletes.actions';
 
@@ -31,7 +32,7 @@ export class AthletesEffects {
     { dispatch: false }
   );
 
-  loadSession$ = createEffect(() =>
+  fetchAthletes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(athletesActions.fetchAthletes),
       switchMap(() => {
@@ -50,7 +51,37 @@ export class AthletesEffects {
           catchError((error: Error) => {
             return of(
               athletesActions.fetchAthletesFailure({
-                message: error?.message,
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  fetchAthleteDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(athletesActions.fetchAthleteDetails),
+      switchMap((action) => {
+        return this.athletesService.getAthleteDetail(action.athleteId).pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return athletesActions.fetchAthleteDetailsFailure({
+                athleteId: action.athleteId,
+                message: response.error.message,
+              });
+            }
+
+            return athletesActions.fetchAthleteDetailsSuccess({
+              athleteDetails: AthleteDetailFactory.fromDtoV1(response.data),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              athletesActions.fetchAthleteDetailsFailure({
+                athleteId: action.athleteId,
+                message: error.message,
               })
             );
           })

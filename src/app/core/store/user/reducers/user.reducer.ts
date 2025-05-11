@@ -60,7 +60,6 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
-      userProfile: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.signupSuccess, (state, action): UserState => {

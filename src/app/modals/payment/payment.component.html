@@ -17,9 +17,10 @@
         </ion-button>
       </ion-buttons>
       <ion-title>{{ paymentTabsConfig[currentTab$()].title }}</ion-title>
-      <ion-progress-bar type="indeterminate" *ngIf="isLoading$()"></ion-progress-bar>
     </ion-toolbar>
+    <ion-progress-bar type="indeterminate" *ngIf="isLoading$()"></ion-progress-bar>
   </ion-header>
+  
   <ion-content class="ion-safe-area-bottom" [scrollY]="false">
     <app-create-payment
       *ngIf="currentTab$() === PaymentTab.CreatePayment"

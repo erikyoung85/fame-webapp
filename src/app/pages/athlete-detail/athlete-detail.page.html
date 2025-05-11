@@ -1,0 +1,85 @@
+<ng-container *ngrxLet="athleteDetails$ as athleteDetailsAsync">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{ (athleteDetailsAsync | unwrapAsync)?.firstName }}</ion-title>
+      <ion-buttons slot="start">
+        <app-back-button></app-back-button>
+      </ion-buttons>
+      <ion-progress-bar type="indeterminate" *ngIf="athleteDetailsAsync | isAsyncLoading"></ion-progress-bar>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content 
+    *ngIf="(athleteDetailsAsync | unwrapAsync) as athleteDetails" 
+    [fullscreen]="true" 
+    class="scroll-behind-header top-image-container"
+  > 
+    <div class="top-image-wrapper">
+      <img [src]="" class="top-image" />
+    </div>
+
+    <div class="page-content">
+      <div class="top-overhang-container">
+        <div class="top-overhang-element">
+          <app-user-profile-avatar 
+            size="xxlarge"
+            [border]="true"
+          ></app-user-profile-avatar>
+        </div>
+        
+        <ion-grid class="top-overhang-other-content">
+        
+          <!-- Top text -->
+          <ion-row class="ion-align-items-center">
+            <ion-col>
+              <ion-header collapse="condense">
+                <ion-toolbar>
+                  <h1 role="heading" aria-level="1" class="ion-margin-top">
+                    <ion-text>{{ athleteDetails.firstName }} {{ athleteDetails.lastName }}</ion-text>
+                  </h1>
+                  <ion-label>
+                    <ion-text color="medium">
+                      {{ athleteDetails.schoolName }}
+                    </ion-text>
+                  </ion-label>
+                </ion-toolbar>
+              </ion-header>
+            </ion-col>
+          </ion-row>
+        
+          <ion-row>
+            <ion-col>
+              <ion-button (click)="onPayClicked(athleteDetails)">Donate to {{ athleteDetails.firstName }}</ion-button>
+            </ion-col>
+          </ion-row>
+        
+          <!-- Athlete information section -->
+          <ion-row>
+            <ion-col>
+              <ion-list-header class="ion-no-padding">
+                Athlete Info
+              </ion-list-header>
+              <ion-list>
+                <ion-item>
+                  <ion-label>Grade</ion-label>
+                  <ion-icon slot="start" name="trophy-sharp"></ion-icon>
+                  <ion-text slot="end">{{ athleteDetails.schoolYear }}</ion-text>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Hometown</ion-label>
+                  <ion-icon slot="start" name="location-sharp"></ion-icon>
+                  <ion-text slot="end">{{ 'Madison' }}, {{ 'WI' }}</ion-text>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Money raised for {{ athleteDetails.firstName }}</ion-label>
+                  <ion-icon slot="start" name="cash-sharp"></ion-icon>
+                  <ion-text slot="end">{{ '$10' }}</ion-text>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+  </ion-content>
+</ng-container>

@@ -5,8 +5,8 @@
       <ion-chip *ngIf="isEditMode$ | ngrxPush" (click)="onCancelClicked()">Cancel</ion-chip>
     </ion-buttons>
     <ion-title>Profile</ion-title>
-    <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
   </ion-toolbar>
+  <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">

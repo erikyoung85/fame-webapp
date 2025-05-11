@@ -45,7 +45,7 @@ export const teamsReducer = createReducer(
       ...state,
       teamDetailsDict: {
         ...state.teamDetailsDict,
-        [action.teamId]: wrapAsAsyncData(
+        [action.teamDetails.id]: wrapAsAsyncData(
           action.teamDetails,
           AsyncDataStatus.Success
         ),

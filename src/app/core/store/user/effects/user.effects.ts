@@ -5,6 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
   catchError,
+  distinctUntilChanged,
   filter,
   from,
   map,
@@ -14,6 +15,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { PageRoutes } from 'src/app/app.routes';
+import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
@@ -65,7 +67,7 @@ export class UserEffects {
   loadSession$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.loadSession),
-      switchMap((action) => {
+      switchMap(() => {
         return from(this.supabaseService.client.auth.getSession()).pipe(
           map((response) => {
             if (response.error) {
@@ -237,13 +239,15 @@ export class UserEffects {
   getUserProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.getUserProfile),
-      withLatestFrom(
-        this.store.select(userFeature.selectSession).pipe(
-          map((async) => async.data),
-          filter((session) => session !== undefined)
-        )
-      ),
-      switchMap(([action, session]) => {
+      withLatestFrom(this.store.select(userFeature.selectSession)),
+      switchMap(([, sessionAsync]) => {
+        const session = sessionAsync.data;
+        if (session === undefined) {
+          return of(
+            userActions.getUserProfileFailure({ message: 'No session' })
+          );
+        }
+
         return this.userProfileService.getUserProfile(session.user.id).pipe(
           map((response) => {
             if (response.error) {
@@ -376,7 +380,12 @@ export class UserEffects {
   );
 
   getProfileOnUserIdChange$ = createEffect(() =>
-    this.store.select(userFeature.selectUserId).pipe(
+    this.store.select(userFeature.selectSession).pipe(
+      filter((async) =>
+        [AsyncDataStatus.Success, AsyncDataStatus.Error].includes(async.status)
+      ),
+      map((sessionAsync) => sessionAsync.data?.user.id),
+      distinctUntilChanged(),
       map((userId) => {
         return userId === undefined
           ? userActions.clearUserProfile()

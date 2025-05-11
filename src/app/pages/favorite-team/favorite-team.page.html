@@ -5,8 +5,8 @@
       <ion-buttons slot="primary">
         <toolbar-icon-button (click)="openModal()" icon="swap-vertical" />
       </ion-buttons>
-      <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
     </ion-toolbar>
+    <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
   </ion-header>
 
   <ng-container *ngrxLet="isUserLoggedIn$ as isUserLoggedIn">

@@ -4,8 +4,8 @@
     <ion-buttons slot="end">
       <ion-button (click)="onLoginClicked()">Login</ion-button>
     </ion-buttons>
-    <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async"></ion-progress-bar>
   </ion-toolbar>
+  <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async"></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
