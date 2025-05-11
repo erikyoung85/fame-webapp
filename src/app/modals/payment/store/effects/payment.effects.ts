@@ -13,11 +13,12 @@ import {
 } from 'rxjs';
 import { StripePaymentIntentFactory } from 'src/app/core/models/StripePaymentIntent.model';
 import { CreatePaymentIntentRequestDtoV1 } from 'src/app/core/services/stripe/dtos/requests/create-payment-intent.request.dto.v1';
+import { UpdatePaymentIntentRequestDtoV1 } from 'src/app/core/services/stripe/dtos/requests/update-payment-intent.request.dto.v1';
 import { StripeApiService } from 'src/app/core/services/stripe/stripe-api.service';
 import { StripeService } from 'src/app/core/services/stripe/stripe.service';
-import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PaymentTab } from '../../payment.routes';
 import { paymentActions } from '../actions/payment.actions';
+import { paymentFeature } from '../feature/payment.feature';
 
 @Injectable()
 export class PaymentEffects {
@@ -27,23 +28,14 @@ export class PaymentEffects {
   private readonly stripeApiService = inject(StripeApiService);
   private readonly toastController = inject(ToastController);
 
-  getPaymentIntent$ = createEffect(() =>
+  createPaymentIntent$ = createEffect(() =>
     this.actions$.pipe(
       ofType(paymentActions.createPaymentIntent),
-      withLatestFrom(this.store.select(userFeature.selectUserProfile).pipe()),
-      switchMap(([action, userProfile]) => {
-        const customerId = userProfile.data?.stripeCustomerId;
-        if (customerId === undefined) {
-          return of(
-            paymentActions.createPaymentIntentFailure({
-              message: 'No customerId found',
-            })
-          );
-        }
-
+      switchMap((action) => {
         const request: CreatePaymentIntentRequestDtoV1 = {
           amount: action.sendPayment.amount,
-          customerId: customerId,
+          message: action.sendPayment.message,
+          customerId: action.customerId,
         };
         return this.stripeApiService.createPaymentIntent(request).pipe(
           map((response) => {
@@ -78,9 +70,67 @@ export class PaymentEffects {
       ),
     { dispatch: false }
   );
-  createPaymentIntentSuccess$ = createEffect(() =>
+
+  updatePaymentIntent$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(paymentActions.createPaymentIntentSuccess),
+      ofType(paymentActions.updatePaymentIntent),
+      withLatestFrom(this.store.select(paymentFeature.selectPaymentIntent)),
+      switchMap(([action, paymentIntentAsync]) => {
+        const paymentIntent = paymentIntentAsync.data;
+        if (paymentIntent === undefined) {
+          return of(
+            paymentActions.updatePaymentIntentFailure({
+              message: 'Payment intent is undefined',
+            })
+          );
+        }
+
+        const request: UpdatePaymentIntentRequestDtoV1 = {
+          id: paymentIntent.id,
+          customerId: action.customerId,
+          amount: action.sendPayment.amount,
+          message: action.sendPayment.message,
+        };
+        return this.stripeApiService.updatePaymentIntent(request).pipe(
+          map((response) => {
+            return paymentActions.updatePaymentIntentSuccess({
+              paymentIntent: StripePaymentIntentFactory.fromDtoV1(response),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              paymentActions.updatePaymentIntentFailure({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+  updatePaymentIntentFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(paymentActions.updatePaymentIntentFailure),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'Failed to update payment details.',
+              duration: 2000,
+              color: 'danger',
+            })
+            .then((toast) => toast.present());
+        })
+      ),
+    { dispatch: false }
+  );
+
+  createOrUpdatePaymentIntentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        paymentActions.createPaymentIntentSuccess,
+        paymentActions.updatePaymentIntentSuccess
+      ),
       map(() => {
         return paymentActions.setPaymentTab({ tab: PaymentTab.ConfirmPayment });
       })

@@ -5,9 +5,9 @@ import { StripeCustomer } from 'src/app/core/models/StripeCustomer.model';
 export const stripeActions = createActionGroup({
   source: 'Stripe',
   events: {
-    'Load Customer': emptyProps(),
-    'Load Customer Success': props<{ customer: StripeCustomer }>(),
-    'Load Customer Failure': props<{ message: string }>(),
+    'Load Customer For User': emptyProps(),
+    'Load Customer For User Success': props<{ customer: StripeCustomer }>(),
+    'Load Customer For User Failure': props<{ message: string }>(),
 
     'Open Payment Modal': props<{ athlete: Athlete }>(),
   },

@@ -14,17 +14,17 @@ export class StripeEffects {
 
   loadCustomer$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(stripeActions.loadCustomer),
+      ofType(stripeActions.loadCustomerForUser),
       switchMap(() => {
         return this.stripeApiService.getCurrentUserCustomer().pipe(
           map((response) => {
-            return stripeActions.loadCustomerSuccess({
+            return stripeActions.loadCustomerForUserSuccess({
               customer: StripeCustomerFactory.fromDtoV1(response),
             });
           }),
           catchError((error: Error) => {
             return of(
-              stripeActions.loadCustomerFailure({
+              stripeActions.loadCustomerForUserFailure({
                 message: error?.message,
               })
             );

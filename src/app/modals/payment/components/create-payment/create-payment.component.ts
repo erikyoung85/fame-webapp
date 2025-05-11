@@ -27,7 +27,6 @@ import { Athlete } from 'src/app/core/models/Athlete.model';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input/currency-input.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { CreatePayment } from '../../models/create-payment.model';
-import { paymentActions } from '../../store/actions/payment.actions';
 
 @Component({
   selector: 'app-create-payment',
@@ -83,9 +82,7 @@ export class CreatePaymentComponent implements OnInit, OnDestroy {
         ...this.form.getRawValue(),
         athleteId: this.athlete.id,
       };
-      this.store.dispatch(
-        paymentActions.createPaymentIntent({ sendPayment: payment })
-      );
+      this.onPaymentCreated.emit(payment);
     }
   }
 }

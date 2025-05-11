@@ -9,19 +9,19 @@ import { StripeState } from '../state/stripe.state';
 
 export const stripeReducer = createReducer(
   INITIAL_STRIPE_STATE,
-  on(stripeActions.loadCustomer, (state): StripeState => {
+  on(stripeActions.loadCustomerForUser, (state): StripeState => {
     return {
       ...state,
       customer: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
-  on(stripeActions.loadCustomerSuccess, (state, action): StripeState => {
+  on(stripeActions.loadCustomerForUserSuccess, (state, action): StripeState => {
     return {
       ...state,
       customer: wrapAsAsyncData(action.customer, AsyncDataStatus.Success),
     };
   }),
-  on(stripeActions.loadCustomerFailure, (state, action): StripeState => {
+  on(stripeActions.loadCustomerForUserFailure, (state, action): StripeState => {
     return {
       ...state,
       customer: wrapAsAsyncData(

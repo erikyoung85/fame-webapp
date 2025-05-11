@@ -9,6 +9,10 @@ import { PaymentState } from '../state/payment.state';
 
 export const paymentReducer = createReducer(
   INITIAL_PAYMENT_STATE,
+  on(paymentActions.resetPaymentState, (): PaymentState => {
+    return INITIAL_PAYMENT_STATE;
+  }),
+
   on(paymentActions.setPaymentTab, (state, action): PaymentState => {
     return {
       ...state,
@@ -22,8 +26,18 @@ export const paymentReducer = createReducer(
       paymentIntent: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
     };
   }),
+  on(paymentActions.updatePaymentIntent, (state): PaymentState => {
+    return {
+      ...state,
+      paymentIntent: wrapAsAsyncData(
+        state.paymentIntent.data,
+        AsyncDataStatus.Loading
+      ),
+    };
+  }),
   on(
     paymentActions.createPaymentIntentSuccess,
+    paymentActions.updatePaymentIntentSuccess,
     (state, action): PaymentState => {
       return {
         ...state,
@@ -36,6 +50,7 @@ export const paymentReducer = createReducer(
   ),
   on(
     paymentActions.createPaymentIntentFailure,
+    paymentActions.updatePaymentIntentFailure,
     (state, action): PaymentState => {
       return {
         ...state,

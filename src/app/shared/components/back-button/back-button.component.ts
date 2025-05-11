@@ -1,4 +1,5 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   inject,
@@ -20,9 +21,14 @@ export class BackButtonComponent {
   private readonly navCtrl = inject(NavController);
   private readonly store = inject(Store);
 
+  @Input({ transform: booleanAttribute }) noAction: boolean = false;
   @Input() defaultRoute?: string;
 
   async goBack() {
+    if (this.noAction) {
+      return;
+    }
+
     const isSuccessful = await this.navCtrl.pop();
     if (!isSuccessful) {
       if (this.defaultRoute !== undefined) {

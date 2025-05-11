@@ -17,9 +17,7 @@ export class UserProfileService {
     return from(
       this.supabaseService.client
         .from('profiles')
-        .select(
-          'id, first_name, last_name, favorite_team_id, stripe_customer_id'
-        )
+        .select('id, first_name, last_name, favorite_team_id')
         .eq('id', userId)
         .single()
     );
@@ -34,9 +32,7 @@ export class UserProfileService {
         .from('profiles')
         .update(request)
         .eq('id', userId)
-        .select(
-          'id, first_name, last_name, favorite_team_id, stripe_customer_id'
-        )
+        .select('id, first_name, last_name, favorite_team_id')
         .single()
     );
   }

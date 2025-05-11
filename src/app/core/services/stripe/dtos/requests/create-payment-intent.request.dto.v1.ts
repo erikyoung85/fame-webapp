@@ -1,4 +1,5 @@
 export interface CreatePaymentIntentRequestDtoV1 {
-  amount: number;
   customerId: string;
+  amount: number;
+  message: string;
 }

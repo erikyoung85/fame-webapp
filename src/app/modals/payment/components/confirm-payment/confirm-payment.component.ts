@@ -13,7 +13,6 @@ import { Athlete } from 'src/app/core/models/Athlete.model';
 import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input/currency-input.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { CreatePayment } from '../../models/create-payment.model';
 
 @Component({
   selector: 'app-confirm-payment',
@@ -35,7 +34,6 @@ import { CreatePayment } from '../../models/create-payment.model';
 export class ConfirmPaymentComponent {
   @Input({ required: true }) athlete!: Athlete;
   @Input({ required: true }) paymentIntent!: StripePaymentIntent;
-  @Input({ required: true }) payment!: CreatePayment;
   @Output() onPaymentConfirmed = new EventEmitter<StripePaymentIntent>();
 
   onConfirmClicked() {

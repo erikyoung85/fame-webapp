@@ -1,31 +1,40 @@
-<ng-container *ngrxLet="paymentIntent$ as paymentIntent">
+<ng-container 
+  *ngrxLet="{
+    stripeCustomer: stripeCustomer$().data,
+    paymentIntent: paymentIntent$().data
+  } as data"
+>
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="primary">
-        <ion-button (click)="cancel()">
-          <ion-icon slot="icon-only" color="dark" size="large" name="close-sharp"></ion-icon>
+      <ion-buttons slot="start" *ngIf="currentTabConfig$().previousTab !== undefined">
+        <ion-button (click)="onBackButtonClicked()">
+          <ion-icon slot="icon-only" color="dark" name="chevron-back-sharp"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title>{{ paymentTabsConfig[currentTab()].title }}</ion-title>
-      <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>
+      <ion-buttons slot="primary">
+        <ion-button (click)="closeModal()">
+          <ion-icon slot="icon-only" color="dark" name="close-sharp"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{ paymentTabsConfig[currentTab$()].title }}</ion-title>
+      <ion-progress-bar type="indeterminate" *ngIf="isLoading$()"></ion-progress-bar>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-safe-area-bottom" [scrollY]="false">
     <app-create-payment
-      *ngIf="currentTab() === PaymentTab.CreatePayment"
+      *ngIf="currentTab$() === PaymentTab.CreatePayment"
       [athlete]="athlete"
       [payment]="payment"
       (onPaymentCreated)="onPaymentCreated($event)"
     ></app-create-payment>
     <app-confirm-payment
-      *ngIf="currentTab() === PaymentTab.ConfirmPayment && paymentIntent.data !== undefined && payment"
+      *ngIf="currentTab$() === PaymentTab.ConfirmPayment && data.paymentIntent && payment"
       [athlete]="athlete"
-      [payment]="payment"
-      [paymentIntent]="paymentIntent.data"
+      [paymentIntent]="data.paymentIntent"
       (onPaymentConfirmed)="onPaymentConfirmed($event)"
     ></app-confirm-payment>
     <app-payment-success
-      *ngIf="currentTab() === PaymentTab.PaymentSuccess"
+      *ngIf="currentTab$() === PaymentTab.PaymentSuccess"
     ></app-payment-success>
   </ion-content>
 </ng-container>

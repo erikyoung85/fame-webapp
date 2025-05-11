@@ -7,7 +7,6 @@ export interface UserProfile {
   firstName: string;
   lastName: string;
   favoriteTeamId: number | undefined;
-  stripeCustomerId: string | undefined;
 }
 
 export class UserProfileFactory {
@@ -19,7 +18,6 @@ export class UserProfileFactory {
       firstName: user.user_metadata?.['first_name'] ?? '',
       lastName: user.user_metadata?.['last_name'] ?? '',
       favoriteTeamId: user.user_metadata?.['favorite_team_id'] ?? undefined,
-      stripeCustomerId: user.user_metadata?.['stripe_customer_id'] ?? undefined,
     };
   }
 
@@ -33,7 +31,6 @@ export class UserProfileFactory {
       firstName: userProfileDto.first_name,
       lastName: userProfileDto.last_name,
       favoriteTeamId: userProfileDto.favorite_team_id ?? undefined,
-      stripeCustomerId: userProfileDto.stripe_customer_id ?? undefined,
     };
   }
 }

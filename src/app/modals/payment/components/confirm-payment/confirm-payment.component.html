@@ -15,13 +15,13 @@
         <ion-col class="flex-col ion-justify-content-center">
             <ion-row class="ion-justify-content-center ion-align-items-center">
                 <ion-col size="auto">
-                    <app-currency-input readonly [value]="payment.amount"></app-currency-input>
+                    <app-currency-input readonly [value]="paymentIntent.amount"></app-currency-input>
                 </ion-col>
             </ion-row>
     
             <ion-row>
                 <ion-col class="ion-text-center">
-                    <p><ion-text>"{{ payment.message }}"</ion-text></p>
+                    <p><ion-text>"{{ paymentIntent.description }}"</ion-text></p>
                 </ion-col>
             </ion-row>
         </ion-col>
