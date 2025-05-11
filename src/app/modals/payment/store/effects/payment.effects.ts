@@ -169,6 +169,16 @@ export class PaymentEffects {
       })
     )
   );
+  collectPaymentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(paymentActions.collectPaymentSuccess),
+      map(() =>
+        paymentActions.setPaymentTab({
+          tab: PaymentTab.PaymentSuccess,
+        })
+      )
+    )
+  );
   collectPaymentFailure$ = createEffect(
     () =>
       this.actions$.pipe(

@@ -32,7 +32,7 @@
         </ion-row>
         <ion-row>
             <ion-col>
-                <ion-button expand="block" (click)="onDonateClicked()">Donate</ion-button>
+                <ion-button [disabled]="form.invalid" expand="block" (click)="onDonateClicked()">Donate</ion-button>
             </ion-col>
         </ion-row>
     </div>
