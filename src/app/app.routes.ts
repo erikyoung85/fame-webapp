@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
 import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
+import { sessionResolver } from './core/resolvers/session/session.resolver';
 import { TabsPage } from './pages/tabs/tabs.page';
 
 export enum AppRoutes {
@@ -34,6 +35,7 @@ export const routes: Routes = [
     path: AppRoutes.Tabs,
     component: TabsPage,
     resolve: {
+      session: sessionResolver,
       // userProfile: userProfileResolver,
       favoriteTeam: favoriteTeamResolver,
     },

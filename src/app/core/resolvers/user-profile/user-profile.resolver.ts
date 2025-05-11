@@ -14,8 +14,8 @@ export const userProfileResolver: ResolveFn<UserProfile | undefined> = (
 
   return store.select(userFeature.selectUserProfile).pipe(
     filter((async) => async.status === AsyncDataStatus.Success),
-    map((user) => {
-      return user.data;
+    map((userProfileAsync) => {
+      return userProfileAsync.data;
     })
   );
 };

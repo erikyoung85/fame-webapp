@@ -14,10 +14,6 @@ export const userFeature = createFeature({
       selectSession,
       (session) => session.data?.access_token
     ),
-    selectIsLoggedIn: createSelector(
-      selectUserProfile,
-      (userProfile) => userProfile.data !== undefined
-    ),
     selectUserId: createSelector(
       selectSession,
       (session) => session.data?.user?.id

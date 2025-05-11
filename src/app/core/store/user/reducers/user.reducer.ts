@@ -102,6 +102,12 @@ export const userReducer = createReducer(
       ),
     };
   }),
+  on(userActions.clearUserProfile, (state): UserState => {
+    return {
+      ...state,
+      userProfile: wrapAsAsyncData(undefined, AsyncDataStatus.Success),
+    };
+  }),
 
   on(
     userActions.updateUserProfile,
@@ -164,13 +170,6 @@ export const userReducer = createReducer(
         AsyncDataStatus.Error,
         action.message
       ),
-    };
-  }),
-
-  on(userActions.clearUserProfile, (state): UserState => {
-    return {
-      ...state,
-      userProfile: wrapAsAsyncData(undefined, AsyncDataStatus.Idle),
     };
   })
 );

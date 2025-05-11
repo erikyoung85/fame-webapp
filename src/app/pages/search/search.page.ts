@@ -89,7 +89,6 @@ export class SearchPage implements OnInit, OnDestroy {
   isSearchLoading$ = this.store.select(searchFeature.selectAnyPagesLoading);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);
-  isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
   allTeams$ = this.store.select(teamsFeature.selectAll);
   isTeamsLoading$ = this.store.select(teamsFeature.selectIsLoading);

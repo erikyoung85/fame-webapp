@@ -8,7 +8,7 @@ export const userActions = createActionGroup({
   source: 'User',
   events: {
     'Load Session': emptyProps(),
-    'Load Session Success': props<{ session: Session }>(),
+    'Load Session Success': props<{ session: Session | undefined }>(),
     'Load Session Failure': props<{ message?: string }>(),
 
     'Login With Password': props<{ email: string; password: string }>(),
@@ -29,7 +29,7 @@ export const userActions = createActionGroup({
     'Reset Password Success': emptyProps(),
     'Reset Password Failure': props<{ message: string }>(),
 
-    'Get User Profile': props<{ userId: string }>(),
+    'Get User Profile': emptyProps(),
     'Get User Profile Success': props<{ userProfile: UserProfile }>(),
     'Get User Profile Failure': props<{ message: string }>(),
 

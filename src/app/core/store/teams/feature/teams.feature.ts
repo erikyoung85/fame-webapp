@@ -20,17 +20,15 @@ export const teamsFeature = createFeature({
       ),
 
     selectFavoriteTeam: createSelector(
-      userFeature.selectIsLoggedIn,
       userFeature.selectUserProfile,
       userFeature.selectFavoriteTeamId,
       selectTeamDetailsDict,
-      (isLoggedIn, userProfile, favoriteTeamId, teamDetailsDict) => {
-        if (isLoggedIn === false) return undefined;
-
+      (userProfile, favoriteTeamId, teamDetailsDict) => {
         if (userProfile.status !== AsyncDataStatus.Success)
           return wrapAsAsyncData(undefined, userProfile.status);
 
-        if (favoriteTeamId === undefined) return undefined;
+        if (favoriteTeamId === undefined)
+          return wrapAsAsyncData(undefined, AsyncDataStatus.Success);
 
         const favoriteTeamDetails = teamDetailsDict[favoriteTeamId];
         if (favoriteTeamDetails === undefined)

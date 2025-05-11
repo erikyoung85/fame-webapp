@@ -61,7 +61,6 @@ export class HomePage implements OnInit {
   private readonly store = inject(Store);
 
   userProfile$ = this.store.select(userFeature.selectUserProfile);
-  isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
 
   allTeams$ = this.store.select(teamsFeature.selectAll);
   isTeamsLoading$ = this.store.select(teamsFeature.selectIsLoading);

@@ -68,13 +68,13 @@ export class UserEffects {
       switchMap((action) => {
         return from(this.supabaseService.client.auth.getSession()).pipe(
           map((response) => {
-            if (response.error || !response.data.session) {
+            if (response.error) {
               return userActions.loadSessionFailure({
                 message: response.error?.message,
               });
             }
             return userActions.loadSessionSuccess({
-              session: response.data.session,
+              session: response.data.session ?? undefined,
             });
           }),
           catchError((error: Error) => {
@@ -244,7 +244,7 @@ export class UserEffects {
         )
       ),
       switchMap(([action, session]) => {
-        return this.userProfileService.getUserProfile(action.userId).pipe(
+        return this.userProfileService.getUserProfile(session.user.id).pipe(
           map((response) => {
             if (response.error) {
               return userActions.getUserProfileFailure({
@@ -380,7 +380,7 @@ export class UserEffects {
       map((userId) => {
         return userId === undefined
           ? userActions.clearUserProfile()
-          : userActions.getUserProfile({ userId: userId });
+          : userActions.getUserProfile();
       })
     )
   );

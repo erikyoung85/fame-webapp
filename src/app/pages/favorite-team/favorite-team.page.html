@@ -2,7 +2,7 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>My team</ion-title>
-      <ion-buttons slot="primary" collapse>
+      <ion-buttons slot="primary">
         <toolbar-icon-button (click)="openModal()" icon="swap-vertical" />
       </ion-buttons>
       <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | ngrxPush"></ion-progress-bar>

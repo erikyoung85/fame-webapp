@@ -54,7 +54,9 @@ export class FavoriteTeamPage {
     userFeature.selectUserProfile
   );
   readonly teamDetails$ = this.store.select(teamsFeature.selectFavoriteTeam);
-  readonly isUserLoggedIn$ = this.store.select(userFeature.selectIsLoggedIn);
+  readonly isUserLoggedIn$ = this.userProfile$.pipe(
+    map((async) => async.data !== undefined)
+  );
 
   readonly isLoading$ = combineLatest([
     this.teamDetails$,
@@ -63,7 +65,7 @@ export class FavoriteTeamPage {
     map(([teamDetails, userProfile]) => {
       return (
         userProfile.status === AsyncDataStatus.Loading ||
-        teamDetails?.status === AsyncDataStatus.Loading
+        teamDetails.status === AsyncDataStatus.Loading
       );
     })
   );

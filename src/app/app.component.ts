@@ -9,7 +9,6 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
-import { userActions } from './core/store/user/actions/user.actions';
 
 @Component({
   standalone: true,
@@ -27,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(userActions.loadSession());
+    // this.store.dispatch(userActions.loadSession());
 
     Keyboard.setResizeMode({ mode: KeyboardResize.None });
     Keyboard.setAccessoryBarVisible({ isVisible: true });
