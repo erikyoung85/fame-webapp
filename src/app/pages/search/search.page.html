@@ -34,84 +34,49 @@
     </ion-item>
   </ion-list>
 
-  <ion-grid *ngIf="!isSearchFocused()">
+  <div *ngIf="!isSearchFocused()">
     <!-- Trending Raffles -->
-    <ion-row>
-      <ion-col class="ion-no-padding">
-        <ion-row>
-          <ion-col>
-            <ion-list-header class="ion-no-padding">
-              <ion-label>Open Raffles</ion-label>
-              <ion-button>See all</ion-button>
-            </ion-list-header>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col
-            size="12"
-            style="
-              display: flex;
-              flex-direction: row;
-              gap: 0.5rem;
-              overflow-x: scroll;
-            "
-          >
-            <app-raffle-preview-card
-              *ngFor="let raffle of mockRaffles"
-              [raffle]="raffle"
-            ></app-raffle-preview-card>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
+    <ion-list-header>
+      <ion-label>Open Raffles</ion-label>
+      <ion-button>See all</ion-button>
+    </ion-list-header>
+    <div class="ion-padding flex-row gap-2 scroll-x">
+      <app-raffle-preview-card
+        *ngFor="let raffle of mockRaffles"
+        [raffle]="raffle"
+      ></app-raffle-preview-card>
+    </div>
 
     <!-- Trending Teams -->
-    <ion-row>
-      <ion-col class="ion-no-padding">
-        <ion-row>
-          <ion-col>
-            <ion-list-header class="ion-no-padding">
-              <ion-label>Trending Teams</ion-label>
-              <ion-button>See all</ion-button>
-            </ion-list-header>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col
-            size="12"
-            style="
-              display: flex;
-              flex-direction: row;
-              gap: 0.5rem;
-              overflow-x: scroll;
-            "
-          >
-            <app-team-preview-card
-              *ngFor="let team of ((allTeams$ | ngrxPush) ?? [])"
-              [team]="team"
-              (click)="onTeamClicked(team.id)"
-            ></app-team-preview-card>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-    </ion-row>
+    <ion-list-header>
+      <ion-label>Trending Teams</ion-label>
+      <ion-button>See all</ion-button>
+    </ion-list-header>
+    <div class="ion-padding flex-row gap-2 scroll-x">
+      <app-team-preview-card
+        *ngFor="let team of ((allTeams$ | ngrxPush) ?? [])"
+        [team]="team"
+        (click)="onTeamClicked(team.id)"
+      ></app-team-preview-card>
+    </div>
 
     <!-- Trending Athletes -->
-    <ion-row>
-      <ion-col>
-        <ion-list-header class="ion-no-padding">
-          <ion-label>Trending Athletes</ion-label>
-          <ion-button>See all</ion-button>
-        </ion-list-header>
-        <ion-list [inset]="true">
-          <app-athlete-preview-item
-            *ngFor="let athlete of ((allAthletes$ | ngrxPush) ?? [])"
-            [athlete]="athlete"
-          ></app-athlete-preview-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-list-header>
+      <ion-label>Trending Athletes</ion-label>
+      <ion-button>See all</ion-button>
+    </ion-list-header>
+    <ion-list [inset]="true" class="card-background">
+      <ion-item 
+        *ngFor="let athlete of ((allAthletes$ | ngrxPush) ?? [])"
+        button 
+        (click)="onAthleteClicked(athlete.id)"
+      >
+        <app-user-profile-avatar size="small" slot="start"></app-user-profile-avatar>
+        <ion-label>
+          <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+          <ion-text><ion-note color="medium">{{ athlete.schoolName }}</ion-note></ion-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>

@@ -2,7 +2,6 @@
   <ion-avatar 
     class="avatar {{size}}" 
     [ngClass]="{ border: border }"
-    [style.background]="background"
   >
     <img [src]="(_value() | isNilOrEmpty) ? DEFAULT_AVATAR_SRC : _value()" />
   </ion-avatar>

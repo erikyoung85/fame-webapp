@@ -19,7 +19,6 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
-  IonNote,
   IonProgressBar,
   IonRow,
   IonText,
@@ -44,7 +43,6 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
   styleUrls: ['./athlete-detail.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonNote,
     IonIcon,
     IonItem,
     IonList,

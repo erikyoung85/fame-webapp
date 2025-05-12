@@ -10,9 +10,7 @@ import {
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   IonButton,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
   IonItem,
   IonLabel,
@@ -20,7 +18,6 @@ import {
   IonListHeader,
   IonNote,
   IonProgressBar,
-  IonRow,
   IonSearchbar,
   IonText,
   IonToolbar,
@@ -43,7 +40,6 @@ import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
-import { AthletePreviewItemComponent } from './athlete-preview-item/athlete-preview-item.component';
 import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
 
@@ -61,15 +57,11 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     IonLabel,
     IonListHeader,
     IonButton,
-    IonCol,
-    IonRow,
-    IonGrid,
     IonContent,
     IonToolbar,
     IonHeader,
     CommonModule,
     TeamPreviewCardComponent,
-    AthletePreviewItemComponent,
     RafflePreviewCardComponent,
     UserProfileAvatarComponent,
     ReactiveFormsModule,
@@ -148,6 +140,14 @@ export class SearchPage implements OnInit, OnDestroy {
     );
   }
 
+  onAthleteClicked(athleteId: number) {
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [PageRoutes.AthleteDetail, athleteId],
+      })
+    );
+  }
+
   onSearchItemClicked(searchItem: SearchItem) {
     if (searchItem.type === SearchItemType.Team) {
       this.store.dispatch(
@@ -155,13 +155,12 @@ export class SearchPage implements OnInit, OnDestroy {
           url: [PageRoutes.TeamDetail, searchItem.id],
         })
       );
+    } else if (searchItem.type === SearchItemType.Athlete) {
+      this.store.dispatch(
+        RouterActions.routeInCurrentTab({
+          url: [PageRoutes.AthleteDetail, searchItem.id],
+        })
+      );
     }
-    // else if (searchItem.type === SearchItemType.Athlete) {
-    //   this.store.dispatch(
-    //     RouterActions.routeInCurrentTab({
-    //       url: [PageRoutes.AthleteDetail, searchItem.id],
-    //     })
-    //   );
-    // }
   }
 }

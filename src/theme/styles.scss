@@ -27,3 +27,12 @@ ion-content::part(scroll) {
 .scroll-behind-header::part(scroll) {
   padding-top: 0;
 }
+
+ion-list.card-background {
+  ion-item::part(native) {
+    background: var(--ion-card-background);
+  }
+}
+ion-item.card-background::part(native) {
+  background: var(--ion-card-background);
+}
