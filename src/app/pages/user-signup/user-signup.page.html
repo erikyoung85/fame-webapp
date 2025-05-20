@@ -79,22 +79,6 @@
               </ion-input>
             </ion-col>
           </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <ion-input
-                [formControl]="userSignupForm.controls.password"
-                fill="outline"
-                name="confirm password"
-                type="password"
-                label="Confirm Password"
-                labelPlacement="floating"
-                errorText="Passwords must match"
-              >
-                <ion-input-password-toggle *ngIf="userSignupForm.controls.password.dirty" slot="end"></ion-input-password-toggle>
-              </ion-input>
-            </ion-col>
-          </ion-row>
     
           <ion-row>
             <ion-col>

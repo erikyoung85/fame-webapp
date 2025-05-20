@@ -1,5 +1,7 @@
 import { Route, Routes } from '@angular/router';
 import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
+import { isNotLoggedInGuard } from './core/guards/is-not-logged-in/is-not-logged-in.guard';
+import { SessionGuard } from './core/guards/session/session.guard';
 import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
 import { sessionResolver } from './core/resolvers/session/session.resolver';
 import { userProfileResolver } from './core/resolvers/user-profile/user-profile.resolver';
@@ -43,6 +45,7 @@ export const routes: Routes = [
   {
     path: AppRoutes.Tabs,
     component: TabsPage,
+    canActivate: [SessionGuard],
     resolve: {
       session: sessionResolver,
       userProfile: userProfileResolver,
@@ -117,6 +120,7 @@ export const routes: Routes = [
             path: PageRoutes.Login,
             loadComponent: () =>
               import('./pages/login/login.page').then((m) => m.LoginPage),
+            canActivate: [isNotLoggedInGuard],
           },
           {
             path: PageRoutes.Register,
@@ -124,6 +128,7 @@ export const routes: Routes = [
               import('./pages/user-signup/user-signup.page').then(
                 (m) => m.UserSignupPage
               ),
+            canActivate: [isNotLoggedInGuard],
           },
           {
             path: PageRoutes.PasswordReset,
@@ -131,6 +136,7 @@ export const routes: Routes = [
               import('./pages/password-reset/password-reset.page').then(
                 (m) => m.PasswordResetPage
               ),
+            canActivate: [isNotLoggedInGuard],
           },
         ],
       },

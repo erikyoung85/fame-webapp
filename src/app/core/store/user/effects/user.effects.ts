@@ -124,23 +124,23 @@ export class UserEffects {
     )
   );
 
-  loginSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(userActions.loginSuccess),
-      switchMap(async () => {
-        await this.toastController
-          .create({
-            message: `Login Successful!`,
-            duration: 2000,
-            color: 'success',
-          })
-          .then((toast) => toast.present());
+  loginSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.loginSuccess),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: `Login Successful!`,
+              duration: 2000,
+              color: 'success',
+            })
+            .then((toast) => toast.present());
 
-        return RouterActions.routeInCurrentTab({
-          url: [PageRoutes.UserProfile],
-        });
-      })
-    )
+          await this.router.navigate(['']);
+        })
+      ),
+    { dispatch: false }
   );
 
   signupWithPassword$ = createEffect(() =>
