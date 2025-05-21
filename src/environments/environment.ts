@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  microserviceUrl: 'https://cha-ching-microservice.vercel.app',
+  microserviceUrl: 'https://fame-microservice.vercel.app',
   supabase: {
     url: import.meta.env.SUPABASE_URL,
     anonKey: import.meta.env.SUPABASE_ANON_KEY,
