@@ -1,3 +1,6 @@
+import { Gender } from 'src/app/core/enums/Gender.enum';
+import { Grade } from 'src/app/core/enums/Grade.enum';
+
 export interface TeamDetailResponseDtoV1 {
   id: number;
   season_year: number;
@@ -24,7 +27,8 @@ export interface TeamDetailResponseDtoV1 {
       id: number;
       first_name: string;
       last_name: string;
-      gender: string;
+      gender: keyof typeof Gender;
+      grade: keyof typeof Grade;
     };
   }[];
 }

@@ -3,6 +3,7 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from './dtos/requests/patch-user-profile.request.dto.v1';
+import { ManagedPagesResponseDtoV1 } from './dtos/responses/managed-pages.response.dto.v1';
 import { UserProfileResponseDtoV1 } from './dtos/responses/user-profile.response.dto.v1';
 
 @Injectable({
@@ -35,5 +36,18 @@ export class UserProfileService {
         .select('id, first_name, last_name, favorite_team_id')
         .single()
     );
+  }
+
+  getManagedPages(
+    userId: string
+  ): Observable<PostgrestSingleResponse<ManagedPagesResponseDtoV1[]>> {
+    const response = from(
+      this.supabaseService.client
+        .from('profiles_x_athletes')
+        .select('athletes(id, first_name, last_name, avatar_url)')
+        .eq('profiles_id', userId)
+    );
+
+    return response;
   }
 }

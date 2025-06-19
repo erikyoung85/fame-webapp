@@ -5,6 +5,10 @@
       <ion-buttons slot="start">
         <app-back-button></app-back-button>
       </ion-buttons>
+      <ion-buttons slot="end" *ngIf="canUserEdit$ | ngrxPush">
+        <ion-chip (click)="onEditClicked()">Edit</ion-chip>
+      </ion-buttons>
+  
       <ion-progress-bar type="indeterminate" *ngIf="athleteDetailsAsync | isAsyncLoading"></ion-progress-bar>
     </ion-toolbar>
   </ion-header>
@@ -63,12 +67,17 @@
                 <ion-item>
                   <ion-label>Grade</ion-label>
                   <ion-icon slot="start" name="trophy-sharp"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails.schoolYear }}</ion-text>
+                  <ion-text slot="end">{{ athleteDetails.grade }}</ion-text>
                 </ion-item>
                 <ion-item>
                   <ion-label>Hometown</ion-label>
                   <ion-icon slot="start" name="location-sharp"></ion-icon>
-                  <ion-text slot="end">{{ 'Madison' }}, {{ 'WI' }}</ion-text>
+                  <ion-text slot="end">{{ athleteDetails.hometown }}</ion-text>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Date of birth</ion-label>
+                  <ion-icon slot="start" name="cash-sharp"></ion-icon>
+                  <ion-text slot="end">{{ athleteDetails.dateOfBirth | date }}</ion-text>
                 </ion-item>
                 <ion-item>
                   <ion-label>Money raised for {{ athleteDetails.firstName }}</ion-label>

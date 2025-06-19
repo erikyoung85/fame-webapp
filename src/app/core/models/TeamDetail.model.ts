@@ -1,5 +1,5 @@
 import { Gender } from '../enums/Gender.enum';
-import { SchoolYear } from '../enums/SchoolYear.enum';
+import { Grade } from '../enums/Grade.enum';
 import { TeamDetailResponseDtoV1 } from '../services/teams/dtos/responses/team-detail.response.dto.v1';
 
 export interface TeamDetail {
@@ -28,7 +28,7 @@ export interface TeamDetail {
     gender: Gender;
     position: string | undefined;
     jerseyNumber: number | undefined;
-    schoolYear: SchoolYear;
+    grade: Grade;
   }[];
 }
 
@@ -57,11 +57,10 @@ export class TeamDetailFactory {
         id: athlete.athletes.id,
         firstName: athlete.athletes.first_name,
         lastName: athlete.athletes.last_name,
-        gender:
-          athlete.athletes.gender === 'Male' ? Gender.Male : Gender.Female,
+        gender: Gender[athlete.athletes.gender],
         position: athlete.position ?? undefined,
         jerseyNumber: athlete.jersey_number ?? undefined,
-        schoolYear: SchoolYear.Junior, // TODO: Map to actual school year
+        grade: Grade[athlete.athletes.grade],
       })),
     };
   }

@@ -170,5 +170,40 @@ export const userReducer = createReducer(
         action.message
       ),
     };
+  }),
+
+  on(userActions.fetchUserManagedPages, (state): UserState => {
+    return {
+      ...state,
+      managedPages: wrapAsAsyncData(
+        {
+          athletes: [],
+        },
+        AsyncDataStatus.Loading
+      ),
+    };
+  }),
+  on(userActions.fetchUserManagedPagesSuccess, (state, action): UserState => {
+    return {
+      ...state,
+      managedPages: wrapAsAsyncData(
+        {
+          athletes: action.athletes,
+        },
+        AsyncDataStatus.Success
+      ),
+    };
+  }),
+  on(userActions.fetchUserManagedPagesFailure, (state, action): UserState => {
+    return {
+      ...state,
+      managedPages: wrapAsAsyncData(
+        {
+          athletes: [],
+        },
+        AsyncDataStatus.Error,
+        action.message
+      ),
+    };
   })
 );

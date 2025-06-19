@@ -45,5 +45,11 @@ export const userActions = createActionGroup({
     'Patch User Profile': props<{ request: PatchUserProfileRequestDtoV1 }>(),
     'Patch User Profile Success': props<{ userProfile: UserProfile }>(),
     'Patch User Profile Failure': props<{ message: string }>(),
+
+    'Fetch User Managed Pages': emptyProps(),
+    'Fetch User Managed Pages Success': props<{
+      athletes: { id: number; name: string; avatarUrl: string | undefined }[];
+    }>(),
+    'Fetch User Managed Pages Failure': props<{ message: string }>(),
   },
 });

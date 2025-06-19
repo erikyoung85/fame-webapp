@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { isNotNil } from 'ramda';
 import {
   catchError,
   distinctUntilChanged,
@@ -14,14 +15,13 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { UserProfileService } from 'src/app/core/services/user-profile/user-profile.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { UserProfileRoutes } from 'src/app/pages/user-profile/user-profile.routes';
 import { RouterActions } from '../../router/actions/router.actions';
 import { userActions } from '../actions/user.actions';
 import { userFeature } from '../feature/user.feature';
@@ -333,7 +333,7 @@ export class UserEffects {
           .then((toast) => toast.present());
 
         return RouterActions.routeInCurrentTab({
-          url: [PageRoutes.UserProfile, UserProfileRoutes.View],
+          url: [PageRoutes.UserProfile, FormActionRoutes.View],
         });
       })
     )
@@ -437,5 +437,41 @@ export class UserEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  fetchUserPermissions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.fetchUserManagedPages),
+      withLatestFrom(
+        this.store.select(userFeature.selectUserId).pipe(filter(isNotNil))
+      ),
+      switchMap(([, userId]) => {
+        return this.userProfileService.getManagedPages(userId).pipe(
+          map((response) => {
+            if (response.error) {
+              return userActions.fetchUserManagedPagesFailure({
+                message: response.error.message,
+              });
+            }
+
+            const managedAthletes = response.data.map((item) => ({
+              id: item.athletes.id,
+              name: `${item.athletes.first_name} ${item.athletes.last_name}`,
+              avatarUrl: item.athletes.avatar_url ?? undefined,
+            }));
+            return userActions.fetchUserManagedPagesSuccess({
+              athletes: managedAthletes,
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.fetchUserManagedPagesFailure({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
   );
 }

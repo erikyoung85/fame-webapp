@@ -5,11 +5,13 @@ import {
   inject,
   input,
   numberAttribute,
+  OnInit,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
   IonButton,
   IonButtons,
+  IonChip,
   IonCol,
   IonContent,
   IonGrid,
@@ -26,12 +28,16 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
-import { LetDirective } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
+import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
+import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
+import { userActions } from 'src/app/core/store/user/actions/user.actions';
+import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
@@ -39,10 +45,11 @@ import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-asy
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
 @Component({
-  templateUrl: './athlete-detail.page.html',
-  styleUrls: ['./athlete-detail.page.scss'],
+  templateUrl: './athlete-detail-view.page.html',
+  styleUrls: ['./athlete-detail-view.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonChip,
     IonIcon,
     IonItem,
     IonList,
@@ -65,9 +72,10 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     IsAsyncLoadingPipe,
     BackButtonComponent,
     UserProfileAvatarComponent,
+    PushPipe,
   ],
 })
-export class AthleteDetailPage {
+export class AthleteDetailViewPage implements OnInit {
   private readonly store = inject(Store);
   private readonly modalController = inject(ModalController);
 
@@ -81,6 +89,32 @@ export class AthleteDetailPage {
       return this.store.select(athletesFeature.selectAthleteDetails(athleteId));
     })
   );
+
+  readonly canUserEdit$ = this.store
+    .select(userFeature.selectManagedAthletePages)
+    .pipe(
+      map((athletes) => {
+        const athleteId = this.athleteId();
+        return athletes.some((athlete) => athlete.id === athleteId);
+      })
+    );
+
+  ngOnInit(): void {
+    this.store.dispatch(userActions.fetchUserManagedPages());
+  }
+
+  onEditClicked() {
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [
+          PageRoutes.AthleteDetail,
+          this.athleteId(),
+          FormActionRoutes.Edit,
+        ],
+        animated: false,
+      })
+    );
+  }
 
   async onPayClicked(athlete: AthleteDetail) {
     const modal = await this.modalController.create({

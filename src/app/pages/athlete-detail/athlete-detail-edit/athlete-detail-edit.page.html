@@ -1,0 +1,112 @@
+<ion-header collapse="fade">
+  <ion-toolbar>
+    <ion-title>{{ form.value.firstName }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-buttons slot="end">
+        <ion-chip (click)="onCancelClicked()">Cancel</ion-chip>
+      </ion-buttons>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-chip (click)="onSaveClicked()">Save</ion-chip>
+    </ion-buttons>
+
+    <ion-progress-bar type="indeterminate" *ngIf="athleteDetails$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content 
+  [fullscreen]="true" 
+  class="scroll-behind-header top-image-container"
+> 
+  <div class="top-image-wrapper">
+    <img [src]="" class="top-image" />
+  </div>
+
+  <div class="page-content">
+    <div class="top-overhang-container">
+      <div class="top-overhang-element">
+        <app-user-profile-avatar 
+          editMode
+          [formControl]="form.controls.avatarUrl"
+          size="xxlarge"
+          [border]="true"
+        ></app-user-profile-avatar>
+
+        <!-- <ion-header collapse="condense" translucent>
+          <ion-toolbar>
+          </ion-toolbar>
+        </ion-header> -->
+      </div>
+      
+      <ion-grid class="top-overhang-other-content">
+      
+        <!-- Top text -->
+        <ion-row class="ion-align-items-center">
+          <ion-col>
+            <ion-input
+              [formControl]="form.controls.firstName"
+              label="First Name"
+              labelPlacement="stacked"
+              placeholder="First Name"
+              errorText="First Name is required"
+            ></ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-input
+              [formControl]="form.controls.lastName"
+              label="Last Name"
+              labelPlacement="stacked"
+              placeholder="Last Name"
+              errorText="Last Name is required"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+              
+        <!-- Athlete information section -->
+        <ion-row>
+          <ion-col>
+            <ion-list-header class="ion-no-padding">
+              Athlete Info
+            </ion-list-header>
+            <ion-list>
+              <ion-item>
+                <ion-icon slot="start" name="trophy-sharp"></ion-icon>
+                <ion-select label="Grade" [formControl]="form.controls.grade">
+                  <ion-select-option 
+                    *ngFor="let option of gradeOptions" 
+                    [value]="option.value"
+                  >{{ option.label }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-icon slot="start" name="trophy-sharp"></ion-icon>
+                <ion-select label="Gender" [formControl]="form.controls.gender">
+                  <ion-select-option 
+                    *ngFor="let option of genderOptions" 
+                    [value]="option.value"
+                  >{{ option.label }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-icon slot="start" name="location-sharp"></ion-icon>
+                <ion-label>Hometown</ion-label>
+                <shared-city-picker [formControl]="form.controls.hometown"></shared-city-picker>
+                <!-- <ion-input
+                  slot="end"
+                  [formControl]="form.controls.hometown"
+                  placeholder="Madison, WI"
+                ></ion-input> -->
+              </ion-item>
+
+              <ion-item>
+                <ion-icon slot="start" name="calendar"></ion-icon>
+                <ion-label>Date of birth</ion-label>
+                <shared-date-picker [formControl]="form.controls.dateOfBirth"></shared-date-picker>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+</ion-content>

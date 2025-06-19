@@ -1,3 +1,4 @@
+
 <ion-grid *ngIf="userProfile$ | async | unwrapAsync as userProfile" class="flex-fill flex-col">
   <ion-row>
     <ion-col>
@@ -25,8 +26,19 @@
           </ion-label>
         </ion-item>
       </ion-list>
+
+      <ng-container *ngrxLet="managedAthletePages$ as managedAthletePages">
+        <ion-list *ngIf="managedAthletePages.length > 0">
+          <ion-list-header>My Athlete Pages</ion-list-header>
+          <ion-item *ngFor="let athlete of managedAthletePages" button (click)="onAthleteClicked(athlete.id)">
+            <app-user-profile-avatar size="small" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
+            <ion-label>{{ athlete.name }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ng-container>
     </ion-col>
   </ion-row>
+
 
   <ion-row>
     <ion-col>

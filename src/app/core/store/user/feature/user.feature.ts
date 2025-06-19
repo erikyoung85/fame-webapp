@@ -5,7 +5,11 @@ import { userReducer } from '../reducers/user.reducer';
 export const userFeature = createFeature({
   name: 'user',
   reducer: userReducer,
-  extraSelectors: ({ selectSession, selectUserProfile }) => ({
+  extraSelectors: ({
+    selectSession,
+    selectUserProfile,
+    selectManagedPages,
+  }) => ({
     selectIsSessionLoading: createSelector(
       selectSession,
       (session) => session.status === AsyncDataStatus.Loading
@@ -21,6 +25,10 @@ export const userFeature = createFeature({
     selectFavoriteTeamId: createSelector(
       selectUserProfile,
       (userProfile) => userProfile.data?.favoriteTeamId
+    ),
+    selectManagedAthletePages: createSelector(
+      selectManagedPages,
+      (managedPages) => managedPages.data.athletes
     ),
   }),
 });

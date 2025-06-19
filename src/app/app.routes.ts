@@ -1,4 +1,4 @@
-import { Route, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
 import { isNotLoggedInGuard } from './core/guards/is-not-logged-in/is-not-logged-in.guard';
 import { SessionGuard } from './core/guards/session/session.guard';
@@ -28,13 +28,32 @@ export enum PageRoutes {
   Payment = 'payment',
 }
 
-const athleteDetailPageRoute: Route = {
-  path: `${PageRoutes.AthleteDetail}/:athleteId`,
-  loadComponent: () =>
-    import('./pages/athlete-detail/athlete-detail.page').then(
-      (m) => m.AthleteDetailPage
-    ),
-};
+export enum FormActionRoutes {
+  View = 'view',
+  Edit = 'edit',
+}
+
+const athleteDetailPageRoutes: Routes = [
+  {
+    path: `${PageRoutes.AthleteDetail}/:athleteId`,
+    redirectTo: `${PageRoutes.AthleteDetail}/:athleteId/${FormActionRoutes.View}`,
+    pathMatch: 'full',
+  },
+  {
+    path: `${PageRoutes.AthleteDetail}/:athleteId/${FormActionRoutes.View}`,
+    loadComponent: () =>
+      import(
+        './pages/athlete-detail/athlete-detail-view/athlete-detail-view.page'
+      ).then((m) => m.AthleteDetailViewPage),
+  },
+  {
+    path: `${PageRoutes.AthleteDetail}/:athleteId/${FormActionRoutes.Edit}`,
+    loadComponent: () =>
+      import(
+        './pages/athlete-detail/athlete-detail-edit/athlete-detail-edit.page'
+      ).then((m) => m.AthleteDetailEditPage),
+  },
+];
 
 export const routes: Routes = [
   {
@@ -72,7 +91,7 @@ export const routes: Routes = [
                 (m) => m.FavoriteTeamPage
               ),
           },
-          athleteDetailPageRoute,
+          ...athleteDetailPageRoutes,
         ],
       },
       {
@@ -95,7 +114,7 @@ export const routes: Routes = [
                 (m) => m.TeamDetailPage
               ),
           },
-          athleteDetailPageRoute,
+          ...athleteDetailPageRoutes,
         ],
       },
       {
@@ -138,6 +157,7 @@ export const routes: Routes = [
               ),
             canActivate: [isNotLoggedInGuard],
           },
+          ...athleteDetailPageRoutes,
         ],
       },
     ],

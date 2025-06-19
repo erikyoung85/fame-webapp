@@ -11,10 +11,13 @@ export type Database = {
     Tables: {
       athletes: {
         Row: {
+          avatar_url: string | null
           created_at: string
           date_of_birth: string | null
           first_name: string
-          gender: string
+          gender: Database["public"]["Enums"]["Gender"]
+          grade: Database["public"]["Enums"]["Grade"]
+          hometown: string | null
           id: number
           last_name: string
           ncaa_player_id: number | null
@@ -22,10 +25,13 @@ export type Database = {
           school_id: number | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
           date_of_birth?: string | null
           first_name: string
-          gender: string
+          gender: Database["public"]["Enums"]["Gender"]
+          grade: Database["public"]["Enums"]["Grade"]
+          hometown?: string | null
           id?: number
           last_name: string
           ncaa_player_id?: number | null
@@ -33,10 +39,13 @@ export type Database = {
           school_id?: number | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
           date_of_birth?: string | null
           first_name?: string
-          gender?: string
+          gender?: Database["public"]["Enums"]["Gender"]
+          grade?: Database["public"]["Enums"]["Grade"]
+          hometown?: string | null
           id?: number
           last_name?: string
           ncaa_player_id?: number | null
@@ -84,6 +93,42 @@ export type Database = {
             columns: ["favorite_team_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles_x_athletes: {
+        Row: {
+          athletes_id: number
+          created_at: string
+          id: number
+          profiles_id: string
+        }
+        Insert: {
+          athletes_id: number
+          created_at?: string
+          id?: number
+          profiles_id: string
+        }
+        Update: {
+          athletes_id?: number
+          created_at?: string
+          id?: number
+          profiles_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_x_athletes_athletes_id_fkey"
+            columns: ["athletes_id"]
+            isOneToOne: true
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_x_athletes_profiles_id_fkey"
+            columns: ["profiles_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -163,19 +208,19 @@ export type Database = {
       sports: {
         Row: {
           created_at: string
-          gender: string
+          gender: Database["public"]["Enums"]["Gender"]
           id: number
           name: string
         }
         Insert: {
           created_at?: string
-          gender: string
+          gender: Database["public"]["Enums"]["Gender"]
           id?: number
           name: string
         }
         Update: {
           created_at?: string
-          gender?: string
+          gender?: Database["public"]["Enums"]["Gender"]
           id?: number
           name?: string
         }
@@ -284,7 +329,8 @@ export type Database = {
       }
     }
     Enums: {
-      Sex: "Male" | "Female"
+      Gender: "Male" | "Female"
+      Grade: "Senior" | "Junior" | "Sophomore" | "Freshman"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -400,7 +446,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      Sex: ["Male", "Female"],
+      Gender: ["Male", "Female"],
+      Grade: ["Senior", "Junior", "Sophomore", "Freshman"],
     },
   },
 } as const

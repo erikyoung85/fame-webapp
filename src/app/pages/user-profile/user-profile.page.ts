@@ -14,13 +14,11 @@ import {
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
-import { PageRoutes } from 'src/app/app.routes';
-import { FormMode } from 'src/app/core/enums/FormMode.enum';
+import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import * as routerSelectors from 'src/app/core/store/router/selectors/router.selectors';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
-import { UserProfileRoutes } from './user-profile.routes';
 
 @Component({
   templateUrl: './user-profile.page.html',
@@ -50,14 +48,14 @@ export class UserProfilePage {
     .select(routerSelectors.selectUrl)
     .pipe(
       map((url) =>
-        url.includes(`${PageRoutes.UserProfile}/${UserProfileRoutes.Edit}`)
+        url.includes(`${PageRoutes.UserProfile}/${FormActionRoutes.Edit}`)
       )
     );
 
   onEditClicked() {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
-        url: [PageRoutes.UserProfile, FormMode.Edit],
+        url: [PageRoutes.UserProfile, FormActionRoutes.Edit],
       })
     );
   }
@@ -65,7 +63,7 @@ export class UserProfilePage {
   onCancelClicked() {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
-        url: [PageRoutes.UserProfile, UserProfileRoutes.View],
+        url: [PageRoutes.UserProfile, FormActionRoutes.View],
       })
     );
   }

@@ -70,5 +70,42 @@ export const athletesReducer = createReducer(
         },
       };
     }
-  )
+  ),
+
+  on(athletesActions.updateAthlete, (state, action): AthletesState => {
+    return {
+      ...state,
+      athleteDetailsDict: {
+        ...state.athleteDetailsDict,
+        [action.request.id]: wrapAsAsyncData(
+          state.athleteDetailsDict[action.request.id]?.data,
+          AsyncDataStatus.Loading
+        ),
+      },
+    };
+  }),
+  on(athletesActions.updateAthleteSuccess, (state, action): AthletesState => {
+    return {
+      ...state,
+      athleteDetailsDict: {
+        ...state.athleteDetailsDict,
+        [action.athleteDetails.id]: wrapAsAsyncData(
+          action.athleteDetails,
+          AsyncDataStatus.Success
+        ),
+      },
+    };
+  }),
+  on(athletesActions.updateAthleteFailure, (state, action): AthletesState => {
+    return {
+      ...state,
+      athleteDetailsDict: {
+        ...state.athleteDetailsDict,
+        [action.athleteId]: wrapAsAsyncData(
+          state.athleteDetailsDict[action.athleteId]?.data,
+          AsyncDataStatus.Success
+        ),
+      },
+    };
+  })
 );

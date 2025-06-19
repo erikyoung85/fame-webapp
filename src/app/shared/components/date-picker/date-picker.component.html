@@ -1,0 +1,14 @@
+<ion-datetime-button datetime="datetime"></ion-datetime-button>
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime 
+      id="datetime" 
+      presentation="date" 
+      [preferWheel]="true" 
+      [showDefaultButtons]="true" 
+      [disabled]="_isDisabled()"
+      [value]="_value()"
+      (ionChange)="valueSubmitted($event.detail.value)"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>

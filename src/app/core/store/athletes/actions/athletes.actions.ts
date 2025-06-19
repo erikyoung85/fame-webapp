@@ -1,6 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Athlete } from 'src/app/core/models/Athlete.model';
 import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
+import { UpdateAthleteRequestDtoV1 } from 'src/app/core/services/athletes/dtos/requests/updateAthlete.request.dto.v1';
 
 export const athletesActions = createActionGroup({
   source: 'Athletes',
@@ -15,5 +16,9 @@ export const athletesActions = createActionGroup({
       athleteId: number;
       message?: string;
     }>(),
+
+    'Update Athlete': props<{ request: UpdateAthleteRequestDtoV1 }>(),
+    'Update Athlete Success': props<{ athleteDetails: AthleteDetail }>(),
+    'Update Athlete Failure': props<{ athleteId: number; message?: string }>(),
   },
 });
