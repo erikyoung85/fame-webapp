@@ -64,6 +64,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string
           favorite_team_id: number | null
           first_name: string
@@ -72,6 +73,7 @@ export type Database = {
           stripe_customer_id: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
           favorite_team_id?: number | null
           first_name: string
@@ -80,6 +82,7 @@ export type Database = {
           stripe_customer_id?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
           favorite_team_id?: number | null
           first_name?: string

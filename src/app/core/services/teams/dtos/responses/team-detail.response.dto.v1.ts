@@ -25,6 +25,7 @@ export interface TeamDetailResponseDtoV1 {
     position: string | null;
     athletes: {
       id: number;
+      avatar_url: string | null;
       first_name: string;
       last_name: string;
       gender: keyof typeof Gender;

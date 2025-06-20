@@ -23,6 +23,7 @@ export interface TeamDetail {
   };
   rosterAthletes: {
     id: number;
+    avatarUrl: string | undefined;
     firstName: string;
     lastName: string;
     gender: Gender;
@@ -55,6 +56,7 @@ export class TeamDetailFactory {
       },
       rosterAthletes: dto.roster_entries.map((athlete) => ({
         id: athlete.athletes.id,
+        avatarUrl: athlete.athletes.avatar_url ?? undefined,
         firstName: athlete.athletes.first_name,
         lastName: athlete.athletes.last_name,
         gender: Gender[athlete.athletes.gender],

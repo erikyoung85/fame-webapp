@@ -12,13 +12,15 @@ import { UserProfileResponseDtoV1 } from './dtos/responses/user-profile.response
 export class UserProfileService {
   private readonly supabaseService = inject(SupabaseService);
 
+  private readonly profileSelect =
+    'id, avatar_url, first_name, last_name, favorite_team_id';
   getUserProfile(
     userId: string
   ): Observable<PostgrestSingleResponse<UserProfileResponseDtoV1>> {
     return from(
       this.supabaseService.client
         .from('profiles')
-        .select('id, first_name, last_name, favorite_team_id')
+        .select(this.profileSelect)
         .eq('id', userId)
         .single()
     );
@@ -33,7 +35,7 @@ export class UserProfileService {
         .from('profiles')
         .update(request)
         .eq('id', userId)
-        .select('id, first_name, last_name, favorite_team_id')
+        .select(this.profileSelect)
         .single()
     );
   }

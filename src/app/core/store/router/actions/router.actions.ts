@@ -12,6 +12,7 @@ export const RouterActions = createActionGroup({
       url: string | any[];
       direction?: 'forward' | 'back';
       animated?: boolean;
+      replaceUrl?: boolean;
     }>(),
   },
 });

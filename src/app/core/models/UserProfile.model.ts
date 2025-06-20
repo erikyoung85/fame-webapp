@@ -3,6 +3,7 @@ import { UserProfileResponseDtoV1 } from '../services/user-profile/dtos/response
 
 export interface UserProfile {
   id: string;
+  avatarUrl: string | undefined;
   email: string;
   firstName: string;
   lastName: string;
@@ -14,6 +15,7 @@ export class UserProfileFactory {
   static fromSupabaseUser(user: AuthUser): UserProfile {
     return {
       id: user.id,
+      avatarUrl: undefined,
       email: user.email ?? '',
       firstName: user.user_metadata?.['first_name'] ?? '',
       lastName: user.user_metadata?.['last_name'] ?? '',
@@ -27,6 +29,7 @@ export class UserProfileFactory {
   ): UserProfile {
     return {
       id: session.user.id,
+      avatarUrl: userProfileDto.avatar_url ?? undefined,
       email: session.user.email ?? '',
       firstName: userProfileDto.first_name,
       lastName: userProfileDto.last_name,

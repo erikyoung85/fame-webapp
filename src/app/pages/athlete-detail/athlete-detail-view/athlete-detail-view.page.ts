@@ -112,6 +112,7 @@ export class AthleteDetailViewPage implements OnInit {
           FormActionRoutes.Edit,
         ],
         animated: false,
+        replaceUrl: true,
       })
     );
   }

@@ -37,6 +37,7 @@ export class RouterEffects {
           url = `${AppRoutes.Tabs}/${currentTabRoute}/${url}`;
           const options = {
             animated: action.animated,
+            replaceUrl: action.replaceUrl,
           };
 
           if (action.direction === 'back') {

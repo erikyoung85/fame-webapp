@@ -28,7 +28,7 @@ export class TeamsService {
       this.supabaseService.client
         .from('teams')
         .select(
-          'id, season_year, name, banner_url, schools(id, name, abbreviation, city, state, logo_url), sports(id, name, gender), roster_entries(id, position, jersey_number, athletes(id, first_name, last_name, gender, grade))'
+          'id, season_year, name, banner_url, schools(id, name, abbreviation, city, state, logo_url), sports(id, name, gender), roster_entries(id, position, jersey_number, athletes(id, avatar_url, first_name, last_name, gender, grade))'
         )
         .eq('id', teamId)
         .single()

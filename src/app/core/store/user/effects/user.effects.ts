@@ -10,6 +10,7 @@ import {
   filter,
   from,
   map,
+  Observable,
   of,
   switchMap,
   tap,
@@ -18,10 +19,14 @@ import {
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
+import { AvatarUploadService } from 'src/app/core/services/avatar/avatar.service';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { UserProfileService } from 'src/app/core/services/user-profile/user-profile.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import dataUrlToBlob, {
+  isDataUrl,
+} from 'src/app/shared/utils/data-url-to-blob.util';
 import { RouterActions } from '../../router/actions/router.actions';
 import { userActions } from '../actions/user.actions';
 import { userFeature } from '../feature/user.feature';
@@ -35,6 +40,7 @@ export class UserEffects {
   private readonly userProfileService = inject(UserProfileService);
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
+  private readonly avatarUploadService = inject(AvatarUploadService);
 
   failureMessages$ = createEffect(
     () =>
@@ -285,37 +291,67 @@ export class UserEffects {
         )
       ),
       switchMap(([action, session]) => {
-        const request: PatchUserProfileRequestDtoV1 = {
-          first_name: action.userProfile.firstName,
-          last_name: action.userProfile.lastName,
-          favorite_team_id: action.userProfile.favoriteTeamId,
-        };
-        return this.userProfileService
-          .patchUserProfile(action.userProfile.id, request)
-          .pipe(
-            map((response) => {
-              if (response.error) {
-                return userActions.updateUserProfileFailure({
-                  message: response.error.message || 'Failed to update profile',
-                });
-              }
+        // Get avatar URL
+        let avatarUrl$: Observable<string | undefined> = of(
+          action.userProfile.avatarUrl
+        );
 
-              return userActions.updateUserProfileSuccess({
-                userProfile:
-                  UserProfileFactory.fromSessionAndProfileResponseDto(
-                    session,
-                    response.data
-                  ),
-              });
-            }),
-            catchError((error: Error) => {
-              return of(
-                userActions.updateUserProfileFailure({
-                  message: error?.message || 'Failed to update profile',
+        if (
+          action.userProfile.avatarUrl !== undefined &&
+          isDataUrl(action.userProfile.avatarUrl)
+        ) {
+          const image: Blob = dataUrlToBlob(action.userProfile.avatarUrl);
+          avatarUrl$ = this.avatarUploadService
+            .uploadProfilePicture(session.user.id, image)
+            .pipe(
+              map((urlOrError) => {
+                if (urlOrError instanceof Error) {
+                  return undefined; // Handle error case
+                }
+                return urlOrError;
+              }),
+              catchError(() => of(undefined)) // Fallback in case of error
+            );
+        }
+
+        // Update user profile
+        return avatarUrl$.pipe(
+          switchMap((avatarUrl) => {
+            const request: PatchUserProfileRequestDtoV1 = {
+              avatar_url: avatarUrl,
+              first_name: action.userProfile.firstName,
+              last_name: action.userProfile.lastName,
+              favorite_team_id: action.userProfile.favoriteTeamId,
+            };
+            return this.userProfileService
+              .patchUserProfile(action.userProfile.id, request)
+              .pipe(
+                map((response) => {
+                  if (response.error) {
+                    return userActions.updateUserProfileFailure({
+                      message:
+                        response.error.message || 'Failed to update profile',
+                    });
+                  }
+
+                  return userActions.updateUserProfileSuccess({
+                    userProfile:
+                      UserProfileFactory.fromSessionAndProfileResponseDto(
+                        session,
+                        response.data
+                      ),
+                  });
+                }),
+                catchError((error: Error) => {
+                  return of(
+                    userActions.updateUserProfileFailure({
+                      message: error?.message || 'Failed to update profile',
+                    })
+                  );
                 })
               );
-            })
-          );
+          })
+        );
       })
     )
   );

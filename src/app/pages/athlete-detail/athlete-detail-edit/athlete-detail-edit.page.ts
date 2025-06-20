@@ -31,7 +31,6 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
-  IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -59,7 +58,6 @@ import { validateRequiredFields } from 'src/app/shared/utils/validate-required-f
   styleUrls: ['./athlete-detail-edit.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonText,
     IonLabel,
     IonInput,
     IonChip,
@@ -181,6 +179,7 @@ export class AthleteDetailEditPage implements OnInit, OnDestroy {
           FormActionRoutes.View,
         ],
         animated: false,
+        replaceUrl: true,
       })
     );
   }

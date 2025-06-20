@@ -50,7 +50,7 @@ export class UserProfileEditComponent implements OnInit, OnDestroy {
   readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
 
   readonly form = this.fb.group({
-    avatarSrc: this.fb.control<string | undefined>(undefined),
+    avatarUrl: this.fb.control<string | undefined>(undefined),
     firstName: this.fb.control('', [Validators.required]),
     lastName: this.fb.control('', [Validators.required]),
     email: this.fb.control({ value: '', disabled: true }),
@@ -67,7 +67,7 @@ export class UserProfileEditComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.form.controls.avatarSrc.valueChanges.subscribe((value) => {
+    this.form.controls.avatarUrl.valueChanges.subscribe((value) => {
       console.log('Avatar source changed:', value);
     });
   }

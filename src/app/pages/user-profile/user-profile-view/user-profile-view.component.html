@@ -4,7 +4,7 @@
     <ion-col>
       <ion-row class="ion-justify-content-center">
         <ion-col size="auto">
-          <app-user-profile-avatar size="xxlarge"></app-user-profile-avatar>
+          <app-user-profile-avatar size="xxlarge" [avatarSrc]="userProfile.avatarUrl"></app-user-profile-avatar>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -31,7 +31,7 @@
         <ion-list *ngIf="managedAthletePages.length > 0">
           <ion-list-header>My Athlete Pages</ion-list-header>
           <ion-item *ngFor="let athlete of managedAthletePages" button (click)="onAthleteClicked(athlete.id)">
-            <app-user-profile-avatar size="small" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
+            <app-user-profile-avatar size="auto" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
             <ion-label>{{ athlete.name }}</ion-label>
           </ion-item>
         </ion-list>
