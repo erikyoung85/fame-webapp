@@ -51,17 +51,30 @@
               </ion-header>
             </ion-col>
           </ion-row>
-        
+
           <ion-row>
             <ion-col>
-              <ion-button (click)="onPayClicked(athleteDetails)">Donate to {{ athleteDetails.firstName }}</ion-button>
+              <ion-list-header class="ion-no-padding ion-margin-bottom">
+                <ion-label>Open Raffles</ion-label>
+                <ng-container *ngIf="canUserEdit$ | ngrxPush">
+                  <ion-button size="large" shape="round" fill="solid" color="light" (click)="onCreateRaffleClicked()">
+                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                  </ion-button>
+                </ng-container>
+              </ion-list-header>
+              <div class="flex-row gap-2 scroll-x">
+                <app-raffle-preview-card
+                  *ngFor="let raffle of mockRaffles"
+                  [raffle]="raffle"
+                ></app-raffle-preview-card>
+              </div>
             </ion-col>
           </ion-row>
-        
+                
           <!-- Athlete information section -->
           <ion-row>
             <ion-col>
-              <ion-list-header class="ion-no-padding">
+              <ion-list-header class="ion-no-padding ion-margin-vertical">
                 Athlete Info
               </ion-list-header>
               <ion-list>
@@ -77,7 +90,7 @@
                 </ion-item>
                 <ion-item>
                   <ion-label>Date of birth</ion-label>
-                  <ion-icon slot="start" name="cash-sharp"></ion-icon>
+                  <ion-icon slot="start" name="calendar"></ion-icon>
                   <ion-text slot="end">{{ athleteDetails.dateOfBirth | date }}</ion-text>
                 </ion-item>
                 <ion-item>

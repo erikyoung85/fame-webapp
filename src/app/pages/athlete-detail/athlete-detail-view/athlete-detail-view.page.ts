@@ -33,6 +33,7 @@ import { Store } from '@ngrx/store';
 import { map, switchMap } from 'rxjs';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
+import { Raffle } from 'src/app/core/models/Raffle.model';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
@@ -43,6 +44,7 @@ import { BackButtonComponent } from 'src/app/shared/components/back-button/back-
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
+import { RafflePreviewCardComponent } from '../../search/raffle-preview-card/raffle-preview-card.component';
 
 @Component({
   templateUrl: './athlete-detail-view.page.html',
@@ -73,6 +75,7 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     BackButtonComponent,
     UserProfileAvatarComponent,
     PushPipe,
+    RafflePreviewCardComponent,
   ],
 })
 export class AthleteDetailViewPage implements OnInit {
@@ -99,9 +102,36 @@ export class AthleteDetailViewPage implements OnInit {
       })
     );
 
+  mockRaffles: Raffle[] = [
+    {
+      id: '0',
+      name: 'Fake Raffle 1',
+      description: 'Lorem ipsum dolor sit amet.',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000), // 1 day from now
+      sport: 'Basketball',
+      team: 'University of Iowa',
+      athlete: 'John Doe',
+      favorited: true,
+    },
+    {
+      id: '0',
+      name: 'Fake Raffle 2',
+      description: 'Lorem ipsum dolor sit amet.',
+      startDate: new Date(),
+      endDate: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
+      sport: 'Basketball',
+      team: 'University of Iowa',
+      athlete: 'John Doe',
+      favorited: true,
+    },
+  ];
+
   ngOnInit(): void {
     this.store.dispatch(userActions.fetchUserManagedPages());
   }
+
+  onCreateRaffleClicked() {}
 
   onEditClicked() {
     this.store.dispatch(
