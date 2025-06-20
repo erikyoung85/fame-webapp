@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   inject,
   input,
@@ -31,6 +31,7 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
+  IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -44,10 +45,10 @@ import { Gender } from 'src/app/core/enums/Gender.enum';
 import { Grade } from 'src/app/core/enums/Grade.enum';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UpdateAthleteRequestDtoV1 } from 'src/app/core/services/athletes/dtos/requests/updateAthlete.request.dto.v1';
+import { ModalService } from 'src/app/core/services/modalService/city-picker.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
-import { CityPickerComponent } from 'src/app/shared/components/city-picker/city-picker.component';
 import { DatePickerComponent } from 'src/app/shared/components/date-picker/date-picker.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
@@ -56,7 +57,6 @@ import { validateRequiredFields } from 'src/app/shared/utils/validate-required-f
 @Component({
   templateUrl: './athlete-detail-edit.page.html',
   styleUrls: ['./athlete-detail-edit.page.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonLabel,
     IonInput,
@@ -82,13 +82,15 @@ import { validateRequiredFields } from 'src/app/shared/utils/validate-required-f
     IonSelect,
     IonSelectOption,
     DatePickerComponent,
-    CityPickerComponent,
+    IonText,
   ],
 })
 export class AthleteDetailEditPage implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
   private readonly store = inject(Store);
   private readonly fb = inject(NonNullableFormBuilder);
+  private readonly modalService = inject(ModalService);
+  private readonly cdRef = inject(ChangeDetectorRef);
 
   readonly athleteId = input.required({ transform: numberAttribute });
 
@@ -144,6 +146,16 @@ export class AthleteDetailEditPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  async onHometownClicked() {
+    const response = await this.modalService.openCityPicker();
+    if (response !== undefined) {
+      this.form.controls.hometown.setValue(
+        `${response.city}, ${response.regionCode}`
+      );
+      this.cdRef.detectChanges();
+    }
   }
 
   onSaveClicked() {

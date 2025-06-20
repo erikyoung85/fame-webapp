@@ -1,10 +1,9 @@
-
 <ion-grid *ngIf="userProfile$ | async | unwrapAsync as userProfile" class="flex-fill flex-col">
   <ion-row>
     <ion-col>
       <ion-row class="ion-justify-content-center">
         <ion-col size="auto">
-          <app-user-profile-avatar size="xxlarge" [avatarSrc]="userProfile.avatarUrl"></app-user-profile-avatar>
+          <app-user-profile-avatar size="xxlarge" [avatarSrc]="userProfile.avatarUrl" [border]="true"></app-user-profile-avatar>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -15,32 +14,28 @@
     </ion-col>
   </ion-row>
 
-  <ion-row class="flex-fill">
-    <ion-col>
-      <ion-list>
-        <ion-item>
-          <ion-icon name="mail" slot="start"></ion-icon>
-          <ion-label>
-            <h3>Email</h3>
-            <ion-note>{{ userProfile.email }}</ion-note>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+  <ion-list>
+    <ion-item>
+      <ion-icon name="mail" slot="start"></ion-icon>
+      <ion-label>
+        <h3>Email</h3>
+        <ion-note>{{ userProfile.email }}</ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-      <ng-container *ngrxLet="managedAthletePages$ as managedAthletePages">
-        <ion-list *ngIf="managedAthletePages.length > 0">
-          <ion-list-header>My Athlete Pages</ion-list-header>
-          <ion-item *ngFor="let athlete of managedAthletePages" button (click)="onAthleteClicked(athlete.id)">
-            <app-user-profile-avatar size="auto" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
-            <ion-label>{{ athlete.name }}</ion-label>
-          </ion-item>
-        </ion-list>
-      </ng-container>
-    </ion-col>
-  </ion-row>
+  <ng-container *ngrxLet="managedAthletePages$ as managedAthletePages">
+    <ion-list-header class="ion-margin-vertical">My Athlete Pages</ion-list-header>
+    <ion-list *ngIf="managedAthletePages.length > 0">
+      <ion-item *ngFor="let athlete of managedAthletePages" button (click)="onAthleteClicked(athlete.id)">
+        <app-user-profile-avatar slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
+        <ion-label>{{ athlete.name }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-container>
 
 
-  <ion-row>
+  <ion-row style="margin-top: auto">
     <ion-col>
       <ion-button fill="outline" color="danger" expand="block" (click)="onLogoutClicked()">Logout</ion-button>
     </ion-col>
