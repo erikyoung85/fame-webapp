@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { from, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from './dtos/requests/patch-user-profile.request.dto.v1';
 import { ManagedPagesResponseDtoV1 } from './dtos/responses/managed-pages.response.dto.v1';
@@ -42,12 +42,37 @@ export class UserProfileService {
 
   getManagedPages(
     userId: string
-  ): Observable<PostgrestSingleResponse<ManagedPagesResponseDtoV1[]>> {
+  ): Observable<ManagedPagesResponseDtoV1 | Error> {
     const response = from(
-      this.supabaseService.client
-        .from('profiles_x_athletes')
-        .select('athletes(id, first_name, last_name, avatar_url)')
-        .eq('profiles_id', userId)
+      Promise.all([
+        this.supabaseService.client
+          .from('profiles_x_athletes')
+          .select('athletes(id, first_name, last_name, avatar_url)')
+          .eq('profiles_id', userId),
+        this.supabaseService.client
+          .from('profiles_x_teams')
+          .select('teams(id, schools(id, name, logo_url))')
+          .eq('profiles_id', userId),
+      ])
+    ).pipe(
+      map(([athletesRes, teamsRes]) => {
+        if (athletesRes.error || teamsRes.error) {
+          return new Error(
+            athletesRes.error?.message ??
+              teamsRes.error?.message ??
+              'Error fetching managed pages'
+          );
+        }
+
+        return {
+          athletes: athletesRes.data?.map((item) => item.athletes),
+          teams: teamsRes.data?.map((item) => ({
+            id: item.teams.id,
+            name: item.teams.schools.name,
+            avatar_url: item.teams.schools.logo_url,
+          })),
+        };
+      })
     );
 
     return response;

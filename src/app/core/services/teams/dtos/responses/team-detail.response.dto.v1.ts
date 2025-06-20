@@ -6,6 +6,7 @@ export interface TeamDetailResponseDtoV1 {
   season_year: number;
   name: string;
   banner_url: string | null;
+  logo_url: string | null;
   schools: {
     id: number;
     name: string;

@@ -18,7 +18,7 @@ import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { TabsService } from 'src/app/core/services/tabs/tabs.service';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
-import { TeamDetailComponent } from 'src/app/shared/components/team-detail/team-detail.component';
+import { TeamDetailViewComponent } from 'src/app/shared/components/team-detail/team-detail-view.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { PickTeamModalComponent } from '../../modals/pick-team/pick-team.component';
@@ -41,7 +41,7 @@ import { ToolbarIconButtonComponent } from '../../shared/components/toolbar-icon
     UnwrapAsyncPipe,
     IsAsyncLoadingPipe,
     PushPipe,
-    TeamDetailComponent,
+    TeamDetailViewComponent,
     ToolbarIconButtonComponent,
   ],
 })

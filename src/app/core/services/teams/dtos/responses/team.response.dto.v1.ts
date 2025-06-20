@@ -2,6 +2,7 @@ export interface TeamResponseDtoV1 {
   id: number;
   season_year: number;
   name: string;
+  logo_url: string | null;
   schools: {
     id: number;
     name: string;

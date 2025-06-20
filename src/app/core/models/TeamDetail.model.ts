@@ -40,7 +40,7 @@ export class TeamDetailFactory {
       name: dto.name,
       seasonYear: dto.season_year,
       bannerUrl: dto.banner_url ?? undefined,
-      logoUrl: undefined,
+      logoUrl: dto.logo_url ?? undefined,
       school: {
         id: dto.schools.id,
         name: dto.schools.name,

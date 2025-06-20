@@ -6,5 +6,6 @@ export const INITIAL_USER_STATE: UserState = {
   session: wrapAsAsyncData(undefined),
   managedPages: wrapAsAsyncData({
     athletes: [],
+    teams: [],
   }),
 };

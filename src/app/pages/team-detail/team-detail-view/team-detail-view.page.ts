@@ -3,8 +3,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  Input,
-  signal,
+  input,
+  numberAttribute,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -18,17 +18,19 @@ import {
 import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, switchMap } from 'rxjs';
+import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
-import { TeamDetailComponent } from 'src/app/shared/components/team-detail/team-detail.component';
+import { TeamDetailViewComponent } from 'src/app/shared/components/team-detail/team-detail-view.component';
+import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
-import safeParseInt from 'src/app/shared/utils/safeParseInt.util';
 
 @Component({
-  templateUrl: './team-detail.page.html',
-  styleUrls: ['./team-detail.page.scss'],
+  templateUrl: './team-detail-view.page.html',
+  styleUrls: ['./team-detail-view.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     IonProgressBar,
@@ -41,24 +43,31 @@ import safeParseInt from 'src/app/shared/utils/safeParseInt.util';
     LetDirective,
     UnwrapAsyncPipe,
     IsAsyncLoadingPipe,
-    TeamDetailComponent,
+    TeamDetailViewComponent,
     BackButtonComponent,
+    ToolbarTextButtonComponent,
   ],
 })
-export class TeamDetailPage {
+export class TeamDetailViewPage {
   private readonly store = inject(Store);
 
-  private readonly _teamId = signal<number | undefined>(undefined);
-  @Input() set teamId(value: string | number | undefined) {
-    const parsedId = safeParseInt(value);
-    this._teamId.set(parsedId);
-  }
+  readonly teamId = input.required({ transform: numberAttribute });
 
-  readonly teamDetails$ = toObservable(this._teamId).pipe(
+  readonly teamDetails$ = toObservable(this.teamId).pipe(
     filter((teamId) => teamId !== undefined),
     switchMap((teamId) => {
       this.store.dispatch(teamsActions.fetchTeamDetails({ teamId: teamId }));
       return this.store.select(teamsFeature.selectTeamDetails(teamId));
     })
   );
+
+  onEditClicked() {
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [PageRoutes.TeamDetail, this.teamId(), FormActionRoutes.Edit],
+        animated: false,
+        replaceUrl: true,
+      })
+    );
+  }
 }

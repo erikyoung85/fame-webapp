@@ -11,7 +11,6 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import {
   IonButton,
   IonButtons,
-  IonChip,
   IonCol,
   IonContent,
   IonGrid,
@@ -41,6 +40,7 @@ import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
+import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
@@ -51,7 +51,6 @@ import { RafflePreviewCardComponent } from '../../search/raffle-preview-card/raf
   styleUrls: ['./athlete-detail-view.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonChip,
     IonIcon,
     IonItem,
     IonList,
@@ -76,6 +75,7 @@ import { RafflePreviewCardComponent } from '../../search/raffle-preview-card/raf
     UserProfileAvatarComponent,
     PushPipe,
     RafflePreviewCardComponent,
+    ToolbarTextButtonComponent,
   ],
 })
 export class AthleteDetailViewPage implements OnInit {

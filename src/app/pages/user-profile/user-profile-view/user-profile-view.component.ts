@@ -59,8 +59,20 @@ export class UserProfileViewComponent implements OnInit {
     userFeature.selectManagedAthletePages
   );
 
+  readonly managedTeamPages$ = this.store.select(
+    userFeature.selectManagedTeamPages
+  );
+
   ngOnInit(): void {
     this.store.dispatch(userActions.fetchUserManagedPages());
+  }
+
+  onTeamClicked(teamId: number) {
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [PageRoutes.TeamDetail, teamId],
+      })
+    );
   }
 
   onAthleteClicked(athleteId: number) {

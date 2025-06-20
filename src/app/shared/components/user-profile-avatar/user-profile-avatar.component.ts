@@ -39,6 +39,7 @@ export class UserProfileAvatarComponent
     'auto';
   @Input({ transform: booleanAttribute }) border: boolean = false;
   @Input() background?: CSS.Properties['background'] = 'white';
+  @Input() defaultAvatarSrc?: string | undefined;
 
   protected readonly DEFAULT_AVATAR_SRC = 'assets/images/default-avatar.svg';
 
@@ -58,12 +59,14 @@ export class UserProfileAvatarComponent
       source: CameraSource.Prompt,
       width: 400, // resize to 400px
       height: 400,
-    });
+    }).catch((error) => new Error('Camera error: ' + error));
 
     if (this._isTouched() === false) {
       this._isTouched.set(true);
       this._onTouched();
     }
+
+    if (image instanceof Error) return;
 
     if (image?.dataUrl) {
       this._value.set(image.dataUrl);

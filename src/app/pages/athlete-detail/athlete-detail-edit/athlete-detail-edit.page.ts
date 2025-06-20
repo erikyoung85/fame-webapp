@@ -16,7 +16,6 @@ import {
 } from '@angular/forms';
 import {
   IonButtons,
-  IonChip,
   IonCol,
   IonContent,
   IonGrid,
@@ -50,6 +49,7 @@ import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.ac
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { DatePickerComponent } from 'src/app/shared/components/date-picker/date-picker.component';
+import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { validateRequiredFields } from 'src/app/shared/utils/validate-required-fields.util';
@@ -60,7 +60,6 @@ import { validateRequiredFields } from 'src/app/shared/utils/validate-required-f
   imports: [
     IonLabel,
     IonInput,
-    IonChip,
     IonIcon,
     IonItem,
     IonList,
@@ -83,6 +82,7 @@ import { validateRequiredFields } from 'src/app/shared/utils/validate-required-f
     IonSelectOption,
     DatePickerComponent,
     IonText,
+    ToolbarTextButtonComponent,
   ],
 })
 export class AthleteDetailEditPage implements OnInit, OnDestroy {

@@ -3,7 +3,7 @@ import { from, map, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable({ providedIn: 'root' })
-export class AvatarUploadService {
+export class StorageService {
   private readonly supabaseService = inject(SupabaseService);
 
   uploadProfilePicture(
@@ -40,6 +40,31 @@ export class AvatarUploadService {
   ): Observable<string | Error> {
     const bucketId = 'athlete-images';
     const filePath = `${athleteId}/avatar.jpg`;
+
+    return from(
+      this.supabaseService.client.storage
+        .from(bucketId)
+        .upload(filePath, image, {
+          cacheControl: '3600',
+          upsert: true,
+        })
+    ).pipe(
+      map((result) => {
+        if (result.error) return new Error(result.error.message);
+
+        // Step 4: Get Public URL
+        const response = this.supabaseService.client.storage
+          .from(bucketId)
+          .getPublicUrl(result.data.path);
+
+        return response.data.publicUrl;
+      })
+    );
+  }
+
+  uploadTeamLogo(teamId: number, image: Blob): Observable<string | Error> {
+    const bucketId = 'team-images';
+    const filePath = `${teamId}/logo.jpg`;
 
     return from(
       this.supabaseService.client.storage

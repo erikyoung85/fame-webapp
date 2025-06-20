@@ -2,7 +2,7 @@
   <div class="top-overhang-element">
     <app-user-profile-avatar 
       size="xxlarge"
-      [avatarSrc]="teamDetails.school.logoUrl"
+      [avatarSrc]="teamDetails.logoUrl ?? teamDetails.school.logoUrl"
       [border]="true"
     ></app-user-profile-avatar>
   </div>

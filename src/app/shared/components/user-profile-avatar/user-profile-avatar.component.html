@@ -3,7 +3,7 @@
     class="avatar {{size}}" 
     [ngClass]="{ border: border }"
   >
-    <img [src]="(_value() | isNilOrEmpty) ? DEFAULT_AVATAR_SRC : _value()" />
+    <img [src]="(_value() | isNilOrEmpty) ? (defaultAvatarSrc ?? DEFAULT_AVATAR_SRC) : _value()" />
   </ion-avatar>
   <ion-fab-button 
     *ngIf="editMode" 

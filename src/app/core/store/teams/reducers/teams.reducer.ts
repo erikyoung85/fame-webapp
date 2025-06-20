@@ -64,5 +64,42 @@ export const teamsReducer = createReducer(
         ),
       },
     };
+  }),
+
+  on(teamsActions.updateTeam, (state, action): TeamsState => {
+    return {
+      ...state,
+      teamDetailsDict: {
+        ...state.teamDetailsDict,
+        [action.request.id]: wrapAsAsyncData(
+          state.teamDetailsDict[action.request.id]?.data,
+          AsyncDataStatus.Loading
+        ),
+      },
+    };
+  }),
+  on(teamsActions.updateTeamSuccess, (state, action): TeamsState => {
+    return {
+      ...state,
+      teamDetailsDict: {
+        ...state.teamDetailsDict,
+        [action.teamDetails.id]: wrapAsAsyncData(
+          action.teamDetails,
+          AsyncDataStatus.Success
+        ),
+      },
+    };
+  }),
+  on(teamsActions.updateTeamFailure, (state, action): TeamsState => {
+    return {
+      ...state,
+      teamDetailsDict: {
+        ...state.teamDetailsDict,
+        [action.teamId]: wrapAsAsyncData(
+          state.teamDetailsDict[action.teamId]?.data,
+          AsyncDataStatus.Success
+        ),
+      },
+    };
   })
 );

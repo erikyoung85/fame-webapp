@@ -1,0 +1,59 @@
+<ng-container *ngrxLet="teamDetails$ as teamDetailsAsync">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <toolbar-text-button (click)="onCancelClicked()">Cancel</toolbar-text-button>
+      </ion-buttons>
+      <ion-title>{{ (teamDetailsAsync | unwrapAsync)?.school?.abbreviation }}</ion-title>
+      <ion-buttons slot="end">
+        <toolbar-text-button (click)="onSaveClicked()">Save</toolbar-text-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-progress-bar type="indeterminate" *ngIf="teamDetailsAsync | isAsyncLoading"></ion-progress-bar>
+  </ion-header>
+  
+  <ion-content 
+    *ngIf="(teamDetailsAsync | unwrapAsync) as teamDetails" 
+    [fullscreen]="true" 
+    class="scroll-behind-header top-image-container"
+  > 
+    <div class="top-image-wrapper">
+      <img [src]="teamDetails.bannerUrl" class="top-image" />
+    </div>
+
+    <div class="page-content">
+      <div class="top-overhang-container">
+        <div class="top-overhang-element">
+          <app-user-profile-avatar 
+            size="xxlarge"
+            [border]="true"
+            editMode
+            [formControl]="form.controls.logoUrl"
+            [defaultAvatarSrc]="teamDetails.school.logoUrl"
+          ></app-user-profile-avatar>
+        </div>
+        
+        <ion-grid class="top-overhang-other-content">
+        
+          <!-- Top text -->
+          <ion-row class="ion-align-items-center">
+            <ion-col>
+              <ion-header collapse="condense">
+                <ion-toolbar>
+                  <h1 role="heading" aria-level="1" class="ion-margin-top">
+                    <ion-text>{{ teamDetails.school.name}}</ion-text>
+                  </h1>
+                  <ion-label>
+                    <ion-text color="medium">
+                      {{ teamDetails.name }}
+                    </ion-text>
+                  </ion-label>
+                </ion-toolbar>
+              </ion-header>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+  </ion-content>
+</ng-container>

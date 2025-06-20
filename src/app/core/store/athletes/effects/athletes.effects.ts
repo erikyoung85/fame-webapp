@@ -7,7 +7,7 @@ import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AthleteFactory } from 'src/app/core/models/Athlete.model';
 import { AthleteDetailFactory } from 'src/app/core/models/AthleteDetail.model';
 import { AthletesService } from 'src/app/core/services/athletes/athletes.service';
-import { AvatarUploadService } from 'src/app/core/services/avatar/avatar.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 import dataUrlToBlob, {
   isDataUrl,
 } from 'src/app/shared/utils/data-url-to-blob.util';
@@ -19,7 +19,7 @@ export class AthletesEffects {
   private readonly actions$ = inject(Actions);
   private readonly athletesService = inject(AthletesService);
   private readonly toastController = inject(ToastController);
-  private readonly avatarUploadService = inject(AvatarUploadService);
+  private readonly storageService = inject(StorageService);
   private readonly store = inject(Store);
 
   failureMessages$ = createEffect(
@@ -116,7 +116,7 @@ export class AthletesEffects {
           isDataUrl(action.request.avatar_url)
         ) {
           const image: Blob = dataUrlToBlob(action.request.avatar_url);
-          avatarUrl$ = this.avatarUploadService
+          avatarUrl$ = this.storageService
             .uploadAthleteAvatar(action.request.id, image)
             .pipe(
               map((urlOrError) => {

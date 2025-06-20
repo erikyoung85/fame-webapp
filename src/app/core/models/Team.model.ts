@@ -4,6 +4,7 @@ export interface Team {
   id: number;
   seasonYear: number;
   name: string;
+  logoUrl: string | undefined;
   school: {
     id: number;
     name: string;
@@ -25,6 +26,7 @@ export class TeamFactory {
       id: dto.id,
       name: dto.name,
       seasonYear: dto.season_year,
+      logoUrl: dto.logo_url ?? undefined,
       school: {
         id: dto.schools.id,
         name: dto.schools.name,

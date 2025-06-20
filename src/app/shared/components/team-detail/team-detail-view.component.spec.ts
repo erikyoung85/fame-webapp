@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TeamDetailComponent } from './team-detail.component';
+import { TeamDetailViewComponent } from './team-detail-view.component';
 
-describe('TeamDetailComponent', () => {
-  let component: TeamDetailComponent;
-  let fixture: ComponentFixture<TeamDetailComponent>;
+describe('TeamDetailViewComponent', () => {
+  let component: TeamDetailViewComponent;
+  let fixture: ComponentFixture<TeamDetailViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TeamDetailComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TeamDetailViewComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TeamDetailComponent);
+    fixture = TestBed.createComponent(TeamDetailViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

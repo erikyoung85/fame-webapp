@@ -1,5 +1,9 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Session } from '@supabase/supabase-js';
+import {
+  AthletePagePreview,
+  TeamPagePreview,
+} from 'src/app/core/models/PagePreview.model';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/requests/signup-with-password.request.dto.v1';
@@ -48,7 +52,8 @@ export const userActions = createActionGroup({
 
     'Fetch User Managed Pages': emptyProps(),
     'Fetch User Managed Pages Success': props<{
-      athletes: { id: number; name: string; avatarUrl: string | undefined }[];
+      athletes: AthletePagePreview[];
+      teams: TeamPagePreview[];
     }>(),
     'Fetch User Managed Pages Failure': props<{ message: string }>(),
   },

@@ -6,7 +6,7 @@
         <app-back-button></app-back-button>
       </ion-buttons>
       <ion-buttons slot="end" *ngIf="canUserEdit$ | ngrxPush">
-        <ion-chip (click)="onEditClicked()">Edit</ion-chip>
+        <toolbar-text-button (click)="onEditClicked()">Edit</toolbar-text-button>
       </ion-buttons>
   
       <ion-progress-bar type="indeterminate" *ngIf="athleteDetailsAsync | isAsyncLoading"></ion-progress-bar>

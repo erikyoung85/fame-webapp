@@ -178,6 +178,7 @@ export const userReducer = createReducer(
       managedPages: wrapAsAsyncData(
         {
           athletes: [],
+          teams: [],
         },
         AsyncDataStatus.Loading
       ),
@@ -189,6 +190,7 @@ export const userReducer = createReducer(
       managedPages: wrapAsAsyncData(
         {
           athletes: action.athletes,
+          teams: action.teams,
         },
         AsyncDataStatus.Success
       ),
@@ -200,6 +202,7 @@ export const userReducer = createReducer(
       managedPages: wrapAsAsyncData(
         {
           athletes: [],
+          teams: [],
         },
         AsyncDataStatus.Error,
         action.message

@@ -3,11 +3,11 @@
     <ion-title>{{ form.value.firstName }}</ion-title>
     <ion-buttons slot="start">
       <ion-buttons slot="end">
-        <ion-chip (click)="onCancelClicked()">Cancel</ion-chip>
+        <toolbar-text-button (click)="onCancelClicked()">Cancel</toolbar-text-button>
       </ion-buttons>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-chip (click)="onSaveClicked()">Save</ion-chip>
+      <toolbar-text-button (click)="onSaveClicked()">Save</toolbar-text-button>
     </ion-buttons>
 
     <ion-progress-bar type="indeterminate" *ngIf="athleteDetails$ | ngrxPush | isAsyncLoading"></ion-progress-bar>

@@ -1,23 +1,27 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-chip *ngIf="!(isEditMode$ | ngrxPush)" (click)="onEditClicked()">Edit</ion-chip>
-      <ion-chip *ngIf="isEditMode$ | ngrxPush" (click)="onCancelClicked()">Cancel</ion-chip>
-    </ion-buttons>
-    <ion-title>Profile</ion-title>
-  </ion-toolbar>
-  <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <div class="full-height flex-col">
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title size="large">Profile</ion-title>
-      </ion-toolbar>
-    </ion-header>
-
-    <!-- View and Edit components -->
-    <router-outlet></router-outlet>
-  </div>
-</ion-content>
+<ng-container *ngrxLet="isEditMode$ as isEditMode">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-chip *ngIf="isEditMode" (click)="onCancelClicked()">Cancel</ion-chip>
+      </ion-buttons>
+      <ion-title>Profile</ion-title>
+      <ion-buttons slot="end">
+        <ion-chip *ngIf="!(isEditMode)" (click)="onEditClicked()">Edit</ion-chip>
+      </ion-buttons>
+    </ion-toolbar>
+    <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
+  </ion-header>
+  
+  <ion-content [fullscreen]="true">
+    <div class="full-height flex-col">
+      <ion-header collapse="condense">
+        <ion-toolbar>
+          <ion-title size="large">Profile</ion-title>
+        </ion-toolbar>
+      </ion-header>
+  
+      <!-- View and Edit components -->
+      <router-outlet></router-outlet>
+    </div>
+  </ion-content>
+</ng-container>

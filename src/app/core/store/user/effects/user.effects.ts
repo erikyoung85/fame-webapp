@@ -17,9 +17,14 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { PageType } from 'src/app/core/enums/PageType.enum';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import {
+  AthletePagePreview,
+  TeamPagePreview,
+} from 'src/app/core/models/PagePreview.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
-import { AvatarUploadService } from 'src/app/core/services/avatar/avatar.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { UserProfileService } from 'src/app/core/services/user-profile/user-profile.service';
@@ -40,7 +45,7 @@ export class UserEffects {
   private readonly userProfileService = inject(UserProfileService);
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
-  private readonly avatarUploadService = inject(AvatarUploadService);
+  private readonly storageService = inject(StorageService);
 
   failureMessages$ = createEffect(
     () =>
@@ -301,7 +306,7 @@ export class UserEffects {
           isDataUrl(action.userProfile.avatarUrl)
         ) {
           const image: Blob = dataUrlToBlob(action.userProfile.avatarUrl);
-          avatarUrl$ = this.avatarUploadService
+          avatarUrl$ = this.storageService
             .uploadProfilePicture(session.user.id, image)
             .pipe(
               map((urlOrError) => {
@@ -484,19 +489,33 @@ export class UserEffects {
       switchMap(([, userId]) => {
         return this.userProfileService.getManagedPages(userId).pipe(
           map((response) => {
-            if (response.error) {
+            if (response instanceof Error) {
               return userActions.fetchUserManagedPagesFailure({
-                message: response.error.message,
+                message: response.message,
               });
             }
 
-            const managedAthletes = response.data.map((item) => ({
-              id: item.athletes.id,
-              name: `${item.athletes.first_name} ${item.athletes.last_name}`,
-              avatarUrl: item.athletes.avatar_url ?? undefined,
-            }));
+            const managedAthletes: AthletePagePreview[] = response.athletes.map(
+              (athlete) => ({
+                type: PageType.Athlete,
+                id: athlete.id,
+                title: `${athlete.first_name} ${athlete.last_name}`,
+                description: undefined,
+                avatarUrl: athlete.avatar_url ?? undefined,
+              })
+            );
+            const managedTeams: TeamPagePreview[] = response.teams.map(
+              (team) => ({
+                type: PageType.Team,
+                id: team.id,
+                title: team.name,
+                description: undefined,
+                avatarUrl: team.avatar_url ?? undefined,
+              })
+            );
             return userActions.fetchUserManagedPagesSuccess({
               athletes: managedAthletes,
+              teams: managedTeams,
             });
           }),
           catchError((error: Error) => {

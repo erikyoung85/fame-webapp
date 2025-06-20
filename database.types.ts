@@ -136,6 +136,42 @@ export type Database = {
           },
         ]
       }
+      profiles_x_teams: {
+        Row: {
+          created_at: string
+          id: number
+          profiles_id: string
+          teams_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          profiles_id: string
+          teams_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          profiles_id?: string
+          teams_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_x_teams_profiles_id_fkey"
+            columns: ["profiles_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_x_teams_teams_id_fkey"
+            columns: ["teams_id"]
+            isOneToOne: true
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       roster_entries: {
         Row: {
           athlete_id: number
@@ -234,6 +270,7 @@ export type Database = {
           banner_url: string | null
           created_at: string
           id: number
+          logo_url: string | null
           name: string
           ncaa_team_id: number | null
           popularity_score: number
@@ -245,6 +282,7 @@ export type Database = {
           banner_url?: string | null
           created_at?: string
           id?: number
+          logo_url?: string | null
           name: string
           ncaa_team_id?: number | null
           popularity_score?: number
@@ -256,6 +294,7 @@ export type Database = {
           banner_url?: string | null
           created_at?: string
           id?: number
+          logo_url?: string | null
           name?: string
           ncaa_team_id?: number | null
           popularity_score?: number

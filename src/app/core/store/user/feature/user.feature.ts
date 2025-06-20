@@ -30,5 +30,9 @@ export const userFeature = createFeature({
       selectManagedPages,
       (managedPages) => managedPages.data.athletes
     ),
+    selectManagedTeamPages: createSelector(
+      selectManagedPages,
+      (managedPages) => managedPages.data.teams
+    ),
   }),
 });

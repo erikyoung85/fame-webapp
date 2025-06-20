@@ -21,9 +21,9 @@ import { RouterActions } from 'src/app/core/store/router/actions/router.actions'
 import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-avatar.component';
 
 @Component({
-  selector: 'app-team-detail',
-  templateUrl: './team-detail.component.html',
-  styleUrls: ['./team-detail.component.scss'],
+  selector: 'app-team-detail-view',
+  templateUrl: './team-detail-view.component.html',
+  styleUrls: ['./team-detail-view.component.scss'],
   imports: [
     IonToolbar,
     IonHeader,
@@ -41,10 +41,10 @@ import { UserProfileAvatarComponent } from '../user-profile-avatar/user-profile-
     NgFor,
   ],
 })
-export class TeamDetailComponent {
+export class TeamDetailViewComponent {
   private readonly store = inject(Store);
 
-  @Input() teamDetails!: TeamDetail;
+  @Input({ required: true }) teamDetails!: TeamDetail;
 
   onAthleteClicked(athlete: TeamDetail['rosterAthletes'][number]) {
     this.store.dispatch(

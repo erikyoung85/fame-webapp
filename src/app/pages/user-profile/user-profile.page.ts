@@ -11,7 +11,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { PushPipe } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
@@ -38,6 +38,7 @@ import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-asy
     RouterOutlet,
     PushPipe,
     NgIf,
+    LetDirective,
   ],
 })
 export class UserProfilePage {
@@ -56,6 +57,8 @@ export class UserProfilePage {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
         url: [PageRoutes.UserProfile, FormActionRoutes.Edit],
+        animated: false,
+        replaceUrl: true,
       })
     );
   }
@@ -64,6 +67,8 @@ export class UserProfilePage {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
         url: [PageRoutes.UserProfile, FormActionRoutes.View],
+        animated: false,
+        replaceUrl: true,
       })
     );
   }

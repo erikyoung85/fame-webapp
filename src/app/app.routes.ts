@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
 import { isNotLoggedInGuard } from './core/guards/is-not-logged-in/is-not-logged-in.guard';
 import { SessionGuard } from './core/guards/session/session.guard';
@@ -33,27 +33,15 @@ export enum FormActionRoutes {
   Edit = 'edit',
 }
 
-const athleteDetailPageRoutes: Routes = [
-  {
-    path: `${PageRoutes.AthleteDetail}/:athleteId`,
-    redirectTo: `${PageRoutes.AthleteDetail}/:athleteId/${FormActionRoutes.View}`,
-    pathMatch: 'full',
-  },
-  {
-    path: `${PageRoutes.AthleteDetail}/:athleteId/${FormActionRoutes.View}`,
-    loadComponent: () =>
-      import(
-        './pages/athlete-detail/athlete-detail-view/athlete-detail-view.page'
-      ).then((m) => m.AthleteDetailViewPage),
-  },
-  {
-    path: `${PageRoutes.AthleteDetail}/:athleteId/${FormActionRoutes.Edit}`,
-    loadComponent: () =>
-      import(
-        './pages/athlete-detail/athlete-detail-edit/athlete-detail-edit.page'
-      ).then((m) => m.AthleteDetailEditPage),
-  },
-];
+const athleteDetailPageRoute: Route = {
+  path: `${PageRoutes.AthleteDetail}/:athleteId`,
+  loadChildren: () => import('./pages/athlete-detail/athlete-detail.routes'),
+};
+
+const teamDetailPageRoute: Route = {
+  path: `${PageRoutes.TeamDetail}/:teamId`,
+  loadChildren: () => import('./pages/team-detail/team-detail.routes'),
+};
 
 export const routes: Routes = [
   {
@@ -91,7 +79,7 @@ export const routes: Routes = [
                 (m) => m.FavoriteTeamPage
               ),
           },
-          ...athleteDetailPageRoutes,
+          athleteDetailPageRoute,
         ],
       },
       {
@@ -107,14 +95,8 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./pages/search/search.page').then((m) => m.SearchPage),
           },
-          {
-            path: `${PageRoutes.TeamDetail}/:teamId`,
-            loadComponent: () =>
-              import('./pages/team-detail/team-detail.page').then(
-                (m) => m.TeamDetailPage
-              ),
-          },
-          ...athleteDetailPageRoutes,
+          teamDetailPageRoute,
+          athleteDetailPageRoute,
         ],
       },
       {
@@ -157,7 +139,8 @@ export const routes: Routes = [
               ),
             canActivate: [isNotLoggedInGuard],
           },
-          ...athleteDetailPageRoutes,
+          teamDetailPageRoute,
+          athleteDetailPageRoute,
         ],
       },
     ],
