@@ -100,6 +100,35 @@ export type Database = {
           },
         ]
       }
+      profiles_admin: {
+        Row: {
+          created_at: string
+          id: number
+          is_admin: boolean
+          profiles_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_admin?: boolean
+          profiles_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_admin?: boolean
+          profiles_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_admin_profiles_id_fkey"
+            columns: ["profiles_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles_x_athletes: {
         Row: {
           athletes_id: number
@@ -343,6 +372,14 @@ export type Database = {
       gtrgm_out: {
         Args: { "": unknown }
         Returns: unknown
+      }
+      is_athlete_manager: {
+        Args: { target_athlete_id: number }
+        Returns: boolean
+      }
+      is_team_manager: {
+        Args: { target_team_id: number }
+        Returns: boolean
       }
       search_all_entities_v2: {
         Args: { query: string; page_limit?: number; page_offset?: number }

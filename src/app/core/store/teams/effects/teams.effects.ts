@@ -28,7 +28,8 @@ export class TeamsEffects {
       this.actions$.pipe(
         ofType(
           teamsActions.fetchTeamsFailure,
-          teamsActions.fetchTeamDetailsFailure
+          teamsActions.fetchTeamDetailsFailure,
+          teamsActions.updateTeamFailure
         ),
         tap(async (action) => {
           if (action.message !== undefined) {

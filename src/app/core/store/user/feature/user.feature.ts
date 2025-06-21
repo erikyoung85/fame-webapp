@@ -9,30 +9,69 @@ export const userFeature = createFeature({
     selectSession,
     selectUserProfile,
     selectManagedPages,
-  }) => ({
-    selectIsSessionLoading: createSelector(
+  }) => {
+    const selectIsSessionLoading = createSelector(
       selectSession,
       (session) => session.status === AsyncDataStatus.Loading
-    ),
-    selectSupabaseAuthToken: createSelector(
+    );
+
+    const selectSupabaseAuthToken = createSelector(
       selectSession,
       (session) => session.data?.access_token
-    ),
-    selectUserId: createSelector(
+    );
+
+    const selectUserId = createSelector(
       selectSession,
       (session) => session.data?.user?.id
-    ),
-    selectFavoriteTeamId: createSelector(
+    );
+
+    const selectFavoriteTeamId = createSelector(
       selectUserProfile,
       (userProfile) => userProfile.data?.favoriteTeamId
-    ),
-    selectManagedAthletePages: createSelector(
+    );
+
+    const selectIsUserAdmin = createSelector(
+      selectUserProfile,
+      (userProfile) => userProfile.data?.isAdmin ?? false
+    );
+
+    const selectManagedAthletePages = createSelector(
       selectManagedPages,
       (managedPages) => managedPages.data.athletes
-    ),
-    selectManagedTeamPages: createSelector(
+    );
+
+    const selectManagedTeamPages = createSelector(
       selectManagedPages,
       (managedPages) => managedPages.data.teams
-    ),
-  }),
+    );
+
+    const selectIsAthleteManager = (athleteId: number) =>
+      createSelector(
+        selectManagedAthletePages,
+        selectIsUserAdmin,
+        (managedAthletePages, isAdmin) =>
+          isAdmin ||
+          managedAthletePages.some((athlete) => athlete.id === athleteId)
+      );
+
+    const selectIsTeamManager = (teamId: number) =>
+      createSelector(
+        selectManagedTeamPages,
+        selectIsUserAdmin,
+        (managedTeamPages, isAdmin) =>
+          isAdmin || managedTeamPages.some((team) => team.id === teamId)
+      );
+
+    return {
+      selectIsSessionLoading,
+      selectSupabaseAuthToken,
+      selectUserId,
+      selectFavoriteTeamId,
+      selectIsUserAdmin,
+      selectManagedAthletePages,
+      selectManagedTeamPages,
+      selectIsAthleteManager,
+      selectIsTeamManager,
+    };
+  },
 });

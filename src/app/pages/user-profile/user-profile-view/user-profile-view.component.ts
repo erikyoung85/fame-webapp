@@ -24,6 +24,7 @@ import { PageRoutes } from 'src/app/app.routes';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { PillComponent } from 'src/app/shared/components/pill/pill.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
@@ -48,6 +49,7 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     UnwrapAsyncPipe,
     UserProfileAvatarComponent,
     LetDirective,
+    PillComponent,
   ],
 })
 export class UserProfileViewComponent implements OnInit {

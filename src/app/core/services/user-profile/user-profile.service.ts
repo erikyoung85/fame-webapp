@@ -13,17 +13,19 @@ export class UserProfileService {
   private readonly supabaseService = inject(SupabaseService);
 
   private readonly profileSelect =
-    'id, avatar_url, first_name, last_name, favorite_team_id';
+    'id, avatar_url, first_name, last_name, favorite_team_id, profiles_admin(is_admin)';
   getUserProfile(
     userId: string
   ): Observable<PostgrestSingleResponse<UserProfileResponseDtoV1>> {
-    return from(
+    const response = from(
       this.supabaseService.client
         .from('profiles')
         .select(this.profileSelect)
         .eq('id', userId)
         .single()
     );
+
+    return response;
   }
 
   patchUserProfile(

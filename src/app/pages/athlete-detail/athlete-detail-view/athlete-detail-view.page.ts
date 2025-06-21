@@ -29,7 +29,7 @@ import {
 } from '@ionic/angular/standalone';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { map, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
 import { Raffle } from 'src/app/core/models/Raffle.model';
@@ -93,14 +93,11 @@ export class AthleteDetailViewPage implements OnInit {
     })
   );
 
-  readonly canUserEdit$ = this.store
-    .select(userFeature.selectManagedAthletePages)
-    .pipe(
-      map((athletes) => {
-        const athleteId = this.athleteId();
-        return athletes.some((athlete) => athlete.id === athleteId);
-      })
-    );
+  readonly canUserEdit$ = toObservable(this.athleteId).pipe(
+    switchMap((athleteId) =>
+      this.store.select(userFeature.selectIsAthleteManager(athleteId))
+    )
+  );
 
   mockRaffles: Raffle[] = [
     {

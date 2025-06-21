@@ -15,13 +15,14 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { LetDirective } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, switchMap } from 'rxjs';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
+import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { TeamDetailViewComponent } from 'src/app/shared/components/team-detail/team-detail-view.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
@@ -46,6 +47,7 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     TeamDetailViewComponent,
     BackButtonComponent,
     ToolbarTextButtonComponent,
+    PushPipe,
   ],
 })
 export class TeamDetailViewPage {
@@ -59,6 +61,12 @@ export class TeamDetailViewPage {
       this.store.dispatch(teamsActions.fetchTeamDetails({ teamId: teamId }));
       return this.store.select(teamsFeature.selectTeamDetails(teamId));
     })
+  );
+
+  readonly canUserEdit$ = toObservable(this.teamId).pipe(
+    switchMap((teamId) =>
+      this.store.select(userFeature.selectIsTeamManager(teamId))
+    )
   );
 
   onEditClicked() {

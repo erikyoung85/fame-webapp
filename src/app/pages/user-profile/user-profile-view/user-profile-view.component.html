@@ -11,6 +11,11 @@
           <ion-text><h1 class="ion-text-xl">{{ userProfile.firstName }} {{ userProfile.lastName }}</h1></ion-text>
         </ion-col>
       </ion-row>
+      <ion-row class="ion-justify-content-center" *ngIf="userProfile.isAdmin">
+        <ion-col size="auto" *ngIf="userProfile.isAdmin">
+          <shared-pill>Admin</shared-pill>
+        </ion-col>
+      </ion-row>
     </ion-col>
   </ion-row>
 
