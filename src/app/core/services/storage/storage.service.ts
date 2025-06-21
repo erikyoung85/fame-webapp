@@ -11,7 +11,7 @@ export class StorageService {
     image: Blob
   ): Observable<string | Error> {
     const bucketId = 'avatars';
-    const filePath = `${userId}/profile.jpg`;
+    const filePath = `${userId}/${new Date().getTime()}.jpg`;
 
     return from(
       this.supabaseService.client.storage
@@ -39,7 +39,7 @@ export class StorageService {
     image: Blob
   ): Observable<string | Error> {
     const bucketId = 'athlete-images';
-    const filePath = `${athleteId}/avatar.jpg`;
+    const filePath = `${athleteId}/${new Date().getTime()}.jpg`;
 
     return from(
       this.supabaseService.client.storage
@@ -64,7 +64,7 @@ export class StorageService {
 
   uploadTeamLogo(teamId: number, image: Blob): Observable<string | Error> {
     const bucketId = 'team-images';
-    const filePath = `${teamId}/logo.jpg`;
+    const filePath = `${teamId}/${new Date().getTime()}.jpg`;
 
     return from(
       this.supabaseService.client.storage
