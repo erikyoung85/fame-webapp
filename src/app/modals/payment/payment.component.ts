@@ -24,6 +24,7 @@ import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { Athlete } from 'src/app/core/models/Athlete.model';
 import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';
+import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
 import { stripeActions } from 'src/app/core/store/stripe/actions/stripe.actions';
 import { stripeFeature } from 'src/app/core/store/stripe/feature/stripe.feature';
 import { combineIsLoading } from 'src/app/shared/utils/combine-is-loading.util';
@@ -132,6 +133,6 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    return this.modalController.dismiss();
+    return this.modalController.dismiss(undefined, ModalDismissRole.Cancel);
   }
 }

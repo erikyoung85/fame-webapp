@@ -1,9 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
+  inject,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   signal,
 } from '@angular/core';
 import {
@@ -17,6 +20,7 @@ import {
 } from '@ionic/angular/standalone';
 import { interval, Subject, takeUntil, takeWhile } from 'rxjs';
 import { Raffle } from 'src/app/core/models/Raffle.model';
+import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 
 @Component({
   selector: 'app-raffle-preview-card',
@@ -35,8 +39,10 @@ import { Raffle } from 'src/app/core/models/Raffle.model';
 })
 export class RafflePreviewCardComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
+  private readonly modalService = inject(ModalService);
 
   @Input() raffle!: Raffle;
+  @Output() onJoinRaffle = new EventEmitter<void>();
 
   countdownSeconds = signal(0);
   countdownString = signal('');
@@ -89,5 +95,10 @@ export class RafflePreviewCardComponent implements OnInit, OnDestroy {
     return `${hours < 10 ? '0' + hours : hours}:${
       minutes < 10 ? '0' + minutes : minutes
     }:${seconds < 10 ? '0' + seconds : seconds}`;
+  }
+
+  onJoinRaffleClicked(event: MouseEvent) {
+    event.stopPropagation();
+    this.onJoinRaffle.emit();
   }
 }

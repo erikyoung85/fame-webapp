@@ -44,7 +44,7 @@ import { Gender } from 'src/app/core/enums/Gender.enum';
 import { Grade } from 'src/app/core/enums/Grade.enum';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UpdateAthleteRequestDtoV1 } from 'src/app/core/services/athletes/dtos/requests/updateAthlete.request.dto.v1';
-import { ModalService } from 'src/app/core/services/modalService/city-picker.service';
+import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';

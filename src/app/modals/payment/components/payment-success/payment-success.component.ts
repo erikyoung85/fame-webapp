@@ -9,6 +9,7 @@ import {
   IonText,
   ModalController,
 } from '@ionic/angular/standalone';
+import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
 import { ConfettiBackgroundComponent } from 'src/app/shared/components/confetti-background/confetti-background.component';
 
 @Component({
@@ -33,6 +34,6 @@ export class PaymentSuccessComponent implements OnInit {
   }
 
   onCloseClicked() {
-    this.modalController.dismiss();
+    this.modalController.dismiss(true, ModalDismissRole.Confirm);
   }
 }

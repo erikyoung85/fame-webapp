@@ -29,6 +29,7 @@ import { Store } from '@ngrx/store';
 import { filter, Subject, take, takeUntil, timer } from 'rxjs';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { Team } from 'src/app/core/models/Team.model';
+import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
@@ -86,7 +87,7 @@ export class PickTeamModalComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    return this.modalController.dismiss(null, 'cancel');
+    return this.modalController.dismiss(null, ModalDismissRole.Cancel);
   }
 
   confirm() {
@@ -95,7 +96,10 @@ export class PickTeamModalComponent implements OnInit, OnDestroy {
         request: { favorite_team_id: this._selectedTeamId() ?? null },
       })
     );
-    return this.modalController.dismiss(this._selectedTeamId(), 'confirm');
+    return this.modalController.dismiss(
+      this._selectedTeamId(),
+      ModalDismissRole.Confirm
+    );
   }
 
   selectTeam(team: Team) {

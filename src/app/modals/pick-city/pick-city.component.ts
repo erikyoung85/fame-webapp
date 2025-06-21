@@ -24,7 +24,7 @@ import {
 } from 'rxjs';
 import { CityResponseDtoV1 } from 'src/app/core/services/geo-city/dtos/city.response.dto.v1';
 import { GeoCityService } from 'src/app/core/services/geo-city/geo-city.service';
-import { ModalDismissRole } from 'src/app/core/services/modalService/city-picker.service';
+import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
 
 @Component({
   templateUrl: './pick-city.component.html',

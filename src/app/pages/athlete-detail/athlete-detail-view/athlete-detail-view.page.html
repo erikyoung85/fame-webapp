@@ -66,6 +66,7 @@
                 <app-raffle-preview-card
                   *ngFor="let raffle of mockRaffles"
                   [raffle]="raffle"
+                  (onJoinRaffle)="onJoinRaffleClicked(raffle, athleteDetails)"
                 ></app-raffle-preview-card>
               </div>
             </ion-col>

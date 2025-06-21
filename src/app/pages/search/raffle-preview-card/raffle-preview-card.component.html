@@ -18,7 +18,7 @@
   </ion-card-content>
 
   <div style="display: flex; justify-content: space-between; align-items: center">
-    <ion-button size="small" [fill]="'solid'">Join</ion-button>
+    <ion-button size="small" [fill]="'solid'" (click)="onJoinRaffleClicked($event)">Join</ion-button>
     <ion-text color="dark">
       {{ countdownString() }}
     </ion-text>
