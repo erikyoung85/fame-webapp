@@ -39,9 +39,10 @@
     <ion-list-header>
       <ion-label>Open Raffles</ion-label>
     </ion-list-header>
-    <div class="ion-padding flex-row gap-2 scroll-x">
+    <div class="ion-padding flex-row gap-2 scroll-x" *ngrxLet="allRaffles$ as allRaffles">
+      <ion-text *ngIf="allRaffles.length === 0" class="ion-padding">No active raffles</ion-text>
       <app-raffle-preview-card
-        *ngFor="let raffle of mockRaffles"
+        *ngFor="let raffle of allRaffles"
         [raffle]="raffle"
       ></app-raffle-preview-card>
     </div>

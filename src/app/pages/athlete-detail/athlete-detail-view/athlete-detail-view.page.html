@@ -62,9 +62,10 @@
                   </ion-button>
                 </ng-container>
               </ion-list-header>
-              <div class="flex-row gap-2 scroll-x">
+              <div class="flex-row gap-2 scroll-x" *ngrxLet="athleteRaffles$ as athleteRaffles">
+                <ion-text *ngIf="athleteRaffles.length === 0" class="ion-padding" color="medium">No active raffles</ion-text>
                 <app-raffle-preview-card
-                  *ngFor="let raffle of mockRaffles"
+                  *ngFor="let raffle of athleteRaffles"
                   [raffle]="raffle"
                   (onJoinRaffle)="onJoinRaffleClicked(raffle, athleteDetails)"
                 ></app-raffle-preview-card>

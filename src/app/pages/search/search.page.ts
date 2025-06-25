@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  IonButton,
   IonContent,
   IonHeader,
   IonItem,
@@ -26,13 +25,14 @@ import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { PageRoutes } from 'src/app/app.routes';
-import { Raffle } from 'src/app/core/models/Raffle.model';
 import {
   SearchItem,
   SearchItemType,
 } from 'src/app/core/models/SearchItem.model';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
+import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
+import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { searchActions } from 'src/app/core/store/search/actions/search.actions';
 import { searchFeature } from 'src/app/core/store/search/feature/search.feature';
@@ -56,7 +56,6 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     IonList,
     IonLabel,
     IonListHeader,
-    IonButton,
     IonContent,
     IonToolbar,
     IonHeader,
@@ -88,9 +87,15 @@ export class SearchPage implements OnInit, OnDestroy {
   allAthletes$ = this.store.select(athletesFeature.selectAll);
   isAthletesLoading$ = this.store.select(athletesFeature.selectIsLoading);
 
+  readonly allRaffles$ = this.store.select(rafflesFeature.selectAll);
+  readonly isRafflesLoading$ = this.store.select(
+    rafflesFeature.selectIsLoading
+  );
+
   ngOnInit(): void {
     this.store.dispatch(teamsActions.fetchTeams());
     this.store.dispatch(athletesActions.fetchAthletes());
+    this.store.dispatch(rafflesActions.fetchRaffles());
 
     this.searchQueryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(500))
@@ -108,31 +113,6 @@ export class SearchPage implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-  mockRaffles: Raffle[] = [
-    {
-      id: '0',
-      name: 'Fake Raffle 1',
-      description: 'Lorem ipsum dolor sit amet.',
-      startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000), // 1 day from now
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      athlete: 'John Doe',
-      favorited: true,
-    },
-    {
-      id: '0',
-      name: 'Fake Raffle 2',
-      description: 'Lorem ipsum dolor sit amet.',
-      startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      athlete: 'John Doe',
-      favorited: true,
-    },
-  ];
 
   onTeamClicked(teamId: number) {
     this.store.dispatch(

@@ -86,4 +86,29 @@ export class StorageService {
       })
     );
   }
+
+  uploadRafflePrize(raffleId: number, image: Blob): Observable<string | Error> {
+    const bucketId = 'raffle-prizes';
+    const filePath = `${raffleId}/${new Date().getTime()}.jpg`;
+
+    return from(
+      this.supabaseService.client.storage
+        .from(bucketId)
+        .upload(filePath, image, {
+          cacheControl: '3600',
+          upsert: true,
+        })
+    ).pipe(
+      map((result) => {
+        if (result.error) return new Error(result.error.message);
+
+        // Step 4: Get Public URL
+        const response = this.supabaseService.client.storage
+          .from(bucketId)
+          .getPublicUrl(result.data.path);
+
+        return response.data.publicUrl;
+      })
+    );
+  }
 }

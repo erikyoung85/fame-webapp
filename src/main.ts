@@ -19,6 +19,8 @@ import { authInterceptor } from './app/core/interceptors/auth.interceptor';
 import { AthletesEffects } from './app/core/store/athletes/effects/athletes.effects';
 import { athletesFeature } from './app/core/store/athletes/feature/athletes.feature';
 import { getMetaReducers } from './app/core/store/meta-reducers/meta-reducers';
+import { RafflesEffects } from './app/core/store/raffles/effects/raffles.effects';
+import { rafflesFeature } from './app/core/store/raffles/feature/raffles.feature';
 import { rootReducer } from './app/core/store/root.reducer';
 import { RouterEffects } from './app/core/store/router/effects/router.effects';
 import { SearchEffects } from './app/core/store/search/effects/search.effects';
@@ -59,8 +61,10 @@ bootstrapApplication(AppComponent, {
     provideEffects(SearchEffects),
     provideState(stripeFeature),
     provideEffects(StripeEffects),
-    provideEffects(PaymentEffects),
     provideState(paymentFeature),
+    provideEffects(PaymentEffects),
+    provideState(rafflesFeature),
+    provideEffects(RafflesEffects),
 
     provideRouterStore(),
     provideHttpClient(withInterceptors([authInterceptor])),

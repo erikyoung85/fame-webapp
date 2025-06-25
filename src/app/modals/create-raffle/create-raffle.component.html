@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="onCancelClicked()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Create a raffle</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCreateClicked()" [strong]="true" [disabled]="form.invalid">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list-header>Details</ion-list-header>
+  <ion-list inset>
+    <ion-item>
+      <ion-input label="Title" [formControl]="form.controls.title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea label="Description" rows="3" [formControl]="form.controls.description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label>Expiration</ion-label>
+      <shared-datetime-picker
+        [formControl]="form.controls.expirationDate"
+      ></shared-datetime-picker>
+    </ion-item>
+  </ion-list>
+
+  <ion-list-header>Prize</ion-list-header>
+  <ion-list inset>
+    <ion-item>
+      <ion-input label="Title"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>

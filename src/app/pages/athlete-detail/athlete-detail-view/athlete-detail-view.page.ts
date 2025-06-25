@@ -35,6 +35,8 @@ import { Raffle } from 'src/app/core/models/Raffle.model';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
+import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
+import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
@@ -98,36 +100,20 @@ export class AthleteDetailViewPage implements OnInit {
     )
   );
 
-  mockRaffles: Raffle[] = [
-    {
-      id: '0',
-      name: 'Fake Raffle 1',
-      description: 'Lorem ipsum dolor sit amet.',
-      startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000), // 1 day from now
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      athlete: 'John Doe',
-      favorited: true,
-    },
-    {
-      id: '0',
-      name: 'Fake Raffle 2',
-      description: 'Lorem ipsum dolor sit amet.',
-      startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
-      sport: 'Basketball',
-      team: 'University of Iowa',
-      athlete: 'John Doe',
-      favorited: true,
-    },
-  ];
+  readonly athleteRaffles$ = toObservable(this.athleteId).pipe(
+    switchMap((athleteId) =>
+      this.store.select(rafflesFeature.selectRafflesForAthlete(athleteId))
+    )
+  );
 
   ngOnInit(): void {
     this.store.dispatch(userActions.fetchUserManagedPages());
+    this.store.dispatch(rafflesActions.fetchRaffles());
   }
 
-  onCreateRaffleClicked() {}
+  onCreateRaffleClicked() {
+    this.modalService.openCreateRaffle(this.athleteId());
+  }
 
   onJoinRaffleClicked(raffle: Raffle, athlete: AthleteDetail) {
     this.modalService.openPaymentModal(athlete);

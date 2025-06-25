@@ -15,27 +15,25 @@ import { isNotNil } from 'ramda';
 import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control-value-accessor.interface';
 
 @Component({
-  selector: 'shared-date-picker',
-  templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.scss'],
+  selector: 'shared-datetime-picker',
+  templateUrl: './datetime-picker.component.html',
+  styleUrls: ['./datetime-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DatePickerComponent),
+      useExisting: forwardRef(() => DatetimePickerComponent),
       multi: true,
     },
   ],
   imports: [IonDatetimeButton, IonDatetime, IonModal],
 })
-export class DatePickerComponent
+export class DatetimePickerComponent
   implements TypedControlValueAccessor<string | undefined>
 {
   protected readonly _id = `datetime-${crypto.randomUUID()}`;
 
-  protected readonly _value = signal<string | undefined>(
-    formatISO(new Date(), { representation: 'date' })
-  );
+  protected readonly _value = signal<string | undefined>(formatISO(new Date()));
   protected readonly _isDisabled = signal<boolean>(false);
   protected readonly _isTouched = signal<boolean>(false);
 
@@ -45,7 +43,7 @@ export class DatePickerComponent
     }
 
     if (isNotNil(newValue)) {
-      newValue = formatISO(parseISO(newValue), { representation: 'date' });
+      newValue = formatISO(parseISO(newValue));
     }
 
     this._isTouched.set(true);

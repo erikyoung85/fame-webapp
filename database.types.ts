@@ -152,14 +152,14 @@ export type Database = {
           {
             foreignKeyName: "profiles_x_athletes_athletes_id_fkey"
             columns: ["athletes_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "athletes"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "profiles_x_athletes_profiles_id_fkey"
             columns: ["profiles_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -188,15 +188,147 @@ export type Database = {
           {
             foreignKeyName: "profiles_x_teams_profiles_id_fkey"
             columns: ["profiles_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "profiles_x_teams_teams_id_fkey"
             columns: ["teams_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      raffle_results: {
+        Row: {
+          created_at: string
+          id: number
+          is_prize_claimed: boolean
+          raffle_id: number
+          winner_profile_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_prize_claimed?: boolean
+          raffle_id: number
+          winner_profile_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_prize_claimed?: boolean
+          raffle_id?: number
+          winner_profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raffle_results_raffle_id_fkey"
+            columns: ["raffle_id"]
+            isOneToOne: false
+            referencedRelation: "raffles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "raffle_results_winner_profile_id_fkey"
+            columns: ["winner_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      raffle_ticket_purchases: {
+        Row: {
+          created_at: string
+          id: number
+          profile_id: string
+          purchased_at: string
+          quantity: number
+          raffle_id: number
+          stripe_payment_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          profile_id: string
+          purchased_at: string
+          quantity: number
+          raffle_id: number
+          stripe_payment_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          profile_id?: string
+          purchased_at?: string
+          quantity?: number
+          raffle_id?: number
+          stripe_payment_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raffle_ticket_purchases_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "raffle_ticket_purchases_raffle_id_fkey"
+            columns: ["raffle_id"]
+            isOneToOne: false
+            referencedRelation: "raffles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      raffles: {
+        Row: {
+          athletes_id: number
+          created_at: string
+          created_by: string
+          description: string | null
+          end_date: string
+          id: number
+          start_date: string
+          title: string
+        }
+        Insert: {
+          athletes_id: number
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          end_date: string
+          id?: number
+          start_date: string
+          title: string
+        }
+        Update: {
+          athletes_id?: number
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          end_date?: string
+          id?: number
+          start_date?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raffles_athletes_id_fkey"
+            columns: ["athletes_id"]
+            isOneToOne: false
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "raffles_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -373,8 +505,20 @@ export type Database = {
         Args: { "": unknown }
         Returns: unknown
       }
+      has_raffle_started: {
+        Args: { target_raffle_id: number }
+        Returns: boolean
+      }
       is_athlete_manager: {
         Args: { target_athlete_id: number }
+        Returns: boolean
+      }
+      is_raffle_manager: {
+        Args: { target_raffle_id: number }
+        Returns: boolean
+      }
+      is_raffle_winner: {
+        Args: { target_raffle_id: number }
         Returns: boolean
       }
       is_team_manager: {

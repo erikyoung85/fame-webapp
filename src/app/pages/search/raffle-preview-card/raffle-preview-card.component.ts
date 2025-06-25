@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -18,9 +17,9 @@ import {
   IonCardTitle,
   IonText,
 } from '@ionic/angular/standalone';
+import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 import { interval, Subject, takeUntil, takeWhile } from 'rxjs';
 import { Raffle } from 'src/app/core/models/Raffle.model';
-import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 
 @Component({
   selector: 'app-raffle-preview-card',
@@ -39,30 +38,21 @@ import { ModalService } from 'src/app/core/services/modal-service/modal.service'
 })
 export class RafflePreviewCardComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
-  private readonly modalService = inject(ModalService);
 
   @Input() raffle!: Raffle;
   @Output() onJoinRaffle = new EventEmitter<void>();
 
-  countdownSeconds = signal(0);
-  countdownString = signal('');
+  readonly countdownString = signal('');
 
   ngOnInit() {
-    this.countdownSeconds.set(
-      Math.floor(
-        Math.floor((this.raffle.endDate.getTime() - Date.now()) / 1000)
-      )
-    );
-
     interval(1000)
       .pipe(
         takeUntil(this.unsubscribe$),
-        takeWhile(() => this.countdownSeconds() > 0, true)
+        takeWhile(() => isFuture(this.raffle.expirationDate))
       )
       .subscribe(() => {
-        this.countdownSeconds.update((seconds) => seconds - 1);
         this.countdownString.set(
-          this.getDurationString(this.countdownSeconds())
+          formatDistanceToNowStrict(this.raffle.expirationDate)
         );
       });
   }
@@ -70,31 +60,6 @@ export class RafflePreviewCardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  getDurationString(totalSeconds: number): string {
-    if (totalSeconds <= 0) {
-      return 'Cannot display a negative duration.';
-    }
-
-    let remaining = totalSeconds;
-
-    const days = Math.floor(remaining / (24 * 60 * 60));
-    if (days > 0) {
-      return `${days} ${days > 1 ? 'days' : 'day'}`;
-    }
-
-    remaining %= 24 * 60 * 60;
-
-    const hours = Math.floor(remaining / (60 * 60));
-    remaining %= 60 * 60;
-
-    const minutes = Math.floor(remaining / 60);
-    const seconds = remaining % 60;
-
-    return `${hours < 10 ? '0' + hours : hours}:${
-      minutes < 10 ? '0' + minutes : minutes
-    }:${seconds < 10 ? '0' + seconds : seconds}`;
   }
 
   onJoinRaffleClicked(event: MouseEvent) {

@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
+import { CreateRaffleModalComponent } from 'src/app/modals/create-raffle/create-raffle.component';
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { PickCityModalComponent } from 'src/app/modals/pick-city/pick-city.component';
 import { PickTeamModalComponent } from 'src/app/modals/pick-team/pick-team.component';
@@ -55,6 +56,24 @@ export class ModalService {
     modal.present();
 
     const response = await modal.onWillDismiss<number | undefined>();
+
+    if (response.role === ModalDismissRole.Confirm) {
+      return response.data;
+    }
+
+    return undefined;
+  }
+
+  async openCreateRaffle(athleteId: number): Promise<boolean | undefined> {
+    const modal = await this.modalController.create({
+      component: CreateRaffleModalComponent,
+      componentProps: {
+        athleteId: athleteId,
+      },
+    });
+    modal.present();
+
+    const response = await modal.onWillDismiss<boolean | undefined>();
 
     if (response.role === ModalDismissRole.Confirm) {
       return response.data;
