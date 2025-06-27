@@ -30,7 +30,6 @@ import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { switchMap } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
-import { Raffle } from 'src/app/core/models/Raffle.model';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
@@ -112,10 +111,6 @@ export class AthleteDetailViewPage implements OnInit {
 
   onCreateRaffleClicked() {
     this.modalService.openCreateRaffle(this.athleteId());
-  }
-
-  onJoinRaffleClicked(raffle: Raffle) {
-    this.modalService.openPaymentModal(raffle);
   }
 
   onEditClicked() {

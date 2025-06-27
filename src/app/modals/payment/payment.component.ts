@@ -22,13 +22,17 @@ import {
 } from '@ionic/angular/standalone';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { AsyncData } from 'src/app/core/models/AsyncData.model';
+import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
 import { Raffle } from 'src/app/core/models/Raffle.model';
 import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';
 import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
+import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { stripeActions } from 'src/app/core/store/stripe/actions/stripe.actions';
 import { stripeFeature } from 'src/app/core/store/stripe/feature/stripe.feature';
+import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { combineIsLoading } from 'src/app/shared/utils/combine-is-loading.util';
 import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
 import { CreatePaymentComponent } from './components/create-payment/create-payment.component';
@@ -58,6 +62,7 @@ import { paymentFeature } from './store/feature/payment.feature';
     LetDirective,
     PaymentSuccessComponent,
     PushPipe,
+    UnwrapAsyncPipe,
   ],
 })
 export class PaymentModalComponent implements OnInit, OnDestroy {
@@ -87,14 +92,21 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
     () => paymentTabsConfig[this.currentTab$()]
   );
 
-  protected readonly athlete$ = this.store
-    .select(athletesFeature.selectEntities)
-    .pipe(map((entities) => entities[this.raffle.athlete.id]));
+  protected athlete$!: Observable<
+    AsyncData<AthleteDetail | undefined> | undefined
+  >;
 
   payment: CreatePayment | undefined = undefined;
 
   ngOnInit(): void {
     this.store.dispatch(stripeActions.loadCustomerForUser());
+
+    this.store.dispatch(
+      athletesActions.fetchAthleteDetails({ athleteId: this.raffle.athlete.id })
+    );
+    this.athlete$ = this.store.select(
+      athletesFeature.selectAthleteDetails(this.raffle.athlete.id)
+    );
   }
 
   ngOnDestroy(): void {

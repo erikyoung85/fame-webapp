@@ -1,5 +1,6 @@
 <ng-container 
   *ngrxLet="{
+    athlete: (athlete$ | ngrxPush)?.data,
     stripeCustomer: stripeCustomer$().data,
     paymentIntent: paymentIntent$().data
   } as data"
@@ -21,16 +22,16 @@
     <ion-progress-bar type="indeterminate" *ngIf="isLoading$()"></ion-progress-bar>
   </ion-header>
   
-  <ion-content class="ion-safe-area-bottom" [scrollY]="false" *ngIf="athlete$ | ngrxPush as athlete">
+  <ion-content class="ion-safe-area-bottom" [scrollY]="false" *ngIf="data.athlete">
     <app-create-payment
       *ngIf="currentTab$() === PaymentTab.CreatePayment"
-      [athlete]="athlete"
+      [athlete]="data.athlete"
       [payment]="payment"
       (onPaymentCreated)="onPaymentCreated($event)"
     ></app-create-payment>
     <app-confirm-payment
       *ngIf="currentTab$() === PaymentTab.ConfirmPayment && data.paymentIntent && payment"
-      [athlete]="athlete"
+      [athlete]="data.athlete"
       [paymentIntent]="data.paymentIntent"
       (onPaymentConfirmed)="onPaymentConfirmed($event)"
     ></app-confirm-payment>

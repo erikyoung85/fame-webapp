@@ -1,11 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  inject,
   Input,
   OnDestroy,
   OnInit,
-  Output,
   signal,
 } from '@angular/core';
 import {
@@ -20,6 +19,7 @@ import {
 import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 import { interval, Subject, takeUntil, takeWhile } from 'rxjs';
 import { Raffle } from 'src/app/core/models/Raffle.model';
+import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 
 @Component({
   selector: 'app-raffle-preview-card',
@@ -38,9 +38,9 @@ import { Raffle } from 'src/app/core/models/Raffle.model';
 })
 export class RafflePreviewCardComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
+  private readonly modalService = inject(ModalService);
 
   @Input() raffle!: Raffle;
-  @Output() onJoinRaffle = new EventEmitter<void>();
 
   readonly countdownString = signal('');
 
@@ -64,6 +64,7 @@ export class RafflePreviewCardComponent implements OnInit, OnDestroy {
 
   onJoinRaffleClicked(event: MouseEvent) {
     event.stopPropagation();
-    this.onJoinRaffle.emit();
+
+    this.modalService.openPaymentModal(this.raffle);
   }
 }

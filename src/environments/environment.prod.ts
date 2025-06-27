@@ -9,7 +9,5 @@ export const environment = {
   stripe: {
     publishableKey:
       'pk_test_51RLWKOReZNkJB8y7RLOKn8uqYqAfYpXCtgZ9BxJPIQkZzbvllpdxMafWEXBg9f8I79wtuY2EeloTWsL2Ovtgsfli00QFHTqayA',
-    secretKey:
-      'sk_test_51RLWKOReZNkJB8y7vVzK2eMLQn7LOv8owkW6kDIY7YwsIrRogmOvxtICgkQ8VNVufETsewRLQSBxeSZwd2mynlSY007ilNyU8W',
   },
 };
