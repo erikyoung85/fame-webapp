@@ -4,7 +4,7 @@ import { CreateRaffleModalComponent } from 'src/app/modals/create-raffle/create-
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { PickCityModalComponent } from 'src/app/modals/pick-city/pick-city.component';
 import { PickTeamModalComponent } from 'src/app/modals/pick-team/pick-team.component';
-import { Athlete } from '../../models/Athlete.model';
+import { Raffle } from '../../models/Raffle.model';
 import { CityResponseDtoV1 } from '../geo-city/dtos/city.response.dto.v1';
 
 export enum ModalDismissRole {
@@ -32,11 +32,11 @@ export class ModalService {
     return undefined;
   }
 
-  async openPaymentModal(athlete: Athlete): Promise<boolean | undefined> {
+  async openPaymentModal(raffle: Raffle): Promise<boolean | undefined> {
     const modal = await this.modalController.create({
       component: PaymentModalComponent,
       componentProps: {
-        athlete: athlete,
+        raffle: raffle,
       },
     });
     modal.present();

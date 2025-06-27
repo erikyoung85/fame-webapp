@@ -1,0 +1,10 @@
+ion-header.header-init-transparent {
+  height: 0;
+
+  &.header-collapse-condense-inactive {
+    ion-toolbar {
+      --background: transparent;
+      --border-width: 0 !important;
+    }
+  }
+}

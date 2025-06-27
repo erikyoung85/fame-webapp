@@ -37,7 +37,7 @@ import {
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, Subject, switchMap, take, takeUntil } from 'rxjs';
-import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes } from 'src/app/app.routes';
 import { genderOptions } from 'src/app/core/constants/gender-options';
 import { gradeOptions } from 'src/app/core/constants/grade-options';
 import { Gender } from 'src/app/core/enums/Gender.enum';
@@ -108,6 +108,7 @@ export class AthleteDetailEditPage implements OnInit, OnDestroy {
 
   readonly form = this.fb.group({
     avatarUrl: this.fb.control<string | undefined>(undefined),
+    bannerUrl: this.fb.control<string | undefined>(undefined),
     firstName: '',
     lastName: '',
     grade: this.fb.control<Grade | undefined>(undefined, Validators.required),
@@ -131,6 +132,7 @@ export class AthleteDetailEditPage implements OnInit, OnDestroy {
 
         const formValues: ReturnType<typeof this.form.getRawValue> = {
           avatarUrl: athleteDetails.avatarUrl,
+          bannerUrl: athleteDetails.bannerUrl,
           firstName: athleteDetails.firstName,
           lastName: athleteDetails.lastName,
           grade: athleteDetails.grade,
@@ -184,14 +186,8 @@ export class AthleteDetailEditPage implements OnInit, OnDestroy {
 
   onCancelClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({
-        url: [
-          PageRoutes.AthleteDetail,
-          this.athleteId(),
-          FormActionRoutes.View,
-        ],
-        animated: false,
-        replaceUrl: true,
+      RouterActions.routeToFormAction({
+        formAction: FormActionRoutes.View,
       })
     );
   }

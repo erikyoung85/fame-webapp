@@ -5,6 +5,7 @@ import { AthleteDetailResponseDtoV1 } from '../services/athletes/dtos/responses/
 export interface AthleteDetail {
   id: number;
   avatarUrl: string | undefined;
+  bannerUrl: string | undefined;
   firstName: string;
   lastName: string;
   dateOfBirth: string | undefined;
@@ -22,6 +23,7 @@ export class AthleteDetailFactory {
     return {
       id: dto.id,
       avatarUrl: dto.avatar_url ?? undefined,
+      bannerUrl: dto.roster_entries[0]?.teams.banner_url ?? undefined,
       firstName: dto.first_name,
       lastName: dto.last_name,
       dateOfBirth: dto.date_of_birth ?? undefined,

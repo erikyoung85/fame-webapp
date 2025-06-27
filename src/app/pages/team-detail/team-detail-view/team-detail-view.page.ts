@@ -18,7 +18,7 @@ import {
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, switchMap } from 'rxjs';
-import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes } from 'src/app/app.routes';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
@@ -71,10 +71,8 @@ export class TeamDetailViewPage {
 
   onEditClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({
-        url: [PageRoutes.TeamDetail, this.teamId(), FormActionRoutes.Edit],
-        animated: false,
-        replaceUrl: true,
+      RouterActions.routeToFormAction({
+        formAction: FormActionRoutes.Edit,
       })
     );
   }

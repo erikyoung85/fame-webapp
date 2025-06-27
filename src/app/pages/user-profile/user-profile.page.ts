@@ -55,20 +55,16 @@ export class UserProfilePage {
 
   onEditClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({
-        url: [PageRoutes.UserProfile, FormActionRoutes.Edit],
-        animated: false,
-        replaceUrl: true,
+      RouterActions.routeToFormAction({
+        formAction: FormActionRoutes.Edit,
       })
     );
   }
 
   onCancelClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({
-        url: [PageRoutes.UserProfile, FormActionRoutes.View],
-        animated: false,
-        replaceUrl: true,
+      RouterActions.routeToFormAction({
+        formAction: FormActionRoutes.View,
       })
     );
   }

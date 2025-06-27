@@ -20,11 +20,13 @@ import {
   IonToolbar,
   ModalController,
 } from '@ionic/angular/standalone';
-import { LetDirective } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { Athlete } from 'src/app/core/models/Athlete.model';
+import { map } from 'rxjs';
+import { Raffle } from 'src/app/core/models/Raffle.model';
 import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';
 import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
+import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { stripeActions } from 'src/app/core/store/stripe/actions/stripe.actions';
 import { stripeFeature } from 'src/app/core/store/stripe/feature/stripe.feature';
 import { combineIsLoading } from 'src/app/shared/utils/combine-is-loading.util';
@@ -55,13 +57,14 @@ import { paymentFeature } from './store/feature/payment.feature';
     ConfirmPaymentComponent,
     LetDirective,
     PaymentSuccessComponent,
+    PushPipe,
   ],
 })
 export class PaymentModalComponent implements OnInit, OnDestroy {
   private readonly modalController = inject(ModalController);
   private readonly store = inject(Store);
 
-  @Input({ required: true }) athlete!: Athlete;
+  @Input({ required: true }) raffle!: Raffle;
 
   protected readonly currentTab$ = this.store.selectSignal(
     paymentFeature.selectCurrentTab
@@ -83,6 +86,10 @@ export class PaymentModalComponent implements OnInit, OnDestroy {
   protected readonly currentTabConfig$ = computed(
     () => paymentTabsConfig[this.currentTab$()]
   );
+
+  protected readonly athlete$ = this.store
+    .select(athletesFeature.selectEntities)
+    .pipe(map((entities) => entities[this.raffle.athlete.id]));
 
   payment: CreatePayment | undefined = undefined;
 

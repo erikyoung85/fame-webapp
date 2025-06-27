@@ -22,6 +22,7 @@ export interface AthleteDetailResponseDtoV1 {
     teams: {
       id: number;
       name: string;
+      banner_url: string | null;
       sports: {
         id: number;
         name: string;

@@ -16,7 +16,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes } from 'src/app/app.routes';
 import { PageType } from 'src/app/core/enums/PageType.enum';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import {
@@ -373,8 +373,8 @@ export class UserEffects {
           })
           .then((toast) => toast.present());
 
-        return RouterActions.routeInCurrentTab({
-          url: [PageRoutes.UserProfile, FormActionRoutes.View],
+        return RouterActions.routeToFormAction({
+          formAction: FormActionRoutes.View,
         });
       })
     )

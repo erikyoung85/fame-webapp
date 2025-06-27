@@ -2,6 +2,7 @@
 @use "utilities";
 @use "toolbar-icon-button";
 @use "top-image";
+@use "header-init-transparent";
 
 // Hide scrollbar in ion-content for Chrome, Safari and Opera
 ion-content::part(scroll)::-webkit-scrollbar {

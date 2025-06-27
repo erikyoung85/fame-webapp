@@ -26,7 +26,7 @@ import {
 import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, Subject, switchMap, take, takeUntil } from 'rxjs';
-import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UpdateTeamRequestDtoV1 } from 'src/app/core/services/teams/dtos/requests/update-team.request.dto.v1';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
@@ -119,10 +119,8 @@ export class TeamDetailEditPage implements OnInit, OnDestroy {
 
   onCancelClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({
-        url: [PageRoutes.TeamDetail, this.teamId(), FormActionRoutes.View],
-        animated: false,
-        replaceUrl: true,
+      RouterActions.routeToFormAction({
+        formAction: FormActionRoutes.View,
       })
     );
   }

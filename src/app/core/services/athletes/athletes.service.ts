@@ -27,7 +27,7 @@ export class AthletesService {
   }
 
   private readonly athleteDetailSelect =
-    'id, avatar_url, first_name, last_name, date_of_birth, gender, grade, hometown, schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, sports(id, name)))';
+    'id, avatar_url, first_name, last_name, date_of_birth, gender, grade, hometown, schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, banner_url, sports(id, name)))';
   getAthleteDetail(
     athleteId: number
   ): Observable<PostgrestSingleResponse<AthleteDetailResponseDtoV1>> {

@@ -6,12 +6,15 @@ export const environment = {
   production: false,
   microserviceUrl: 'https://api.thefamesports.com',
   supabase: {
-    url: import.meta.env.SUPABASE_URL,
-    anonKey: import.meta.env.SUPABASE_ANON_KEY,
+    url: 'https://rcqdlekpvweemrojyheo.supabase.co',
+    anonKey:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjcWRsZWtwdndlZW1yb2p5aGVvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxNjYwNjgsImV4cCI6MjA1OTc0MjA2OH0.k2r4R5hZkFzCrvrf1NDzK6BMoDHHNC6Oq99-WFoJqYw',
   },
   stripe: {
-    publishableKey: import.meta.env.STRIPE_PUBLISHABLE_KEY,
-    secretKey: import.meta.env.STRIPE_SECRET_KEY,
+    publishableKey:
+      'pk_test_51RLWKOReZNkJB8y7RLOKn8uqYqAfYpXCtgZ9BxJPIQkZzbvllpdxMafWEXBg9f8I79wtuY2EeloTWsL2Ovtgsfli00QFHTqayA',
+    secretKey:
+      'sk_test_51RLWKOReZNkJB8y7vVzK2eMLQn7LOv8owkW6kDIY7YwsIrRogmOvxtICgkQ8VNVufETsewRLQSBxeSZwd2mynlSY007ilNyU8W',
   },
 };
 

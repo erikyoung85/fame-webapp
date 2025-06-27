@@ -1,5 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { TabRoutes } from 'src/app/app.routes';
+import { FormActionRoutes, TabRoutes } from 'src/app/app.routes';
 
 export const RouterActions = createActionGroup({
   source: 'Router',
@@ -14,5 +14,7 @@ export const RouterActions = createActionGroup({
       animated?: boolean;
       replaceUrl?: boolean;
     }>(),
+
+    'Route to form action': props<{ formAction: FormActionRoutes }>(),
   },
 });

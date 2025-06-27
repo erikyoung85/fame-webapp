@@ -3,7 +3,7 @@ import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, Observable, of, switchMap, tap } from 'rxjs';
-import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes } from 'src/app/app.routes';
 import { TeamFactory } from 'src/app/core/models/Team.model';
 import { TeamDetailFactory } from 'src/app/core/models/TeamDetail.model';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
@@ -182,14 +182,8 @@ export class TeamsEffects {
           })
           .then((toast) => toast.present());
 
-        return RouterActions.routeInCurrentTab({
-          url: [
-            PageRoutes.TeamDetail,
-            action.teamDetails.id,
-            FormActionRoutes.View,
-          ],
-          animated: false,
-          replaceUrl: true,
+        return RouterActions.routeToFormAction({
+          formAction: FormActionRoutes.View,
         });
       })
     )

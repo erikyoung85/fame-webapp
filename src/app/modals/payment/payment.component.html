@@ -21,7 +21,7 @@
     <ion-progress-bar type="indeterminate" *ngIf="isLoading$()"></ion-progress-bar>
   </ion-header>
   
-  <ion-content class="ion-safe-area-bottom" [scrollY]="false">
+  <ion-content class="ion-safe-area-bottom" [scrollY]="false" *ngIf="athlete$ | ngrxPush as athlete">
     <app-create-payment
       *ngIf="currentTab$() === PaymentTab.CreatePayment"
       [athlete]="athlete"
