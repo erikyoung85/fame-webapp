@@ -32,7 +32,6 @@ import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.ac
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
 import { stripeActions } from 'src/app/core/store/stripe/actions/stripe.actions';
 import { stripeFeature } from 'src/app/core/store/stripe/feature/stripe.feature';
-import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { combineIsLoading } from 'src/app/shared/utils/combine-is-loading.util';
 import { ConfirmPaymentComponent } from './components/confirm-payment/confirm-payment.component';
 import { CreatePaymentComponent } from './components/create-payment/create-payment.component';
@@ -62,7 +61,6 @@ import { paymentFeature } from './store/feature/payment.feature';
     LetDirective,
     PaymentSuccessComponent,
     PushPipe,
-    UnwrapAsyncPipe,
   ],
 })
 export class PaymentModalComponent implements OnInit, OnDestroy {
