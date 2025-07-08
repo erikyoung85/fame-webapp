@@ -14,7 +14,6 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonNav,
   IonProgressBar,
   IonTitle,
   IonToolbar,
@@ -45,7 +44,6 @@ import { paymentFeature } from './store/feature/payment.feature';
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [IonNav],
   imports: [
     IonIcon,
     IonProgressBar,

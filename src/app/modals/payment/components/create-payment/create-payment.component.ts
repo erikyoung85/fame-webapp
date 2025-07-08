@@ -24,6 +24,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { Athlete } from 'src/app/core/models/Athlete.model';
+import { Raffle } from 'src/app/core/models/Raffle.model';
 import { CurrencyInputComponent } from 'src/app/shared/components/currency-input/currency-input.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { CreatePayment } from '../../models/create-payment.model';
@@ -51,6 +52,7 @@ export class CreatePaymentComponent implements OnInit, OnDestroy {
   private readonly store = inject(Store);
 
   @Input({ required: true }) athlete!: Athlete;
+  @Input({ required: true }) raffle!: Raffle;
   @Input() payment?: CreatePayment;
   readonly onPaymentCreated = output<CreatePayment>();
 
@@ -80,7 +82,7 @@ export class CreatePaymentComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       const payment: CreatePayment = {
         ...this.form.getRawValue(),
-        athleteId: this.athlete.id,
+        raffleId: this.raffle.id,
       };
       this.onPaymentCreated.emit(payment);
     }

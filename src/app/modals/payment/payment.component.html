@@ -22,16 +22,18 @@
     <ion-progress-bar type="indeterminate" *ngIf="isLoading$()"></ion-progress-bar>
   </ion-header>
   
-  <ion-content class="ion-safe-area-bottom" [scrollY]="false" *ngIf="data.athlete">
+  <ion-content class="ion-safe-area-bottom" [scrollY]="false" *ngIf="data.athlete && raffle">
     <app-create-payment
       *ngIf="currentTab$() === PaymentTab.CreatePayment"
       [athlete]="data.athlete"
+      [raffle]="raffle"
       [payment]="payment"
       (onPaymentCreated)="onPaymentCreated($event)"
     ></app-create-payment>
     <app-confirm-payment
       *ngIf="currentTab$() === PaymentTab.ConfirmPayment && data.paymentIntent && payment"
       [athlete]="data.athlete"
+      [raffle]="raffle"
       [paymentIntent]="data.paymentIntent"
       (onPaymentConfirmed)="onPaymentConfirmed($event)"
     ></app-confirm-payment>

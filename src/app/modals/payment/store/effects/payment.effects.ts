@@ -33,9 +33,10 @@ export class PaymentEffects {
       ofType(paymentActions.createPaymentIntent),
       switchMap((action) => {
         const request: CreatePaymentIntentRequestDtoV1 = {
+          customerId: action.customerId,
+          raffleId: action.sendPayment.raffleId,
           amount: action.sendPayment.amount,
           message: action.sendPayment.message,
-          customerId: action.customerId,
         };
         return this.stripeApiService.createPaymentIntent(request).pipe(
           map((response) => {
@@ -88,6 +89,7 @@ export class PaymentEffects {
         const request: UpdatePaymentIntentRequestDtoV1 = {
           id: paymentIntent.id,
           customerId: action.customerId,
+          raffleId: action.sendPayment.raffleId,
           amount: action.sendPayment.amount,
           message: action.sendPayment.message,
         };
