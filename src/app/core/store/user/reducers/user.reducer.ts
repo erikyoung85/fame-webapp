@@ -179,6 +179,7 @@ export const userReducer = createReducer(
         {
           athletes: [],
           teams: [],
+          raffles: [],
         },
         AsyncDataStatus.Loading
       ),
@@ -191,6 +192,7 @@ export const userReducer = createReducer(
         {
           athletes: action.athletes,
           teams: action.teams,
+          raffles: action.raffles,
         },
         AsyncDataStatus.Success
       ),
@@ -203,6 +205,7 @@ export const userReducer = createReducer(
         {
           athletes: [],
           teams: [],
+          raffles: [],
         },
         AsyncDataStatus.Error,
         action.message

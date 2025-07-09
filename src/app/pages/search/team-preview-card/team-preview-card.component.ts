@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
-  IonButton,
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonIcon,
 } from '@ionic/angular/standalone';
 import { Team } from 'src/app/core/models/Team.model';
 
@@ -14,14 +12,7 @@ import { Team } from 'src/app/core/models/Team.model';
   templateUrl: './team-preview-card.component.html',
   styleUrls: ['./team-preview-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    IonIcon,
-    IonButton,
-    IonCardSubtitle,
-    IonCardTitle,
-    IonCardHeader,
-    IonCard,
-  ],
+  imports: [IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard],
 })
 export class TeamPreviewCardComponent {
   @Input() team!: Team;

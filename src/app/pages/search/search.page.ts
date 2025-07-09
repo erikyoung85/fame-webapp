@@ -74,18 +74,26 @@ export class SearchPage implements OnInit, OnDestroy {
 
   private readonly store = inject(Store);
 
-  searchQueryControl = new FormControl<string>('', { nonNullable: true });
-  isSearchFocused = signal(false);
-  allSearchItems$ = this.store.select(searchFeature.selectAllSearchItems);
-  isSearchLoading$ = this.store.select(searchFeature.selectAnyPagesLoading);
+  readonly searchQueryControl = new FormControl<string>('', {
+    nonNullable: true,
+  });
+  readonly isSearchFocused = signal(false);
+  readonly allSearchItems$ = this.store.select(
+    searchFeature.selectAllSearchItems
+  );
+  readonly isSearchLoading$ = this.store.select(
+    searchFeature.selectAnyPagesLoading
+  );
 
-  userProfile$ = this.store.select(userFeature.selectUserProfile);
+  readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
 
-  allTeams$ = this.store.select(teamsFeature.selectAll);
-  isTeamsLoading$ = this.store.select(teamsFeature.selectIsLoading);
+  readonly allTeams$ = this.store.select(teamsFeature.selectAll);
+  readonly isTeamsLoading$ = this.store.select(teamsFeature.selectIsLoading);
 
-  allAthletes$ = this.store.select(athletesFeature.selectAll);
-  isAthletesLoading$ = this.store.select(athletesFeature.selectIsLoading);
+  readonly allAthletes$ = this.store.select(athletesFeature.selectAll);
+  readonly isAthletesLoading$ = this.store.select(
+    athletesFeature.selectIsLoading
+  );
 
   readonly allRaffles$ = this.store.select(rafflesFeature.selectAll);
   readonly isRafflesLoading$ = this.store.select(

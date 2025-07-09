@@ -1,13 +1,11 @@
+import {
+  AthletePagePreview,
+  RafflePreview,
+  TeamPagePreview,
+} from 'src/app/core/models/PagePreview.model';
+
 export interface ManagedPagesResponseDtoV1 {
-  athletes: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    avatar_url: string | null;
-  }[];
-  teams: {
-    id: number;
-    name: string;
-    avatar_url: string | null;
-  }[];
+  athletes: AthletePagePreview[];
+  teams: TeamPagePreview[];
+  raffles: RafflePreview[];
 }

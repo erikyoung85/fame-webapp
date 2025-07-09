@@ -15,3 +15,7 @@ export type AthletePagePreview = PagePreview & {
 export type TeamPagePreview = PagePreview & {
   type: PageType.Team;
 };
+
+export type RafflePreview = PagePreview & {
+  type: PageType.Raffle;
+};

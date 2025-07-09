@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,36 +7,43 @@ import {
 } from '@angular/core';
 import {
   IonButton,
+  IonButtons,
+  IonChip,
   IonCol,
+  IonContent,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonListHeader,
   IonNote,
+  IonProgressBar,
   IonRow,
   IonText,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/angular/standalone';
-import { LetDirective } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { PageRoutes } from 'src/app/app.routes';
+import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PillComponent } from 'src/app/shared/components/pill/pill.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
+import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
 @Component({
-  selector: 'app-user-profile-view',
-  templateUrl: './user-profile-view.component.html',
-  styleUrls: ['./user-profile-view.component.scss'],
+  templateUrl: './user-profile-view.page.html',
+  styleUrls: ['./user-profile-view.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    NgIf,
     IonListHeader,
     IonButton,
-    CommonModule,
     IonLabel,
     IonItem,
     IonList,
@@ -50,9 +57,19 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     UserProfileAvatarComponent,
     LetDirective,
     PillComponent,
+    PushPipe,
+    IonTitle,
+    IonToolbar,
+    IonHeader,
+    IonContent,
+    IsAsyncLoadingPipe,
+    IonProgressBar,
+    IonChip,
+    IonButtons,
+    NgFor,
   ],
 })
-export class UserProfileViewComponent implements OnInit {
+export class UserProfileViewPage implements OnInit {
   private readonly store = inject(Store);
 
   readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
@@ -63,6 +80,10 @@ export class UserProfileViewComponent implements OnInit {
 
   readonly managedTeamPages$ = this.store.select(
     userFeature.selectManagedTeamPages
+  );
+
+  readonly managedRaffles$ = this.store.select(
+    userFeature.selectManagedRaffles
   );
 
   ngOnInit(): void {
@@ -81,6 +102,14 @@ export class UserProfileViewComponent implements OnInit {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
         url: [PageRoutes.AthleteDetail, athleteId],
+      })
+    );
+  }
+
+  onEditClicked() {
+    this.store.dispatch(
+      RouterActions.routeToFormAction({
+        formAction: FormActionRoutes.Edit,
       })
     );
   }

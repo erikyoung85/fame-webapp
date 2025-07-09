@@ -17,12 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
-import { PageType } from 'src/app/core/enums/PageType.enum';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
-import {
-  AthletePagePreview,
-  TeamPagePreview,
-} from 'src/app/core/models/PagePreview.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
@@ -495,28 +490,7 @@ export class UserEffects {
               });
             }
 
-            const managedAthletes: AthletePagePreview[] = response.athletes.map(
-              (athlete) => ({
-                type: PageType.Athlete,
-                id: athlete.id,
-                title: `${athlete.first_name} ${athlete.last_name}`,
-                description: undefined,
-                avatarUrl: athlete.avatar_url ?? undefined,
-              })
-            );
-            const managedTeams: TeamPagePreview[] = response.teams.map(
-              (team) => ({
-                type: PageType.Team,
-                id: team.id,
-                title: team.name,
-                description: undefined,
-                avatarUrl: team.avatar_url ?? undefined,
-              })
-            );
-            return userActions.fetchUserManagedPagesSuccess({
-              athletes: managedAthletes,
-              teams: managedTeams,
-            });
+            return userActions.fetchUserManagedPagesSuccess(response);
           }),
           catchError((error: Error) => {
             return of(

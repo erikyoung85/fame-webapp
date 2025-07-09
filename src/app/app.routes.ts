@@ -43,6 +43,12 @@ const teamDetailPageRoute: Route = {
   loadChildren: () => import('./pages/team-detail/team-detail.routes'),
 };
 
+const userProfilePageRoute: Route = {
+  path: PageRoutes.UserProfile,
+  loadChildren: () => import('./pages/user-profile/user-profile.routes'),
+  canActivate: [isLoggedInGuard],
+};
+
 export const routes: Routes = [
   {
     path: '',
@@ -107,16 +113,7 @@ export const routes: Routes = [
             redirectTo: PageRoutes.UserProfile,
             pathMatch: 'full',
           },
-          {
-            path: PageRoutes.UserProfile,
-            loadComponent: () =>
-              import('./pages/user-profile/user-profile.page').then(
-                (m) => m.UserProfilePage
-              ),
-            loadChildren: () =>
-              import('./pages/user-profile/user-profile.routes'),
-            canActivate: [isLoggedInGuard],
-          },
+          userProfilePageRoute,
           {
             path: PageRoutes.Login,
             loadComponent: () =>

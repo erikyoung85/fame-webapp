@@ -2,6 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Session } from '@supabase/supabase-js';
 import {
   AthletePagePreview,
+  RafflePreview,
   TeamPagePreview,
 } from 'src/app/core/models/PagePreview.model';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
@@ -54,6 +55,7 @@ export const userActions = createActionGroup({
     'Fetch User Managed Pages Success': props<{
       athletes: AthletePagePreview[];
       teams: TeamPagePreview[];
+      raffles: RafflePreview[];
     }>(),
     'Fetch User Managed Pages Failure': props<{ message: string }>(),
   },

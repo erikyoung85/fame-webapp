@@ -45,6 +45,11 @@ export const userFeature = createFeature({
       (managedPages) => managedPages.data.teams
     );
 
+    const selectManagedRaffles = createSelector(
+      selectManagedPages,
+      (managedPages) => managedPages.data.raffles
+    );
+
     const selectIsAthleteManager = (athleteId: number) =>
       createSelector(
         selectManagedAthletePages,
@@ -62,6 +67,14 @@ export const userFeature = createFeature({
           isAdmin || managedTeamPages.some((team) => team.id === teamId)
       );
 
+    const selectIsRaffleManager = (raffleId: number) =>
+      createSelector(
+        selectManagedRaffles,
+        selectIsUserAdmin,
+        (managedRaffles, isAdmin) =>
+          isAdmin || managedRaffles.some((raffle) => raffle.id === raffleId)
+      );
+
     return {
       selectIsSessionLoading,
       selectSupabaseAuthToken,
@@ -70,8 +83,10 @@ export const userFeature = createFeature({
       selectIsUserAdmin,
       selectManagedAthletePages,
       selectManagedTeamPages,
+      selectManagedRaffles,
       selectIsAthleteManager,
       selectIsTeamManager,
+      selectIsRaffleManager,
     };
   },
 });

@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { FormActionRoutes } from 'src/app/app.routes';
-import { UserProfileEditComponent } from './user-profile-edit/user-profile-edit.component';
-import { UserProfileViewComponent } from './user-profile-view/user-profile-view.component';
+import { UserProfileEditPage } from './user-profile-edit/user-profile-edit.page';
+import { UserProfileViewPage } from './user-profile-view/user-profile-view.page';
 
 export default [
   {
@@ -11,10 +11,10 @@ export default [
   },
   {
     path: FormActionRoutes.View,
-    component: UserProfileViewComponent,
+    component: UserProfileViewPage,
   },
   {
     path: FormActionRoutes.Edit,
-    component: UserProfileEditComponent,
+    component: UserProfileEditPage,
   },
 ] satisfies Routes;
