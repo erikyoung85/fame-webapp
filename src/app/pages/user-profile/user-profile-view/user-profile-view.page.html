@@ -1,8 +1,11 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <toolbar-text-button (click)="onLogoutClicked()">Logout</toolbar-text-button>
+    </ion-buttons>
     <ion-title>Profile</ion-title>
     <ion-buttons slot="end">
-      <ion-chip (click)="onEditClicked()">Edit</ion-chip>
+      <toolbar-text-button (click)="onEditClicked()">Edit</toolbar-text-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
@@ -75,10 +78,4 @@
       </ion-item>
     </ion-list>
   </ng-container>
-    
-  <ion-row>
-    <ion-col>
-      <ion-button fill="outline" color="danger" expand="block" (click)="onLogoutClicked()">Logout</ion-button>
-    </ion-col>
-  </ion-row>
 </ion-content>

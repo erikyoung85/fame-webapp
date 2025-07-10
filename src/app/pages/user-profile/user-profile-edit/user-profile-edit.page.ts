@@ -14,7 +14,6 @@ import {
 } from '@angular/forms';
 import {
   IonButtons,
-  IonChip,
   IonCol,
   IonContent,
   IonGrid,
@@ -33,6 +32,7 @@ import { UserProfile } from 'src/app/core/models/UserProfile.model';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
+import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 
@@ -60,9 +60,9 @@ import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-asy
     IonContent,
     IsAsyncLoadingPipe,
     IonProgressBar,
-    IonChip,
     IonButtons,
     NgIf,
+    ToolbarTextButtonComponent,
   ],
 })
 export class UserProfileEditPage implements OnInit, OnDestroy {

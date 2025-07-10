@@ -5,7 +5,6 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  signal,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -77,7 +76,6 @@ export class SearchPage implements OnInit, OnDestroy {
   readonly searchQueryControl = new FormControl<string>('', {
     nonNullable: true,
   });
-  readonly isSearchFocused = signal(false);
   readonly allSearchItems$ = this.store.select(
     searchFeature.selectAllSearchItems
   );

@@ -6,9 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  IonButton,
   IonButtons,
-  IonChip,
   IonCol,
   IonContent,
   IonGrid,
@@ -32,6 +30,7 @@ import { RouterActions } from 'src/app/core/store/router/actions/router.actions'
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PillComponent } from 'src/app/shared/components/pill/pill.component';
+import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
 import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
@@ -43,7 +42,6 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
   imports: [
     NgIf,
     IonListHeader,
-    IonButton,
     IonLabel,
     IonItem,
     IonList,
@@ -64,9 +62,9 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     IonContent,
     IsAsyncLoadingPipe,
     IonProgressBar,
-    IonChip,
     IonButtons,
     NgFor,
+    ToolbarTextButtonComponent,
   ],
 })
 export class UserProfileViewPage implements OnInit {

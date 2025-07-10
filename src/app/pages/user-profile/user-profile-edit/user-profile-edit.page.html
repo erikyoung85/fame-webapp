@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-chip (click)="onCancelClicked()">Cancel</ion-chip>
+      <toolbar-text-button (click)="onCancelClicked()">Cancel</toolbar-text-button>
     </ion-buttons>
     <ion-title>Profile</ion-title>
     <ion-buttons slot="end">
-      <ion-chip (click)="onUpdateUserProfileClicked()">Save</ion-chip>
+      <toolbar-text-button (click)="onUpdateUserProfileClicked()">Save</toolbar-text-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-progress-bar type="indeterminate" *ngIf="userProfile$ | ngrxPush | isAsyncLoading"></ion-progress-bar>
