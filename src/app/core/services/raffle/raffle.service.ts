@@ -3,7 +3,10 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 import { CreateRaffleRequestDtoV1 } from './dtos/requests/create-raffle.request.dto.v1';
-import { RaffleResponseDtoV1 } from './dtos/responses/raffle.response.dto.v1';
+import {
+  RaffleResponseDtoV1,
+  raffleSelectStr,
+} from './dtos/responses/raffle.response.dto.v1';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +14,27 @@ import { RaffleResponseDtoV1 } from './dtos/responses/raffle.response.dto.v1';
 export class RaffleService {
   private readonly supabaseService = inject(SupabaseService);
 
-  private readonly raffleSelect =
-    'id, title, description, start_date, end_date, athletes(id, first_name, last_name, roster_entries(teams(id, name, sports(id, name))))';
+  getRaffle(
+    raffleId: number
+  ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1>> {
+    const response = from(
+      this.supabaseService.client
+        .from('raffles')
+        .select(raffleSelectStr)
+        .eq('id', raffleId)
+        .single()
+    );
+
+    return response;
+  }
+
   getRafflesForAthlete(
     athleteId: number
   ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1[]>> {
     const response = from(
       this.supabaseService.client
         .from('raffles')
-        .select(this.raffleSelect)
+        .select(raffleSelectStr)
         .eq('athletes_id', athleteId)
     );
 
@@ -33,7 +48,7 @@ export class RaffleService {
       this.supabaseService.client
         .from('raffles')
         .insert(request)
-        .select(this.raffleSelect)
+        .select(raffleSelectStr)
         .single()
     );
 

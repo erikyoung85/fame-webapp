@@ -5,9 +5,10 @@ export interface Raffle {
   title: string;
   description: string | undefined;
   startDate: string;
-  expirationDate: string;
+  endDate: string;
   sport: string;
   teamName: string;
+  prizeThumbnail: string;
   athlete: {
     id: number;
     name: string;
@@ -22,9 +23,10 @@ export class RaffleFactory {
       title: dto.title,
       description: dto.description ?? undefined,
       startDate: dto.start_date,
-      expirationDate: dto.end_date,
+      endDate: dto.end_date,
       sport: dto.athletes.roster_entries[0]?.teams.sports.name ?? '',
       teamName: dto.athletes.roster_entries[0]?.teams.name ?? '',
+      prizeThumbnail: dto.prize_thumbnail,
       athlete: {
         id: dto.athletes.id,
         name: `${dto.athletes.first_name} ${dto.athletes.last_name}`,

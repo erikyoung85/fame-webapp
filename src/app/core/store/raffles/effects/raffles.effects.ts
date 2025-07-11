@@ -18,7 +18,8 @@ export class RafflesEffects {
     () =>
       this.actions$.pipe(
         ofType(
-          rafflesActions.fetchRafflesFailure,
+          rafflesActions.fetchRaffleFailure,
+          rafflesActions.fetchRafflesForAthleteFailure,
           rafflesActions.createRaffleFailure
         ),
         tap(async (action) => {
@@ -36,25 +37,55 @@ export class RafflesEffects {
     { dispatch: false }
   );
 
-  fetchRaffles$ = createEffect(() =>
+  fetchRafflesForAthlete$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(rafflesActions.fetchRaffles),
-      switchMap(() => {
-        return this.raffleService.getRafflesForAthlete(1).pipe(
+      ofType(rafflesActions.fetchRafflesForAthlete),
+      switchMap((action) => {
+        return this.raffleService.getRafflesForAthlete(action.athleteId).pipe(
           map((response) => {
             if (response.error !== null) {
-              return rafflesActions.fetchRafflesFailure({
+              return rafflesActions.fetchRafflesForAthleteFailure({
                 message: response.error.message,
               });
             }
 
-            return rafflesActions.fetchRafflesSuccess({
+            return rafflesActions.fetchRafflesForAthleteSuccess({
               raffles: response.data.map(RaffleFactory.fromDtoV1),
             });
           }),
           catchError((error: Error) => {
             return of(
-              rafflesActions.fetchRafflesFailure({
+              rafflesActions.fetchRafflesForAthleteFailure({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  fetchRaffle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(rafflesActions.fetchRaffle),
+      switchMap((action) => {
+        return this.raffleService.getRaffle(action.raffleId).pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return rafflesActions.fetchRaffleFailure({
+                raffleId: action.raffleId,
+                message: response.error.message,
+              });
+            }
+
+            return rafflesActions.fetchRaffleSuccess({
+              raffle: RaffleFactory.fromDtoV1(response.data),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              rafflesActions.fetchRaffleFailure({
+                raffleId: action.raffleId,
                 message: error.message,
               })
             );

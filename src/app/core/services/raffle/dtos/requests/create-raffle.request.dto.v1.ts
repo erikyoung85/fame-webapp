@@ -4,4 +4,6 @@ export interface CreateRaffleRequestDtoV1 {
   description: string | null;
   start_date: string;
   end_date: string;
+  prize_thumbnail: string;
+  prize_video_url: string;
 }

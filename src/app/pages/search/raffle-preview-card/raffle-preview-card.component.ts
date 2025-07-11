@@ -16,10 +16,13 @@ import {
   IonCardTitle,
   IonText,
 } from '@ionic/angular/standalone';
+import { Store } from '@ngrx/store';
 import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 import { interval, Subject, takeUntil, takeWhile } from 'rxjs';
+import { PageRoutes } from 'src/app/app.routes';
 import { Raffle } from 'src/app/core/models/Raffle.model';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
+import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 
 @Component({
   selector: 'app-raffle-preview-card',
@@ -39,6 +42,7 @@ import { ModalService } from 'src/app/core/services/modal-service/modal.service'
 export class RafflePreviewCardComponent implements OnInit, OnDestroy {
   private readonly unsubscribe$ = new Subject<void>();
   private readonly modalService = inject(ModalService);
+  private readonly store = inject(Store);
 
   @Input() raffle!: Raffle;
 
@@ -48,11 +52,11 @@ export class RafflePreviewCardComponent implements OnInit, OnDestroy {
     interval(1000)
       .pipe(
         takeUntil(this.unsubscribe$),
-        takeWhile(() => isFuture(this.raffle.expirationDate))
+        takeWhile(() => isFuture(this.raffle.endDate))
       )
       .subscribe(() => {
         this.countdownString.set(
-          formatDistanceToNowStrict(this.raffle.expirationDate)
+          formatDistanceToNowStrict(this.raffle.endDate)
         );
       });
   }
@@ -66,5 +70,13 @@ export class RafflePreviewCardComponent implements OnInit, OnDestroy {
     event.stopPropagation();
 
     this.modalService.openPaymentModal(this.raffle);
+  }
+
+  onRaffleClicked() {
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [PageRoutes.RaffleDetail, this.raffle.id],
+      })
+    );
   }
 }

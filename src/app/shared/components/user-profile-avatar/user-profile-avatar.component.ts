@@ -36,7 +36,7 @@ export class UserProfileAvatarComponent
   @Input() avatarSrc: string | undefined = undefined;
   @Input({ transform: booleanAttribute }) editMode: boolean = false;
   @Input() size: 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'auto' =
-    'auto';
+    'small';
   @Input({ transform: booleanAttribute }) border: boolean = false;
   @Input() background?: CSS.Properties['background'] = 'white';
   @Input() defaultAvatarSrc?: string | undefined;

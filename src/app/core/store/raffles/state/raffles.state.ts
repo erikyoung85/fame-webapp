@@ -1,12 +1,7 @@
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { Dictionary } from '@ngrx/entity';
+import { AsyncData } from 'src/app/core/models/AsyncData.model';
 import { Raffle } from 'src/app/core/models/Raffle.model';
 
-export interface RafflesState extends EntityState<Raffle> {
-  isLoading: boolean;
-  error: string | undefined;
+export interface RafflesState {
+  raffleDict: Dictionary<AsyncData<Raffle | undefined>>;
 }
-
-export const rafflesEntityAdapter = createEntityAdapter<Raffle>({
-  selectId: (raffle) => raffle.id,
-  sortComparer: false,
-});

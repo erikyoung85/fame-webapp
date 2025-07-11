@@ -1,15 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="onCancelClicked()">Cancel</ion-button>
+      <toolbar-text-button (click)="onCancelClicked()">Cancel</toolbar-text-button>
     </ion-buttons>
-    <ion-title>Create a Raffle</ion-title>
+    <ion-title>{{ form.value.title }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="onCreateClicked()" [strong]="true" [disabled]="form.invalid">Confirm</ion-button>
+      <toolbar-text-button (click)="onSaveClicked()">Save</toolbar-text-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content style="--ion-background-color: black">
+
+<ion-content>
   <ion-card>
     <shared-form-photo
       [formControl]="form.controls.prizeThumbnailUrl"
@@ -52,8 +53,6 @@
             </ion-toolbar>
             <ion-datetime
               [formControl]="form.controls.startDate"
-              [min]="minStartDate"
-              [max]="maxStartDate"
               presentation="date-time" 
               [preferWheel]="true"
               size="cover"
@@ -78,8 +77,6 @@
             </ion-toolbar>
             <ion-datetime
               [formControl]="form.controls.endDate"
-              [min]="form.value.startDate"
-              [max]="maxExpirationDate"
               presentation="date-time" 
               [preferWheel]="true"
               size="cover"

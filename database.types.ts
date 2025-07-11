@@ -245,6 +245,30 @@ export type Database = {
           },
         ]
       }
+      raffle_ticket_purchase_errors: {
+        Row: {
+          created_at: string
+          description: string
+          id: number
+          stripe_payment_id: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: number
+          stripe_payment_id?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: number
+          stripe_payment_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       raffle_ticket_purchases: {
         Row: {
           created_at: string
@@ -298,6 +322,8 @@ export type Database = {
           description: string | null
           end_date: string
           id: number
+          prize_thumbnail: string
+          prize_video_url: string
           raffle_results_id: number | null
           start_date: string
           title: string
@@ -309,6 +335,8 @@ export type Database = {
           description?: string | null
           end_date: string
           id?: number
+          prize_thumbnail: string
+          prize_video_url: string
           raffle_results_id?: number | null
           start_date: string
           title: string
@@ -320,6 +348,8 @@ export type Database = {
           description?: string | null
           end_date?: string
           id?: number
+          prize_thumbnail?: string
+          prize_video_url?: string
           raffle_results_id?: number | null
           start_date?: string
           title?: string

@@ -65,7 +65,7 @@
             button
             (click)="onAthleteClicked(athlete)"
           >
-            <app-user-profile-avatar size="auto" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
+            <app-user-profile-avatar slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
             <ion-label>
               <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
               <ion-text><ion-note color="medium">{{ athlete.grade }} • {{ athlete.position }} • #{{ athlete.jerseyNumber }}</ion-note></ion-text>

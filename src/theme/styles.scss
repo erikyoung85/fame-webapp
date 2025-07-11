@@ -3,6 +3,7 @@
 @use "toolbar-icon-button";
 @use "top-image";
 @use "header-init-transparent";
+@use "list-card-color";
 
 // Hide scrollbar in ion-content for Chrome, Safari and Opera
 ion-content::part(scroll)::-webkit-scrollbar {
@@ -27,13 +28,4 @@ ion-content::part(scroll) {
 
 .scroll-behind-header::part(scroll) {
   padding-top: 0;
-}
-
-ion-list.card-background {
-  ion-item::part(native) {
-    background: var(--ion-card-background);
-  }
-}
-ion-item.card-background::part(native) {
-  background: var(--ion-card-background);
 }

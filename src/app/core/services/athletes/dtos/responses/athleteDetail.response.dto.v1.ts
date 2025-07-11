@@ -1,5 +1,6 @@
 import { Gender } from 'src/app/core/enums/Gender.enum';
 import { Grade } from 'src/app/core/enums/Grade.enum';
+import { RaffleResponseDtoV1 } from '../../../raffle/dtos/responses/raffle.response.dto.v1';
 
 export interface AthleteDetailResponseDtoV1 {
   id: number;
@@ -29,4 +30,5 @@ export interface AthleteDetailResponseDtoV1 {
       };
     };
   }[];
+  raffles: RaffleResponseDtoV1[];
 }

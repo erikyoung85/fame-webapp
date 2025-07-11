@@ -1,0 +1,50 @@
+.form-photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.photo-display {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+
+  .photo-overlay {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  width: 100%;
+  border: 2px dashed var(--ion-color-medium);
+  border-radius: 8px;
+  cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  ion-button {
+    margin-bottom: 8px;
+
+    ion-icon {
+      font-size: 2rem;
+    }
+  }
+
+  ion-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}

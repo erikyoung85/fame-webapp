@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
+import { raffleSelectStr } from '../raffle/dtos/responses/raffle.response.dto.v1';
 import { SupabaseService } from '../supabase/supabase.service';
 import { UpdateAthleteRequestDtoV1 } from './dtos/requests/updateAthlete.request.dto.v1';
 import { AthleteDetailResponseDtoV1 } from './dtos/responses/athleteDetail.response.dto.v1';
@@ -26,8 +27,7 @@ export class AthletesService {
     return response;
   }
 
-  private readonly athleteDetailSelect =
-    'id, avatar_url, first_name, last_name, date_of_birth, gender, grade, hometown, schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, banner_url, sports(id, name)))';
+  private readonly athleteDetailSelect = `id, avatar_url, first_name, last_name, date_of_birth, gender, grade, hometown, raffles(${raffleSelectStr}), schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, banner_url, sports(id, name)))`;
   getAthleteDetail(
     athleteId: number
   ): Observable<PostgrestSingleResponse<AthleteDetailResponseDtoV1>> {

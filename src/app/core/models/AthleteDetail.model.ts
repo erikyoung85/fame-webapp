@@ -1,6 +1,7 @@
 import { Gender } from '../enums/Gender.enum';
 import { Grade } from '../enums/Grade.enum';
 import { AthleteDetailResponseDtoV1 } from '../services/athletes/dtos/responses/athleteDetail.response.dto.v1';
+import { Raffle, RaffleFactory } from './Raffle.model';
 
 export interface AthleteDetail {
   id: number;
@@ -16,6 +17,7 @@ export interface AthleteDetail {
   teamName: string | undefined;
   grade: Grade;
   hometown: string | undefined;
+  raffles: Raffle[];
 }
 
 export class AthleteDetailFactory {
@@ -34,6 +36,7 @@ export class AthleteDetailFactory {
       teamName: dto.roster_entries[0]?.teams.name ?? undefined,
       grade: Grade[dto.grade],
       hometown: dto.hometown ?? undefined,
+      raffles: dto.raffles.map((raffle) => RaffleFactory.fromDtoV1(raffle)),
     };
   }
 }

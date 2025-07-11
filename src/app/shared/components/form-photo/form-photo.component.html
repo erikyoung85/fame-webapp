@@ -1,0 +1,40 @@
+<div class="form-photo-container">
+  @if (_value()) {
+    <div class="photo-display" (click)="selectPhoto()">
+      <ion-img 
+        [src]="_value()" 
+        [alt]="alt"
+      ></ion-img>
+      @if (!readonly && !_isDisabled()) {
+        <div class="photo-overlay">
+          <ion-button 
+            shape="round"
+            size="large"
+            color="light"
+          >
+            <ion-icon name="camera-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="photo-placeholder" (click)="selectPhoto()">
+      @if (!readonly && !_isDisabled()) {
+        <ion-button 
+          fill="clear" 
+          size="large"
+          [disabled]="_isDisabled()"
+        >
+          <ion-icon name="camera-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-text color="medium">
+          <p>{{ placeholder }}</p>
+        </ion-text>
+      } @else {
+        <ion-text color="medium">
+          <p>No photo selected</p>
+        </ion-text>
+      }
+    </div>
+  }
+</div>

@@ -20,6 +20,7 @@ export enum TabRoutes {
 export enum PageRoutes {
   TeamDetail = 'team-detail',
   AthleteDetail = 'athlete-detail',
+  RaffleDetail = 'raffle-detail',
   UserProfile = 'user-profile',
   Login = 'login',
   Register = 'register',
@@ -41,6 +42,11 @@ const athleteDetailPageRoute: Route = {
 const teamDetailPageRoute: Route = {
   path: `${PageRoutes.TeamDetail}/:teamId`,
   loadChildren: () => import('./pages/team-detail/team-detail.routes'),
+};
+
+const raffleDetailPageRoute: Route = {
+  path: `${PageRoutes.RaffleDetail}/:raffleId`,
+  loadChildren: () => import('./pages/raffle-detail/raffle-detail.routes'),
 };
 
 const userProfilePageRoute: Route = {
@@ -86,6 +92,7 @@ export const routes: Routes = [
               ),
           },
           athleteDetailPageRoute,
+          raffleDetailPageRoute,
         ],
       },
       {
@@ -103,6 +110,7 @@ export const routes: Routes = [
           },
           teamDetailPageRoute,
           athleteDetailPageRoute,
+          raffleDetailPageRoute,
         ],
       },
       {
@@ -138,6 +146,7 @@ export const routes: Routes = [
           },
           teamDetailPageRoute,
           athleteDetailPageRoute,
+          raffleDetailPageRoute,
         ],
       },
     ],

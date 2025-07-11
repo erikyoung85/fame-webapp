@@ -106,7 +106,9 @@ export class AthleteDetailViewPage implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(userActions.fetchUserManagedPages());
-    this.store.dispatch(rafflesActions.fetchRaffles());
+    this.store.dispatch(
+      rafflesActions.fetchRafflesForAthlete({ athleteId: this.athleteId() })
+    );
   }
 
   onCreateRaffleClicked() {

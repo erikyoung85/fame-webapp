@@ -1,37 +1,80 @@
 import { createReducer, on } from '@ngrx/store';
+import { indexBy } from 'ramda';
+import {
+  AsyncDataStatus,
+  wrapAsAsyncData,
+} from 'src/app/core/models/AsyncData.model';
 import { rafflesActions } from '../actions/raffles.actions';
 import { INITIAL_RAFFLES_STATE } from '../state/raffles.initial-state';
-import { rafflesEntityAdapter, RafflesState } from '../state/raffles.state';
+import { RafflesState } from '../state/raffles.state';
 
 export const rafflesReducer = createReducer(
   INITIAL_RAFFLES_STATE,
-  on(rafflesActions.fetchRaffles, (state): RafflesState => {
+  on(rafflesActions.fetchRaffle, (state, action): RafflesState => {
     return {
       ...state,
-      isLoading: true,
-      error: undefined,
+      raffleDict: {
+        ...state.raffleDict,
+        [action.raffleId]: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
+      },
     };
   }),
-  on(rafflesActions.fetchRafflesSuccess, (state, action): RafflesState => {
-    return rafflesEntityAdapter.upsertMany<RafflesState>(action.raffles, {
-      ...state,
-      isLoading: false,
-      error: undefined,
-    });
-  }),
-  on(rafflesActions.fetchRafflesFailure, (state, action): RafflesState => {
+  on(rafflesActions.fetchRaffleSuccess, (state, action): RafflesState => {
     return {
       ...state,
-      isLoading: false,
-      error: action.message,
+      raffleDict: {
+        ...state.raffleDict,
+        [action.raffle.id]: wrapAsAsyncData(
+          action.raffle,
+          AsyncDataStatus.Success
+        ),
+      },
+    };
+  }),
+  on(rafflesActions.fetchRaffleFailure, (state, action): RafflesState => {
+    return {
+      ...state,
+      raffleDict: {
+        ...state.raffleDict,
+        [action.raffleId]: wrapAsAsyncData(
+          undefined,
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      },
     };
   }),
 
+  on(
+    rafflesActions.fetchRafflesForAthleteSuccess,
+    (state, action): RafflesState => {
+      const asyncRaffles = action.raffles.map((raffle) =>
+        wrapAsAsyncData(raffle, AsyncDataStatus.Success)
+      );
+
+      const groupedRaffles = indexBy(
+        (raffle) => raffle.data.athlete.id,
+        asyncRaffles
+      );
+
+      return {
+        ...state,
+        raffleDict: {
+          ...state.raffleDict,
+          ...groupedRaffles,
+        },
+      };
+    }
+  ),
+
   on(rafflesActions.createRaffleSuccess, (state, action): RafflesState => {
-    return rafflesEntityAdapter.upsertOne<RafflesState>(action.raffle, {
+    const asyncRaffle = wrapAsAsyncData(action.raffle, AsyncDataStatus.Success);
+    return {
       ...state,
-      isLoading: false,
-      error: undefined,
-    });
+      raffleDict: {
+        ...state.raffleDict,
+        [action.raffle.id]: asyncRaffle,
+      },
+    };
   })
 );

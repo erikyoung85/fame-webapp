@@ -37,10 +37,11 @@
     </ion-list-header>
     <div class="ion-padding flex-row gap-2 scroll-x" *ngrxLet="allRaffles$ as allRaffles">
       <ion-text *ngIf="allRaffles.length === 0" class="ion-padding">No active raffles</ion-text>
-      <app-raffle-preview-card
-        *ngFor="let raffle of allRaffles"
-        [raffle]="raffle"
-      ></app-raffle-preview-card>
+      @for (raffle of allRaffles; track raffle.id) {
+        <app-raffle-preview-card
+          [raffle]="raffle"
+        ></app-raffle-preview-card>
+      }
     </div>
 
     <!-- Trending Teams -->

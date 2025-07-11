@@ -62,10 +62,10 @@
                   </ion-button>
                 </ng-container>
               </ion-list-header>
-              <div class="flex-row gap-2 scroll-x" *ngrxLet="athleteRaffles$ as athleteRaffles">
-                <ion-text *ngIf="athleteRaffles.length === 0" class="ion-padding" color="medium">No active raffles</ion-text>
+              <div class="flex-row gap-2 scroll-x">
+                <ion-text *ngIf="(athleteDetails?.raffles?.length ?? 0) === 0" class="ion-padding" color="medium">No active raffles</ion-text>
                 <app-raffle-preview-card
-                  *ngFor="let raffle of athleteRaffles"
+                  *ngFor="let raffle of athleteDetails?.raffles"
                   [raffle]="raffle"
                 ></app-raffle-preview-card>
               </div>
@@ -73,64 +73,6 @@
           </ion-row>
                 
           <!-- Athlete information section -->
-          <ion-row>
-            <ion-col>
-              <ion-list-header class="ion-no-padding ion-margin-vertical">
-                Athlete Info
-              </ion-list-header>
-              <ion-list>
-                <ion-item>
-                  <ion-label>Grade</ion-label>
-                  <ion-icon slot="start" name="trophy-sharp"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails?.grade }}</ion-text>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Hometown</ion-label>
-                  <ion-icon slot="start" name="location-sharp"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails?.hometown }}</ion-text>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Date of birth</ion-label>
-                  <ion-icon slot="start" name="calendar"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails?.dateOfBirth | date }}</ion-text>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Money raised for {{ athleteDetails?.firstName }}</ion-label>
-                  <ion-icon slot="start" name="cash-sharp"></ion-icon>
-                  <ion-text slot="end">{{ '$10' }}</ion-text>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <ion-list-header class="ion-no-padding ion-margin-vertical">
-                Athlete Info
-              </ion-list-header>
-              <ion-list>
-                <ion-item>
-                  <ion-label>Grade</ion-label>
-                  <ion-icon slot="start" name="trophy-sharp"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails?.grade }}</ion-text>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Hometown</ion-label>
-                  <ion-icon slot="start" name="location-sharp"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails?.hometown }}</ion-text>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Date of birth</ion-label>
-                  <ion-icon slot="start" name="calendar"></ion-icon>
-                  <ion-text slot="end">{{ athleteDetails?.dateOfBirth | date }}</ion-text>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Money raised for {{ athleteDetails?.firstName }}</ion-label>
-                  <ion-icon slot="start" name="cash-sharp"></ion-icon>
-                  <ion-text slot="end">{{ '$10' }}</ion-text>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-          </ion-row>
           <ion-row>
             <ion-col>
               <ion-list-header class="ion-no-padding ion-margin-vertical">

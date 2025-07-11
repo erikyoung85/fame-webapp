@@ -22,7 +22,8 @@ import {
 } from '@ionic/angular/standalone';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { isNotNil } from 'ramda';
+import { debounceTime, map, Subject, takeUntil } from 'rxjs';
 import { PageRoutes } from 'src/app/app.routes';
 import {
   SearchItem,
@@ -93,15 +94,20 @@ export class SearchPage implements OnInit, OnDestroy {
     athletesFeature.selectIsLoading
   );
 
-  readonly allRaffles$ = this.store.select(rafflesFeature.selectAll);
-  readonly isRafflesLoading$ = this.store.select(
-    rafflesFeature.selectIsLoading
-  );
+  readonly allRaffles$ = this.store
+    .select(rafflesFeature.selectAllRaffles)
+    .pipe(
+      map((raffleAsyncs) =>
+        raffleAsyncs.map((async) => async?.data).filter(isNotNil)
+      )
+    );
 
   ngOnInit(): void {
     this.store.dispatch(teamsActions.fetchTeams());
     this.store.dispatch(athletesActions.fetchAthletes());
-    this.store.dispatch(rafflesActions.fetchRaffles());
+    this.store.dispatch(
+      rafflesActions.fetchRafflesForAthlete({ athleteId: 1 })
+    );
 
     this.searchQueryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(500))
