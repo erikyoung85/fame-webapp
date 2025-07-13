@@ -2,7 +2,6 @@ import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   OnInit,
 } from '@angular/core';
@@ -74,12 +73,10 @@ export class UserProfileViewPage implements OnInit {
   readonly managedAthletePages$ = this.store.selectSignal(
     userFeature.selectManagedAthletePages
   );
-  readonly isAthlete$ = computed(() => this.managedAthletePages$().length > 0);
 
   readonly managedTeamPages$ = this.store.selectSignal(
     userFeature.selectManagedTeamPages
   );
-  readonly isTeamManager$ = computed(() => this.managedTeamPages$().length > 0);
 
   readonly managedRaffles$ = this.store.selectSignal(
     userFeature.selectManagedRaffles

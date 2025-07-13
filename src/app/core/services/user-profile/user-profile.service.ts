@@ -14,7 +14,7 @@ export class UserProfileService {
   private readonly supabaseService = inject(SupabaseService);
 
   private readonly profileSelect =
-    'id, avatar_url, first_name, last_name, favorite_team_id, profiles_admin(is_admin)';
+    'id, avatar_url, first_name, last_name, favorite_team_id, is_athlete, is_team_manager, profiles_admin(is_admin)';
   getUserProfile(
     userId: string
   ): Observable<PostgrestSingleResponse<UserProfileResponseDtoV1>> {

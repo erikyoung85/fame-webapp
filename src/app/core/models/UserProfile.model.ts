@@ -8,6 +8,8 @@ export interface UserProfile {
   firstName: string;
   lastName: string;
   favoriteTeamId: number | undefined;
+  isAthlete: boolean;
+  isTeamManager: boolean;
   isAdmin: boolean;
 }
 
@@ -22,6 +24,8 @@ export class UserProfileFactory {
       lastName: user.user_metadata?.['last_name'] ?? '',
       favoriteTeamId: user.user_metadata?.['favorite_team_id'] ?? undefined,
       isAdmin: false,
+      isAthlete: false,
+      isTeamManager: false,
     };
   }
 
@@ -37,6 +41,8 @@ export class UserProfileFactory {
       lastName: userProfileDto.last_name,
       favoriteTeamId: userProfileDto.favorite_team_id ?? undefined,
       isAdmin: userProfileDto.profiles_admin?.is_admin ?? false,
+      isAthlete: userProfileDto.is_athlete,
+      isTeamManager: userProfileDto.is_team_manager,
     };
   }
 }

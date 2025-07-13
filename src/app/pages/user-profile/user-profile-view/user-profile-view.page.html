@@ -43,10 +43,10 @@
           </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center">
-          <ion-col size="auto" *ngIf="isAthlete$()">
+          <ion-col size="auto" *ngIf="userProfile.isAthlete">
             <shared-pill color="secondary">Athlete</shared-pill>
           </ion-col>
-          <ion-col size="auto" *ngIf="isTeamManager$()">
+          <ion-col size="auto" *ngIf="userProfile.isTeamManager">
             <shared-pill color="tertiary">Team Manager</shared-pill>
           </ion-col>
         </ion-row>
@@ -70,6 +70,7 @@
     </ion-item>
   </ion-list>
 
+  @if (userProfile.isAthlete || userProfile.isTeamManager) {
   <ion-list-header class="ion-margin-vertical">My Pages</ion-list-header>
 
   @let managedTeamPages = managedTeamPages$();
@@ -99,6 +100,7 @@
       <ion-label>{{ raffle.title }}</ion-label>
     </ion-item>
   </ion-list>
+  }
   }
   }
 </ion-content>

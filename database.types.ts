@@ -74,6 +74,8 @@ export type Database = {
           favorite_team_id: number | null
           first_name: string
           id: string
+          is_athlete: boolean
+          is_team_manager: boolean
           last_name: string
           stripe_customer_id: string | null
         }
@@ -83,6 +85,8 @@ export type Database = {
           favorite_team_id?: number | null
           first_name: string
           id?: string
+          is_athlete?: boolean
+          is_team_manager?: boolean
           last_name: string
           stripe_customer_id?: string | null
         }
@@ -92,6 +96,8 @@ export type Database = {
           favorite_team_id?: number | null
           first_name?: string
           id?: string
+          is_athlete?: boolean
+          is_team_manager?: boolean
           last_name?: string
           stripe_customer_id?: string | null
         }
