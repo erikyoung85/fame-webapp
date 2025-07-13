@@ -2,10 +2,12 @@ import { NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
 } from '@angular/core';
 import {
+  IonButton,
   IonButtons,
   IonCol,
   IonContent,
@@ -17,28 +19,26 @@ import {
   IonList,
   IonListHeader,
   IonNote,
-  IonProgressBar,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PillComponent } from 'src/app/shared/components/pill/pill.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
-import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
 @Component({
   templateUrl: './user-profile-view.page.html',
   styleUrls: ['./user-profile-view.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
   imports: [
     NgIf,
     IonListHeader,
@@ -51,36 +51,37 @@ import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.
     IonRow,
     IonGrid,
     IonIcon,
-    UnwrapAsyncPipe,
     UserProfileAvatarComponent,
-    LetDirective,
     PillComponent,
-    PushPipe,
     IonTitle,
     IonToolbar,
     IonHeader,
     IonContent,
-    IsAsyncLoadingPipe,
-    IonProgressBar,
     IonButtons,
     NgFor,
     ToolbarTextButtonComponent,
+    IonButton,
   ],
 })
 export class UserProfileViewPage implements OnInit {
   private readonly store = inject(Store);
+  readonly LoadingStatus = AsyncDataStatus.Loading;
 
-  readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
+  readonly userProfile$ = this.store.selectSignal(
+    userFeature.selectUserProfile
+  );
 
-  readonly managedAthletePages$ = this.store.select(
+  readonly managedAthletePages$ = this.store.selectSignal(
     userFeature.selectManagedAthletePages
   );
+  readonly isAthlete$ = computed(() => this.managedAthletePages$().length > 0);
 
-  readonly managedTeamPages$ = this.store.select(
+  readonly managedTeamPages$ = this.store.selectSignal(
     userFeature.selectManagedTeamPages
   );
+  readonly isTeamManager$ = computed(() => this.managedTeamPages$().length > 0);
 
-  readonly managedRaffles$ = this.store.select(
+  readonly managedRaffles$ = this.store.selectSignal(
     userFeature.selectManagedRaffles
   );
 
@@ -100,6 +101,14 @@ export class UserProfileViewPage implements OnInit {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
         url: [PageRoutes.AthleteDetail, athleteId],
+      })
+    );
+  }
+
+  onRaffleClicked(raffleId: number) {
+    this.store.dispatch(
+      RouterActions.routeInCurrentTab({
+        url: [PageRoutes.RaffleDetail, raffleId],
       })
     );
   }

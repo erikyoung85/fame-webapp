@@ -8,7 +8,7 @@ import {
   name: 'isAsyncLoading',
 })
 export class IsAsyncLoadingPipe implements PipeTransform {
-  transform<T>(value: AsyncData<T> | null | undefined): boolean {
+  transform(value: AsyncData<unknown> | null | undefined): boolean {
     return (
       value?.status === AsyncDataStatus.Idle ||
       value?.status === AsyncDataStatus.Loading
