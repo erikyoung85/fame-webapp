@@ -29,6 +29,8 @@ import { StripeEffects } from './app/core/store/stripe/effects/stripe.effects';
 import { stripeFeature } from './app/core/store/stripe/feature/stripe.feature';
 import { TeamsEffects } from './app/core/store/teams/effects/teams.effects';
 import { teamsFeature } from './app/core/store/teams/feature/teams.feature';
+import { TransactionEffects } from './app/core/store/transaction/effects/transaction.effects';
+import { transactionFeature } from './app/core/store/transaction/feature/transaction.feature';
 import { UserEffects } from './app/core/store/user/effects/user.effects';
 import { userFeature } from './app/core/store/user/feature/user.feature';
 import { PaymentEffects } from './app/modals/payment/store/effects/payment.effects';
@@ -65,6 +67,8 @@ bootstrapApplication(AppComponent, {
     provideEffects(PaymentEffects),
     provideState(rafflesFeature),
     provideEffects(RafflesEffects),
+    provideState(transactionFeature),
+    provideEffects(TransactionEffects),
 
     provideRouterStore(),
     provideHttpClient(withInterceptors([authInterceptor])),

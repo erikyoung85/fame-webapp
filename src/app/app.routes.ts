@@ -14,6 +14,7 @@ export enum AppRoutes {
 export enum TabRoutes {
   MyTeam = 'my-team',
   Search = 'search',
+  Transactions = 'transactions',
   Account = 'account',
 }
 
@@ -27,6 +28,7 @@ export enum PageRoutes {
   PasswordReset = 'password-reset',
   Search = 'search',
   Payment = 'payment',
+  Transactions = 'transactions',
 }
 
 export enum FormActionRoutes {
@@ -111,6 +113,27 @@ export const routes: Routes = [
           teamDetailPageRoute,
           athleteDetailPageRoute,
           raffleDetailPageRoute,
+        ],
+      },
+      {
+        path: TabRoutes.Transactions,
+        canActivate: [isLoggedInGuard],
+        children: [
+          {
+            path: '',
+            redirectTo: PageRoutes.Transactions,
+            pathMatch: 'full',
+          },
+          {
+            path: PageRoutes.Transactions,
+            loadComponent: () =>
+              import('./pages/transactions/transactions.page').then(
+                (m) => m.TransactionsPage
+              ),
+            resolve: {
+              userProfile: userProfileResolver,
+            },
+          },
         ],
       },
       {

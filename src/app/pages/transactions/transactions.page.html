@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Transactions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- User Transaction Summary -->
+  <ion-list-header>User Summary</ion-list-header>
+  <ion-grid>
+    @let transactionSummary = transactionSummary$().data;
+    @let isTransactionSummaryLoading = transactionSummary$().status === LoadingStatus;
+    @if (isTransactionSummaryLoading) {
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+            <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+            <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+            <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    }
+    @if (!isTransactionSummaryLoading && transactionSummary !== undefined) {
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title>{{ transactionSummary.rafflesJoined }}</ion-card-title>
+            <ion-card-subtitle>Raffles Entered</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title>{{ transactionSummary.rafflesWon }}</ion-card-title>
+            <ion-card-subtitle>Raffles Won</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title>{{ transactionSummary.totalSpent| currency }}</ion-card-title>
+            <ion-card-subtitle>Money Spent</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    }
+  </ion-grid>
+
+  <!-- Managed Athletes Raffle Summary -->
+  @if (userProfile().isAthlete) {
+  <ion-list-header>Athlete Summary</ion-list-header>
+  <ion-grid>
+    @let managedAthletesRaffleSummary = managedAthletesRaffleSummary$().data;
+    @let isManagedAthletesRaffleSummaryLoading = managedAthletesRaffleSummary$().status === LoadingStatus;
+    @if (isManagedAthletesRaffleSummaryLoading) {
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+            <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+            <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+            <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    }
+    @if (!isManagedAthletesRaffleSummaryLoading && managedAthletesRaffleSummary !== undefined) {
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title>{{ managedAthletesRaffleSummary.rafflesCreated }}</ion-card-title>
+            <ion-card-subtitle>Raffles Created</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title>{{ managedAthletesRaffleSummary.rafflesCompleted }}</ion-card-title>
+            <ion-card-subtitle>Raffles Completed</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col size="12">
+        <ion-card class="ion-no-margin">
+          <ion-card-header>
+            <ion-card-title color="success">+ {{ managedAthletesRaffleSummary.ticketsSold| currency }}</ion-card-title>
+            <ion-card-subtitle>Money Earned</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    }
+  </ion-grid>
+  }
+
+
+  <!-- Transaction History -->
+  @let transactions = transactions$().data;
+  @let isTransactionsLoading = transactions$().status === LoadingStatus;
+
+  <ion-list-header class="ion-margin-vertical">History</ion-list-header>
+  @if (isTransactionsLoading) {
+  <ion-list inset>
+    <ion-item>
+      <ion-label>
+        <h2><ion-skeleton-text [animated]="true"></ion-skeleton-text></h2>
+        <ion-note><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-note>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2> <ion-skeleton-text [animated]="true"></ion-skeleton-text></h2>
+        <ion-note><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-note>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  }
+  @if (!isTransactionsLoading && transactions !== undefined) {
+  <ion-list inset>
+    <ion-item (click)="onTransactionClicked()" *ngFor="let transaction of transactions">
+      <ion-label>
+        <h2>{{ transaction.raffle.title }}</h2>
+        <ion-note>{{ transaction.raffle.athlete.name }}</ion-note>
+      </ion-label>
+      <ion-label slot="end">
+        @if (transaction.type === TransactionType.AthleteProfit) {
+        <h2><ion-text color="success">+ {{ transaction.quantity | currency }}</ion-text></h2>
+        } @else if (transaction.type === TransactionType.UserPurchase) {
+        <h2><ion-text>- {{ transaction.quantity | currency }}</ion-text></h2>
+        } @else {
+        <h2>{{ transaction.quantity | currency }}</h2>
+        }
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  }
+</ion-content>

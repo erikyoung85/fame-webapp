@@ -76,6 +76,11 @@ export class TabsPage implements OnInit, OnDestroy {
       route: TabRoutes.Search,
     },
     {
+      label: 'Transactions',
+      icon: 'swap-vertical-sharp',
+      route: TabRoutes.Transactions,
+    },
+    {
       label: 'Account',
       icon: 'person-sharp',
       route: TabRoutes.Account,

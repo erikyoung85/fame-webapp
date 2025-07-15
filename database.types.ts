@@ -533,7 +533,57 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      athlete_raffle_summary: {
+        Row: {
+          athlete_id: number | null
+          total_raffles_completed: number | null
+          total_raffles_created: number | null
+          total_tickets_sold: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raffles_athletes_id_fkey"
+            columns: ["athlete_id"]
+            isOneToOne: false
+            referencedRelation: "athletes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profile_athlete_raffle_summary: {
+        Row: {
+          profile_id: string | null
+          total_raffles_completed: number | null
+          total_raffles_created: number | null
+          total_tickets_sold: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_x_athletes_profiles_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profile_raffle_summary: {
+        Row: {
+          profile_id: string | null
+          total_raffles_joined: number | null
+          total_raffles_won: number | null
+          total_tickets_purchased: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raffle_ticket_purchases_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       has_raffle_started: {

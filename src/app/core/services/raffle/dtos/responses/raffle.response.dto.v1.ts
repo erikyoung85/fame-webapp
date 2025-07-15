@@ -1,5 +1,5 @@
 export const raffleSelectStr =
-  'id, title, description, start_date, end_date, prize_thumbnail, athletes(id, first_name, last_name, roster_entries(teams(id, name, sports(id, name))))';
+  'id, title, description, start_date, end_date, prize_thumbnail, athletes(id, first_name, last_name, profiles_x_athletes(), roster_entries(teams(id, name, sports(id, name))))';
 
 export interface RaffleResponseDtoV1 {
   id: number;
