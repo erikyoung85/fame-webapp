@@ -7,6 +7,7 @@ import { UserManagedAthletesRaffleSummary } from 'src/app/core/models/UserManage
 export interface TransactionState {
   transactions: AsyncData<RaffleTransaction[]>;
   transactionSummary: AsyncData<RaffleTransactionSummary | undefined>;
+  userManagedAthletesTransactions: AsyncData<RaffleTransaction[]>;
   userManagedAthletesRaffleSummary: AsyncData<
     UserManagedAthletesRaffleSummary | undefined
   >;

@@ -1,0 +1,40 @@
+<ion-list inset>
+  @if (isLoading()) {
+  <ion-item>
+    <ion-label>
+      <h2><ion-skeleton-text [animated]="true"></ion-skeleton-text></h2>
+      <ion-note><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-note>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      <h2> <ion-skeleton-text [animated]="true"></ion-skeleton-text></h2>
+      <ion-note><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-note>
+    </ion-label>
+  </ion-item>
+  }
+  @else if (transactions().length === 0) {
+  <ion-item>
+    <ion-label>
+      <h2>No transactions found</h2>
+    </ion-label>
+  </ion-item>
+  }
+  @else {
+  <ion-item (click)="onTransactionClicked()" *ngFor="let transaction of transactions()">
+    <ion-label>
+      <h2>{{ transaction.raffle.title }}</h2>
+      <ion-note>{{ transaction.raffle.athlete.name }}</ion-note>
+    </ion-label>
+    <ion-label slot="end">
+      @if (transaction.type === TransactionType.AthleteProfit) {
+      <h2><ion-text color="success">+ {{ transaction.quantity | currency }}</ion-text></h2>
+      } @else if (transaction.type === TransactionType.UserPurchase) {
+      <h2><ion-text>{{ transaction.quantity | currency }}</ion-text></h2>
+      } @else {
+      <h2>{{ transaction.quantity | currency }}</h2>
+      }
+    </ion-label>
+  </ion-item>
+  }
+</ion-list>

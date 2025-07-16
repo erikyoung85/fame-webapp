@@ -1,0 +1,68 @@
+<ion-list-header>Athlete Summary</ion-list-header>
+<ion-grid>
+  @let managedAthletesRaffleSummary = managedAthletesRaffleSummary$().data;
+  @let isManagedAthletesRaffleSummaryLoading = managedAthletesRaffleSummary$().status === LoadingStatus;
+  @if (isManagedAthletesRaffleSummaryLoading) {
+  <ion-row>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="12">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  }
+  @if (!isManagedAthletesRaffleSummaryLoading && managedAthletesRaffleSummary !== undefined) {
+  <ion-row>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin h-100">
+        <ion-card-header>
+          <ion-card-title>{{ managedAthletesRaffleSummary.rafflesCreated }}</ion-card-title>
+          <ion-card-subtitle>Raffles Created</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin h-100">
+        <ion-card-header>
+          <ion-card-title>{{ managedAthletesRaffleSummary.rafflesCompleted }}</ion-card-title>
+          <ion-card-subtitle>Raffles Completed</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="12">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title color="success">{{ managedAthletesRaffleSummary.ticketsSold| currency }}</ion-card-title>
+          <ion-card-subtitle>Money Earned</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  }
+</ion-grid>
+
+<!-- Transaction History -->
+@let transactions = managedAthletesTransactions$().data;
+@let isTransactionsLoading = managedAthletesTransactions$().status === LoadingStatus;
+
+<ion-list-header class="ion-margin-vertical">History</ion-list-header>
+<app-transactions-list [transactions]="transactions" [isLoading]="isTransactionsLoading"></app-transactions-list>

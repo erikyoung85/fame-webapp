@@ -1,37 +1,18 @@
-import { CurrencyPipe, NgFor } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  OnInit,
-} from '@angular/core';
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonItem,
   IonLabel,
-  IonList,
-  IonListHeader,
-  IonNote,
-  IonRow,
-  IonSkeletonText,
-  IonText,
+  IonSegment,
+  IonSegmentButton,
+  IonSegmentContent,
+  IonSegmentView,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
-import { Store } from '@ngrx/store';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
-import { RaffleTransactionType } from 'src/app/core/models/RaffleTransaction.model';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
-import { transactionActions } from 'src/app/core/store/transaction/actions/transaction.actions';
-import { transactionFeature } from 'src/app/core/store/transaction/feature/transaction.feature';
+import { AthleteTransactionsViewComponent } from './athlete-transactions-view/athlete-transactions-view.component';
+import { UserTransactionsViewComponent } from './user-transactions-view/user-transactions-view.component';
 
 @Component({
   templateUrl: './transactions.page.html',
@@ -39,54 +20,19 @@ import { transactionFeature } from 'src/app/core/store/transaction/feature/trans
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
-    IonCardSubtitle,
-    IonCardTitle,
-    IonCardHeader,
-    IonCard,
-    IonCol,
-    IonRow,
-    IonGrid,
-    IonSkeletonText,
-    IonListHeader,
+    IonSegmentButton,
+    IonSegment,
     IonLabel,
-    IonItem,
-    IonList,
-    IonNote,
-    IonText,
     IonTitle,
     IonToolbar,
     IonHeader,
     IonContent,
-    NgFor,
-    CurrencyPipe,
+    IonSegmentView,
+    IonSegmentContent,
+    UserTransactionsViewComponent,
+    AthleteTransactionsViewComponent,
   ],
 })
-export class TransactionsPage implements OnInit {
-  private readonly store = inject(Store);
-  readonly LoadingStatus = AsyncDataStatus.Loading;
-  readonly TransactionType = RaffleTransactionType;
-
+export class TransactionsPage {
   readonly userProfile = input.required<UserProfile>();
-
-  readonly transactions$ = this.store.selectSignal(
-    transactionFeature.selectTransactions
-  );
-  readonly transactionSummary$ = this.store.selectSignal(
-    transactionFeature.selectTransactionSummary
-  );
-  readonly managedAthletesRaffleSummary$ = this.store.selectSignal(
-    transactionFeature.selectUserManagedAthletesRaffleSummary
-  );
-
-  ngOnInit(): void {
-    this.store.dispatch(transactionActions.fetchTransactionsForUser());
-    this.store.dispatch(transactionActions.fetchTransactionSummaryForUser());
-    if (this.userProfile().isAthlete) {
-      this.store.dispatch(
-        transactionActions.fetchRaffleSummaryForUserManagedAthletes()
-      );
-    }
-  }
-
-  onTransactionClicked(): void {}
 }

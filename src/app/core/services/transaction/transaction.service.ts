@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { from, map, Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 import {
   AthleteRaffleSummaryResponseDtoV1,
@@ -25,30 +25,14 @@ import {
 export class TransactionService {
   private readonly supabaseService = inject(SupabaseService);
 
-  getTransactionsForUser(userProfileId: string): Observable<{
-    userTransactions: PostgrestSingleResponse<TransactionResponseDtoV1[]>;
-    profitTransactions: PostgrestSingleResponse<TransactionResponseDtoV1[]>;
-  }> {
+  getTransactionsForUser(
+    userProfileId: string
+  ): Observable<PostgrestSingleResponse<TransactionResponseDtoV1[]>> {
     const response = from(
-      Promise.all([
-        this.supabaseService.client
-          .from('raffle_ticket_purchases')
-          .select(transactionSelectStr)
-          .eq('profile_id', userProfileId),
-
-        this.supabaseService.client
-          .from('raffle_ticket_purchases')
-          .select(transactionSelectStr)
-          .eq(
-            'raffles.athletes.profiles_x_athletes.profiles_id',
-            userProfileId
-          ),
-      ])
-    ).pipe(
-      map(([userTransactions, profitTransactions]) => ({
-        userTransactions,
-        profitTransactions,
-      }))
+      this.supabaseService.client
+        .from('raffle_ticket_purchases')
+        .select(transactionSelectStr)
+        .eq('profile_id', userProfileId)
     );
 
     return response;
@@ -62,6 +46,19 @@ export class TransactionService {
         .from('raffle_ticket_purchases')
         .select(transactionSelectStr)
         .eq('raffles.athletes.id', athleteId)
+    );
+
+    return response;
+  }
+
+  getTransactionsForUserManagedAthletes(
+    userProfileId: string
+  ): Observable<PostgrestSingleResponse<TransactionResponseDtoV1[]>> {
+    const response = from(
+      this.supabaseService.client
+        .from('raffle_ticket_purchases')
+        .select(transactionSelectStr)
+        .eq('raffles.athletes.profiles_x_athletes.profiles_id', userProfileId)
     );
 
     return response;

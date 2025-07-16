@@ -4,6 +4,7 @@ import { TransactionState } from './transaction.state';
 export const INITIAL_TRANSACTION_STATE: TransactionState = {
   transactions: wrapAsAsyncData([]),
   transactionSummary: wrapAsAsyncData(undefined),
+  userManagedAthletesTransactions: wrapAsAsyncData([]),
   userManagedAthletesRaffleSummary: wrapAsAsyncData(undefined),
 
   transactionsByAthleteId: {},

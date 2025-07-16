@@ -61,33 +61,19 @@ export class TransactionEffects {
       switchMap(([, userId]) => {
         return this.transactionService.getTransactionsForUser(userId).pipe(
           map((response) => {
-            if (
-              response.userTransactions.error ||
-              response.profitTransactions.error
-            ) {
+            if (response.error) {
               return transactionActions.fetchTransactionsForUserFailure({
-                message:
-                  response.userTransactions.error?.message ??
-                  response.profitTransactions.error?.message ??
-                  'Failed to fetch transactions',
+                message: response.error.message,
               });
             }
 
             return transactionActions.fetchTransactionsForUserSuccess({
-              transactions: [
-                ...response.userTransactions.data.map((transaction) =>
-                  RaffleTransactionFactory.fromDto(
-                    transaction,
-                    RaffleTransactionType.UserPurchase
-                  )
-                ),
-                ...response.profitTransactions.data.map((transaction) =>
-                  RaffleTransactionFactory.fromDto(
-                    transaction,
-                    RaffleTransactionType.AthleteProfit
-                  )
-                ),
-              ],
+              transactions: response.data.map((transaction) =>
+                RaffleTransactionFactory.fromDto(
+                  transaction,
+                  RaffleTransactionType.UserPurchase
+                )
+              ),
             });
           }),
           catchError(() => {
@@ -98,6 +84,51 @@ export class TransactionEffects {
             );
           })
         );
+      })
+    )
+  );
+
+  fetchTransactionsForUserManagedAthletes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(transactionActions.fetchTransactionsForUserManagedAthletes),
+      withLatestFrom(
+        this.store.select(userFeature.selectUserId).pipe(filter(isNotNil))
+      ),
+      switchMap(([, userId]) => {
+        return this.transactionService
+          .getTransactionsForUserManagedAthletes(userId)
+          .pipe(
+            map((response) => {
+              if (response.error) {
+                return transactionActions.fetchTransactionsForUserManagedAthletesFailure(
+                  {
+                    message: response.error.message,
+                  }
+                );
+              }
+
+              return transactionActions.fetchTransactionsForUserManagedAthletesSuccess(
+                {
+                  transactions: response.data.map((transaction) =>
+                    RaffleTransactionFactory.fromDto(
+                      transaction,
+                      RaffleTransactionType.AthleteProfit
+                    )
+                  ),
+                }
+              );
+            }),
+            catchError(() => {
+              return of(
+                transactionActions.fetchTransactionsForUserManagedAthletesFailure(
+                  {
+                    message:
+                      'Failed to fetch transactions for user managed athletes',
+                  }
+                )
+              );
+            })
+          );
       })
     )
   );

@@ -1,0 +1,69 @@
+<!-- User Transaction Summary -->
+<ion-list-header>User Summary</ion-list-header>
+<ion-grid>
+  @let transactionSummary = transactionSummary$().data;
+  @let isTransactionSummaryLoading = transactionSummary$().status === LoadingStatus;
+  @if (isTransactionSummaryLoading) {
+  <ion-row>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="12">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  }
+  @if (!isTransactionSummaryLoading && transactionSummary !== undefined) {
+  <ion-row>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin h-100">
+        <ion-card-header>
+          <ion-card-title>{{ transactionSummary.rafflesJoined }}</ion-card-title>
+          <ion-card-subtitle>Raffles Entered</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="6">
+      <ion-card class="ion-no-margin h-100">
+        <ion-card-header>
+          <ion-card-title>{{ transactionSummary.rafflesWon }}</ion-card-title>
+          <ion-card-subtitle>Raffles Won</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col size="12">
+      <ion-card class="ion-no-margin">
+        <ion-card-header>
+          <ion-card-title>{{ transactionSummary.totalSpent| currency }}</ion-card-title>
+          <ion-card-subtitle>Money Spent</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  }
+</ion-grid>
+
+<!-- Transaction History -->
+@let transactions = transactions$().data;
+@let isTransactionsLoading = transactions$().status === LoadingStatus;
+
+<ion-list-header class="ion-margin-vertical">History</ion-list-header>
+<app-transactions-list [transactions]="transactions" [isLoading]="isTransactionsLoading"></app-transactions-list>

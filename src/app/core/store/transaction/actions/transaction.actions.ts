@@ -23,6 +23,14 @@ export const transactionActions = createActionGroup({
       message: string;
     }>(),
 
+    'Fetch Transactions for User Managed Athletes': emptyProps(),
+    'Fetch Transactions for User Managed Athletes Success': props<{
+      transactions: RaffleTransaction[];
+    }>(),
+    'Fetch Transactions for User Managed Athletes Failure': props<{
+      message: string;
+    }>(),
+
     'Fetch Raffle Summary for User Managed Athletes': emptyProps(),
     'Fetch Raffle Summary for User Managed Athletes Success': props<{
       raffleSummary: UserManagedAthletesRaffleSummary;

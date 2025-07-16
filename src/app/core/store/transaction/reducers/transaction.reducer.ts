@@ -80,6 +80,44 @@ export const transactionReducer = createReducer(
   ),
 
   on(
+    transactionActions.fetchTransactionsForUserManagedAthletes,
+    (state): TransactionState => {
+      return {
+        ...state,
+        userManagedAthletesTransactions: wrapAsAsyncData(
+          [],
+          AsyncDataStatus.Loading
+        ),
+      };
+    }
+  ),
+  on(
+    transactionActions.fetchTransactionsForUserManagedAthletesSuccess,
+    (state, action): TransactionState => {
+      return {
+        ...state,
+        userManagedAthletesTransactions: wrapAsAsyncData(
+          action.transactions,
+          AsyncDataStatus.Success
+        ),
+      };
+    }
+  ),
+  on(
+    transactionActions.fetchTransactionsForUserManagedAthletesFailure,
+    (state, action): TransactionState => {
+      return {
+        ...state,
+        userManagedAthletesTransactions: wrapAsAsyncData(
+          [],
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  ),
+
+  on(
     transactionActions.fetchRaffleSummaryForUserManagedAthletes,
     (state, action): TransactionState => {
       return {
