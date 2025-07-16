@@ -1,12 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-searchbar 
-      animated 
-      showCancelButton="focus"
-      placeholder="Search for teams or athletes"
-      [formControl]="searchQueryControl"
-      [maxlength]="50"
-    ></ion-searchbar>
+    <ion-searchbar animated showCancelButton="focus" placeholder="Search for teams or athletes"
+      [formControl]="searchQueryControl" [maxlength]="50"></ion-searchbar>
   </ion-toolbar>
   <ion-progress-bar type="indeterminate" *ngIf="isSearchLoading$ | ngrxPush"></ion-progress-bar>
 </ion-header>
@@ -17,15 +12,11 @@
       <ion-label>Search Results</ion-label>
     </ion-list-header>
 
-    <ion-item
-      *ngFor="let searchItem of allSearchItems"
-      button
-      (click)="onSearchItemClicked(searchItem)"
-    >
+    <ion-item *ngFor="let searchItem of allSearchItems" button (click)="onSearchItemClicked(searchItem)">
       <app-user-profile-avatar slot="start" size="small" [avatarSrc]="searchItem.imgSrc"></app-user-profile-avatar>
       <ion-label>
         <ion-text><b>{{ searchItem.title }}</b></ion-text><br />
-        <ion-text><ion-note color="medium">{{ searchItem.subtitle }}</ion-note></ion-text>      
+        <ion-text><ion-note color="medium">{{ searchItem.subtitle }}</ion-note></ion-text>
       </ion-label>
     </ion-item>
   </ion-list>
@@ -38,9 +29,7 @@
     <div class="ion-padding flex-row gap-2 scroll-x" *ngrxLet="allRaffles$ as allRaffles">
       <ion-text *ngIf="allRaffles.length === 0" class="ion-padding">No active raffles</ion-text>
       @for (raffle of allRaffles; track raffle.id) {
-        <app-raffle-preview-card
-          [raffle]="raffle"
-        ></app-raffle-preview-card>
+      <app-raffle-preview-card [raffle]="raffle"></app-raffle-preview-card>
       }
     </div>
 
@@ -49,23 +38,16 @@
       <ion-label>Trending Teams</ion-label>
     </ion-list-header>
     <div class="ion-padding flex-row gap-2 scroll-x">
-      <app-team-preview-card
-        *ngFor="let team of ((allTeams$ | ngrxPush) ?? [])"
-        [team]="team"
-        (click)="onTeamClicked(team.id)"
-      ></app-team-preview-card>
+      <app-team-preview-card *ngFor="let team of ((allTeams$ | ngrxPush) ?? [])" [team]="team"
+        (click)="onTeamClicked(team.id)"></app-team-preview-card>
     </div>
 
     <!-- Trending Athletes -->
     <ion-list-header>
       <ion-label>Trending Athletes</ion-label>
     </ion-list-header>
-    <ion-list [inset]="true" class="card-background">
-      <ion-item 
-        *ngFor="let athlete of ((allAthletes$ | ngrxPush) ?? [])"
-        button 
-        (click)="onAthleteClicked(athlete.id)"
-      >
+    <ion-list [inset]="true" class="list-color-card">
+      <ion-item *ngFor="let athlete of ((allAthletes$ | ngrxPush) ?? [])" button (click)="onAthleteClicked(athlete.id)">
         <app-user-profile-avatar size="small" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
         <ion-label>
           <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
