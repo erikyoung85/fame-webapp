@@ -12,63 +12,64 @@
 
 <ion-content>
   @if (raffleResource.isLoading()) {
-    <ion-card>
-      <ion-skeleton-text [animated]="true" style="margin: 0; height: 265px;"></ion-skeleton-text>
-      <ion-card-header>
-        <ion-card-title><ion-skeleton-text [animated]="true" style="width: 100px;"></ion-skeleton-text></ion-card-title>
-        <ion-card-subtitle><ion-skeleton-text [animated]="true" style="width: 50px;"></ion-skeleton-text></ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-      </ion-card-content>
-    </ion-card>
+  <ion-card>
+    <ion-skeleton-text [animated]="true" style="margin: 0; height: 265px;"></ion-skeleton-text>
+    <ion-card-header>
+      <ion-card-title><ion-skeleton-text [animated]="true" style="width: 100px;"></ion-skeleton-text></ion-card-title>
+      <ion-card-subtitle><ion-skeleton-text [animated]="true"
+          style="width: 50px;"></ion-skeleton-text></ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+    </ion-card-content>
+  </ion-card>
   }
 
   @let raffle = raffleResource.value();
   @if (raffle) {
-    <ion-card>
-      <ion-img [src]="raffle.prizeThumbnail" alt="Raffle Prize Thumbnail"></ion-img>
+  <ion-card>
+    <ion-img [src]="raffle.prizeThumbnail" alt="Raffle Prize Thumbnail"></ion-img>
 
-      <ion-card-header>
-        <ion-card-title>{{ raffle.title }}</ion-card-title>
-        <ion-card-subtitle>{{ raffle.endDate | distanceToNow: true | ngrxPush }}</ion-card-subtitle>
-      </ion-card-header>
+    <ion-card-header>
+      <ion-card-title>{{ raffle.title }}</ion-card-title>
+      <ion-card-subtitle>{{ raffle.endDate | distanceToNow: true | ngrxPush }}</ion-card-subtitle>
+    </ion-card-header>
 
-      <ion-card-content>
-        <ion-text>{{ raffle.description }}</ion-text>
+    <ion-card-content>
+      <ion-text>{{ raffle.description }}</ion-text>
 
-        <div class="w-100 flex-row gap-1 ion-padding-vertical">
-          <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
-            <ion-card-header>
-              <ion-card-title>Start</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              {{ raffle.startDate | date: 'shortDate' }}<br/>{{ raffle.startDate | date: 'shortTime' }}
-            </ion-card-content>
-          </ion-card>
-          <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
-            <ion-card-header>
-              <ion-card-title>End</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              {{ raffle.endDate | date: 'shortDate' }}<br/>{{ raffle.endDate | date: 'shortTime' }}
-            </ion-card-content>
-          </ion-card>
-          <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
-            <ion-card-header>
-              <ion-card-title>Tickets Purchased</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              {{ 10 }}
-            </ion-card-content>
-          </ion-card>
-        </div>
+      <div class="w-100 flex-row gap-1 ion-padding-vertical">
+        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
+          <ion-card-header>
+            <ion-card-title>Start</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{ raffle.startDate | date: 'shortDate' }}<br />{{ raffle.startDate | date: 'shortTime' }}
+          </ion-card-content>
+        </ion-card>
+        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
+          <ion-card-header>
+            <ion-card-title>End</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{ raffle.endDate | date: 'shortDate' }}<br />{{ raffle.endDate | date: 'shortTime' }}
+          </ion-card-content>
+        </ion-card>
+        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
+          <ion-card-header>
+            <ion-card-title>Tickets Purchased</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            {{ 10 }}
+          </ion-card-content>
+        </ion-card>
+      </div>
 
-        <ion-button fill="outline">Join Raffle</ion-button>
-      </ion-card-content>
-      
-    </ion-card>
+      <ion-button fill="outline">Join Raffle</ion-button>
+    </ion-card-content>
+
+  </ion-card>
   }
 </ion-content>

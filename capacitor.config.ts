@@ -9,6 +9,9 @@ const config: CapacitorConfig = {
     buildOptions: {},
   },
   plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
     Keyboard: {
       resize: KeyboardResize.None,
       style: KeyboardStyle.Default,

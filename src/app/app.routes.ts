@@ -2,12 +2,14 @@ import { Route, Routes } from '@angular/router';
 import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
 import { isNotLoggedInGuard } from './core/guards/is-not-logged-in/is-not-logged-in.guard';
 import { SessionGuard } from './core/guards/session/session.guard';
+import { InviteLinkRedirect } from './core/redirect-functions/invite-link/invite-link.redirect';
 import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
 import { sessionResolver } from './core/resolvers/session/session.resolver';
 import { userProfileResolver } from './core/resolvers/user-profile/user-profile.resolver';
 import { TabsPage } from './pages/tabs/tabs.page';
 
 export enum AppRoutes {
+  Invite = 'invite',
   Tabs = 'tabs',
 }
 
@@ -61,6 +63,11 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: AppRoutes.Tabs,
+    pathMatch: 'full',
+  },
+  {
+    path: AppRoutes.Invite,
+    redirectTo: InviteLinkRedirect,
     pathMatch: 'full',
   },
   {

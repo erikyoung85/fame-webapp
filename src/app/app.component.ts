@@ -9,6 +9,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
+import { InviteService } from './core/services/invite/invite.service';
 
 @Component({
   standalone: true,
@@ -20,6 +21,7 @@ import * as ionIcons from 'ionicons/icons';
 })
 export class AppComponent implements OnInit {
   private readonly store = inject(Store);
+  private readonly inviteService = inject(InviteService);
 
   constructor() {
     addIcons({ ...ionIcons });

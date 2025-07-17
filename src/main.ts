@@ -18,6 +18,8 @@ import { routes } from './app/app.routes';
 import { authInterceptor } from './app/core/interceptors/auth.interceptor';
 import { AthletesEffects } from './app/core/store/athletes/effects/athletes.effects';
 import { athletesFeature } from './app/core/store/athletes/feature/athletes.feature';
+import { InviteEffects } from './app/core/store/invite/effects/invite.effects';
+import { inviteFeature } from './app/core/store/invite/feature/invite.feature';
 import { getMetaReducers } from './app/core/store/meta-reducers/meta-reducers';
 import { RafflesEffects } from './app/core/store/raffles/effects/raffles.effects';
 import { rafflesFeature } from './app/core/store/raffles/feature/raffles.feature';
@@ -69,6 +71,8 @@ bootstrapApplication(AppComponent, {
     provideEffects(RafflesEffects),
     provideState(transactionFeature),
     provideEffects(TransactionEffects),
+    provideState(inviteFeature),
+    provideEffects(InviteEffects),
 
     provideRouterStore(),
     provideHttpClient(withInterceptors([authInterceptor])),
