@@ -4,6 +4,7 @@
 @use "top-image";
 @use "header-init-transparent";
 @use "list-color-card";
+@use "custom-dialog";
 
 // Hide scrollbar in ion-content for Chrome, Safari and Opera
 ion-content::part(scroll)::-webkit-scrollbar {

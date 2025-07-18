@@ -14,6 +14,7 @@ import {
 } from 'rxjs';
 import { AcceptInviteRequestDtoV1 } from 'src/app/core/services/invite/dtos/requests/accept-invite.request.dto.v1';
 import { InviteService } from 'src/app/core/services/invite/invite.service';
+import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { userFeature } from '../../user/feature/user.feature';
 import { inviteActions } from '../actions/invite.actions';
 
@@ -23,6 +24,7 @@ export class InviteEffects {
   private readonly store = inject(Store);
   private readonly inviteService = inject(InviteService);
   private readonly toastController = inject(ToastController);
+  private readonly modalService = inject(ModalService);
 
   triggerProcessInvite$ = createEffect(() =>
     this.store.select(userFeature.selectUserProfile).pipe(
@@ -64,7 +66,7 @@ export class InviteEffects {
             }
 
             return inviteActions.acceptInviteSuccess({
-              message: response.data.successMsg,
+              acceptedInvite: response.data,
             });
           }),
           catchError(() => {
@@ -85,14 +87,7 @@ export class InviteEffects {
         ofType(inviteActions.acceptInviteSuccess),
         tap(async (action) => {
           this.inviteService.clearInviteInfo();
-          await this.toastController
-            .create({
-              message: action.message,
-              color: 'success',
-              swipeGesture: 'vertical',
-              duration: 2000,
-            })
-            .then((toast) => toast.present());
+          await this.modalService.openAcceptedInvite(action.acceptedInvite);
         })
       ),
     { dispatch: false }

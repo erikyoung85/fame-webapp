@@ -1,11 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
+import { AcceptedInviteModalComponent } from 'src/app/modals/accepted-invite/accepted-invite.component';
 import { CreateRaffleModalComponent } from 'src/app/modals/create-raffle/create-raffle.component';
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { PickCityModalComponent } from 'src/app/modals/pick-city/pick-city.component';
 import { PickTeamModalComponent } from 'src/app/modals/pick-team/pick-team.component';
 import { Raffle } from '../../models/Raffle.model';
 import { CityResponseDtoV1 } from '../geo-city/dtos/city.response.dto.v1';
+import { AcceptInviteResponseDtoV1 } from '../invite/dtos/responses/accept-invite.response.dto.v1';
 
 export enum ModalDismissRole {
   Cancel = 'cancel',
@@ -80,5 +82,20 @@ export class ModalService {
     }
 
     return undefined;
+  }
+
+  async openAcceptedInvite(
+    acceptedInvite: AcceptInviteResponseDtoV1
+  ): Promise<void> {
+    const modal = await this.modalController.create({
+      component: AcceptedInviteModalComponent,
+      cssClass: 'custom-dialog',
+      componentProps: {
+        acceptedInvite: acceptedInvite,
+      },
+    });
+    modal.present();
+
+    await modal.onWillDismiss<void>();
   }
 }

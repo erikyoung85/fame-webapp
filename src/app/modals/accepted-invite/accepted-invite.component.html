@@ -1,0 +1,17 @@
+<ion-card class="ion-no-margin">
+  <ion-card-header>
+    <ion-card-title>
+      Invitation Accepted!
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-text>
+      You have successfully accepted your invitation from
+      {{ acceptedInvite.invitedBy.first_name }} {{ acceptedInvite.invitedBy.last_name }}.
+    </ion-text>
+
+  </ion-card-content>
+  <div class="ion-padding">
+    <ion-button (click)="closeModal()">Close</ion-button>
+  </div>
+</ion-card>
