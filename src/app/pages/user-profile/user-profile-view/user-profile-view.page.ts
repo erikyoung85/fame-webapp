@@ -1,10 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -62,7 +57,7 @@ import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profi
     IonButton,
   ],
 })
-export class UserProfileViewPage implements OnInit {
+export class UserProfileViewPage {
   private readonly store = inject(Store);
   readonly LoadingStatus = AsyncDataStatus.Loading;
 
@@ -81,10 +76,6 @@ export class UserProfileViewPage implements OnInit {
   readonly managedRaffles$ = this.store.selectSignal(
     userFeature.selectManagedRaffles
   );
-
-  ngOnInit(): void {
-    this.store.dispatch(userActions.fetchUserManagedPages());
-  }
 
   onTeamClicked(teamId: number) {
     this.store.dispatch(

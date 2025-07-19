@@ -15,6 +15,7 @@ import {
 import { AcceptInviteRequestDtoV1 } from 'src/app/core/services/invite/dtos/requests/accept-invite.request.dto.v1';
 import { InviteService } from 'src/app/core/services/invite/invite.service';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
+import { userActions } from '../../user/actions/user.actions';
 import { userFeature } from '../../user/feature/user.feature';
 import { inviteActions } from '../actions/invite.actions';
 
@@ -81,16 +82,15 @@ export class InviteEffects {
     )
   );
 
-  acceptInviteSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(inviteActions.acceptInviteSuccess),
-        tap(async (action) => {
-          this.inviteService.clearInviteInfo();
-          await this.modalService.openAcceptedInvite(action.acceptedInvite);
-        })
-      ),
-    { dispatch: false }
+  acceptInviteSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(inviteActions.acceptInviteSuccess),
+      mergeMap(async (action) => {
+        this.inviteService.clearInviteInfo();
+        await this.modalService.openAcceptedInvite(action.acceptedInvite);
+        return userActions.fetchUserManagedPages();
+      })
+    )
   );
 
   acceptInviteFailure$ = createEffect(

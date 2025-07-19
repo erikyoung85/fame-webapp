@@ -36,7 +36,6 @@ import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.fe
 import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
 import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
-import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
@@ -105,7 +104,6 @@ export class AthleteDetailViewPage implements OnInit {
   );
 
   ngOnInit(): void {
-    this.store.dispatch(userActions.fetchUserManagedPages());
     this.store.dispatch(
       rafflesActions.fetchRafflesForAthlete({ athleteId: this.athleteId() })
     );
