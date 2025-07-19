@@ -77,7 +77,7 @@
   @if (managedTeamPages.length > 0) {
   <ion-list inset class="list-color-card">
     <ion-item *ngFor="let team of managedTeamPages" button (click)="onTeamClicked(team.id)">
-      <app-user-profile-avatar slot="start" [avatarSrc]="team.avatarUrl"></app-user-profile-avatar>
+      <app-user-profile-avatar slot="start" [avatarSrc]="team.avatarUrl" shape="square"></app-user-profile-avatar>
       <ion-label>{{ team.title }}</ion-label>
     </ion-item>
   </ion-list>
@@ -87,17 +87,19 @@
   @if (managedAthletePages.length > 0) {
   <ion-list inset class="list-color-card">
     <ion-item *ngFor="let athlete of managedAthletePages" button (click)="onAthleteClicked(athlete.id)">
-      <app-user-profile-avatar slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
+      <app-user-profile-avatar slot="start" [avatarSrc]="athlete.avatarUrl" shape="square"></app-user-profile-avatar>
       <ion-label>{{ athlete.title }}</ion-label>
     </ion-item>
   </ion-list>
   }
 
-  @let managedRaffles = managedRaffles$();
+  @let managedRaffles = managedRafflesSorted$();
   @if (managedRaffles.length > 0) {
   <ion-list inset class="list-color-card">
     <ion-item *ngFor="let raffle of managedRaffles" button (click)="onRaffleClicked(raffle.id)">
+      <app-user-profile-avatar slot="start" [avatarSrc]="raffle.avatarUrl" shape="square"></app-user-profile-avatar>
       <ion-label>{{ raffle.title }}</ion-label>
+      <ion-note>{{ raffle.endDate | distanceToNow | ngrxPush }}</ion-note>
     </ion-item>
   </ion-list>
   }

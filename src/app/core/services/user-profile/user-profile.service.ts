@@ -51,7 +51,7 @@ export class UserProfileService {
         this.supabaseService.client
           .from('profiles_x_athletes')
           .select(
-            'athletes(id, first_name, last_name, avatar_url, raffles(id, title, description))'
+            'athletes(id, first_name, last_name, avatar_url, raffles(id, title, description, prize_thumbnail, end_date))'
           )
           .eq('profiles_id', userId),
         this.supabaseService.client
@@ -90,7 +90,8 @@ export class UserProfileService {
               id: raffle.id,
               title: raffle.title,
               description: raffle.description ?? undefined,
-              avatarUrl: undefined,
+              avatarUrl: raffle.prize_thumbnail,
+              endDate: raffle.end_date,
             }))
           ),
         };

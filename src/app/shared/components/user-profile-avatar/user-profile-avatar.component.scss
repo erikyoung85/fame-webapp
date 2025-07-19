@@ -31,6 +31,10 @@
     &.border {
       border: 4px solid white;
     }
+
+    &.square {
+      --border-radius: 5px;
+    }
   }
 
   .edit-avatar-btn {

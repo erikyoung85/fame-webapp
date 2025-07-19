@@ -1,5 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import {
   IonButton,
   IonButtons,
@@ -18,7 +23,9 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
+import { compareDesc } from 'date-fns';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
@@ -27,6 +34,7 @@ import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { PillComponent } from 'src/app/shared/components/pill/pill.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
+import { DistanceToNowPipe } from 'src/app/shared/pipes/distance-to-now/distance-to-now.pipe';
 
 @Component({
   templateUrl: './user-profile-view.page.html',
@@ -55,6 +63,8 @@ import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profi
     NgFor,
     ToolbarTextButtonComponent,
     IonButton,
+    DistanceToNowPipe,
+    PushPipe,
   ],
 })
 export class UserProfileViewPage {
@@ -76,6 +86,11 @@ export class UserProfileViewPage {
   readonly managedRaffles$ = this.store.selectSignal(
     userFeature.selectManagedRaffles
   );
+  readonly managedRafflesSorted$ = computed(() => {
+    return [...this.managedRaffles$()].sort((a, b) =>
+      compareDesc(a.endDate, b.endDate)
+    );
+  });
 
   onTeamClicked(teamId: number) {
     this.store.dispatch(

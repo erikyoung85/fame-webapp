@@ -18,4 +18,5 @@ export type TeamPagePreview = PagePreview & {
 
 export type RafflePreview = PagePreview & {
   type: PageType.Raffle;
+  endDate: string;
 };

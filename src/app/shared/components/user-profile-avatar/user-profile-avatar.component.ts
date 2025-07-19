@@ -39,6 +39,7 @@ export class UserProfileAvatarComponent
     'small';
   @Input({ transform: booleanAttribute }) border: boolean = false;
   @Input() background?: CSS.Properties['background'] = 'white';
+  @Input() shape?: 'circle' | 'square' = 'circle';
   @Input() defaultAvatarSrc?: string | undefined;
 
   protected readonly DEFAULT_AVATAR_SRC = 'assets/images/default-avatar.svg';

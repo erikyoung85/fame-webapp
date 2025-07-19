@@ -1,17 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {
-  formatDistanceToNow,
-  formatDistanceToNowStrict,
-  isPast,
-} from 'date-fns';
-import {
-  Observable,
-  distinct,
-  interval,
-  map,
-  startWith,
-  takeWhile,
-} from 'rxjs';
+import { Observable } from 'rxjs';
+import { getDistanceToNowObs } from '../../utils/get-distance-to-now-obs.util';
 
 @Pipe({
   name: 'distanceToNow',
@@ -22,18 +11,6 @@ export class DistanceToNowPipe implements PipeTransform {
     strict = false,
     expiredString = 'Ended'
   ): Observable<string> {
-    return interval(1000).pipe(
-      startWith(0), // Emit immediately
-      map(() => {
-        if (isPast(value)) {
-          return expiredString;
-        }
-        return strict
-          ? formatDistanceToNowStrict(value)
-          : formatDistanceToNow(value);
-      }),
-      distinct(),
-      takeWhile((result) => result !== expiredString, true) // Include the 'Ended' emission then complete
-    );
+    return getDistanceToNowObs(value, strict, expiredString);
   }
 }

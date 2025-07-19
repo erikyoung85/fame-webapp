@@ -1,17 +1,9 @@
 <div class="avatar-wrapper">
-  <ion-avatar 
-    class="avatar {{size}}" 
-    [ngClass]="{ border: border }"
-  >
+  <ion-avatar class="avatar {{size}} {{shape}}" [ngClass]="{ border: border }">
     <img [src]="(_value() | isNilOrEmpty) ? (defaultAvatarSrc ?? DEFAULT_AVATAR_SRC) : _value()" />
   </ion-avatar>
-  <ion-fab-button 
-    *ngIf="editMode" 
-    class="edit-avatar-btn" 
-    size="small" 
-    [disabled]="_isDisabled()"
-    (click)="editImageClicked()" 
-  >
+  <ion-fab-button *ngIf="editMode" class="edit-avatar-btn" size="small" [disabled]="_isDisabled()"
+    (click)="editImageClicked()">
     <ion-icon name="pencil"></ion-icon>
   </ion-fab-button>
 </div>
