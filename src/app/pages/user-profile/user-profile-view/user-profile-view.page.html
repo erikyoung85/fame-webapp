@@ -70,6 +70,49 @@
     </ion-item>
   </ion-list>
 
+  <ion-list-header class="ion-margin-vertical">Entered Raffles</ion-list-header>
+  <div class="ion-padding-horizontal flex-row gap-2 scroll-x">
+    @let enteredRaffles = enteredRafflesSorted$();
+    @let isEnteredRafflesLoading = isEnteredRafflesLoading$();
+    @if (isEnteredRafflesLoading) {
+    <ion-card *ngFor="let _ of [0, 0]" class="custom-card" style="
+      --card-width: 10rem;
+      --card-padding: 0.75rem;
+      --card-items-gap: 0.5rem;
+      --card-title-size: 1rem;
+      --card-content-size: 0.875rem;
+    ">
+      <ion-card-header>
+        <ion-card-title><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-title>
+        <ion-card-subtitle><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-text><ion-skeleton-text [animated]="true"></ion-skeleton-text></ion-text>
+      </ion-card-content>
+    </ion-card>
+    }
+    @if (!isEnteredRafflesLoading && enteredRaffles !== undefined) {
+    <ion-text *ngIf="enteredRaffles.length === 0" class="ion-padding">No active raffles</ion-text>
+    <ion-card *ngFor="let raffle of enteredRaffles" class="custom-card" style="
+      --card-width: 10rem;
+      --card-padding: 0.75rem;
+      --card-items-gap: 0.5rem;
+      --card-title-size: 1rem;
+      --card-content-size: 0.875rem;
+    " (click)="onRaffleClicked(raffle.id)">
+      <ion-card-header>
+        <ion-card-title>{{ raffle.title }}</ion-card-title>
+        <ion-card-subtitle>{{ raffle.endDate | distanceToNow | ngrxPush }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-text>{{ raffle.description }}</ion-text>
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+
   @if (userProfile.isAthlete || userProfile.isTeamManager) {
   <ion-list-header class="ion-margin-vertical">My Pages</ion-list-header>
 

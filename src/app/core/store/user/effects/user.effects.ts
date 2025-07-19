@@ -18,7 +18,9 @@ import {
 } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { RaffleFactory } from 'src/app/core/models/Raffle.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
+import { RaffleService } from 'src/app/core/services/raffle/raffle.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
@@ -41,6 +43,7 @@ export class UserEffects {
   private readonly toastController = inject(ToastController);
   private readonly router = inject(Router);
   private readonly storageService = inject(StorageService);
+  private readonly raffleService = inject(RaffleService);
 
   failureMessages$ = createEffect(
     () =>
@@ -475,7 +478,38 @@ export class UserEffects {
     { dispatch: false }
   );
 
-  fetchUserPermissions$ = createEffect(() =>
+  fetchUserEnteredRaffles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.fetchUserEnteredRaffles),
+      withLatestFrom(
+        this.store.select(userFeature.selectUserId).pipe(filter(isNotNil))
+      ),
+      switchMap(([, userId]) => {
+        return this.raffleService.getUserEnteredRaffles(userId).pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return userActions.fetchUserEnteredRafflesFailure({
+                message: 'Failed to fetch entered raffles',
+              });
+            }
+
+            return userActions.fetchUserEnteredRafflesSuccess({
+              raffles: response.data.map(RaffleFactory.fromDtoV1),
+            });
+          }),
+          catchError(() => {
+            return of(
+              userActions.fetchUserEnteredRafflesFailure({
+                message: 'Failed to fetch entered raffles',
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  fetchUserManagedPages$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.fetchUserManagedPages),
       withLatestFrom(

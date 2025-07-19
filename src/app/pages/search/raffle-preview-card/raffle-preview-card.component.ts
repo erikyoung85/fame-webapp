@@ -44,7 +44,7 @@ export class RafflePreviewCardComponent implements OnInit, OnDestroy {
   private readonly modalService = inject(ModalService);
   private readonly store = inject(Store);
 
-  @Input() raffle!: Raffle;
+  @Input({ required: true }) raffle!: Raffle;
 
   readonly countdownString = signal('');
 

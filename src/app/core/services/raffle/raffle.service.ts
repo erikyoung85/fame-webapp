@@ -28,6 +28,19 @@ export class RaffleService {
     return response;
   }
 
+  getUserEnteredRaffles(
+    userProfileId: string
+  ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1[]>> {
+    const response = from(
+      this.supabaseService.client
+        .from('raffles')
+        .select(`${raffleSelectStr}, raffle_ticket_purchases!inner()`)
+        .eq('raffle_ticket_purchases.profile_id', userProfileId)
+    );
+
+    return response;
+  }
+
   getRafflesForAthlete(
     athleteId: number
   ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1[]>> {

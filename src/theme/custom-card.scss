@@ -8,6 +8,7 @@
   margin: 0;
   padding: var(--card-padding);
   width: var(--card-width);
+  min-width: var(--card-width);
 
   ion-img {
     margin-bottom: var(--card-items-gap);

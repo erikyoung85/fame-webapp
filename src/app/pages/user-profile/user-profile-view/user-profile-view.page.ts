@@ -4,10 +4,16 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
 } from '@angular/core';
 import {
   IonButton,
   IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonCol,
   IonContent,
   IonGrid,
@@ -19,6 +25,7 @@ import {
   IonListHeader,
   IonNote,
   IonRow,
+  IonSkeletonText,
   IonText,
   IonTitle,
   IonToolbar,
@@ -42,6 +49,12 @@ import { DistanceToNowPipe } from 'src/app/shared/pipes/distance-to-now/distance
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
+    IonSkeletonText,
+    IonCardSubtitle,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonCard,
     NgIf,
     IonListHeader,
     IonLabel,
@@ -67,13 +80,25 @@ import { DistanceToNowPipe } from 'src/app/shared/pipes/distance-to-now/distance
     PushPipe,
   ],
 })
-export class UserProfileViewPage {
+export class UserProfileViewPage implements OnInit {
   private readonly store = inject(Store);
   readonly LoadingStatus = AsyncDataStatus.Loading;
 
   readonly userProfile$ = this.store.selectSignal(
     userFeature.selectUserProfile
   );
+
+  readonly enteredRafflesAsync$ = this.store.selectSignal(
+    userFeature.selectEnteredRaffles
+  );
+  readonly isEnteredRafflesLoading$ = computed(() => {
+    return this.enteredRafflesAsync$().status === AsyncDataStatus.Loading;
+  });
+  readonly enteredRafflesSorted$ = computed(() => {
+    return [...this.enteredRafflesAsync$().data].sort((a, b) =>
+      compareDesc(a.endDate, b.endDate)
+    );
+  });
 
   readonly managedAthletePages$ = this.store.selectSignal(
     userFeature.selectManagedAthletePages
@@ -91,6 +116,10 @@ export class UserProfileViewPage {
       compareDesc(a.endDate, b.endDate)
     );
   });
+
+  ngOnInit(): void {
+    this.store.dispatch(userActions.fetchUserEnteredRaffles());
+  }
 
   onTeamClicked(teamId: number) {
     this.store.dispatch(

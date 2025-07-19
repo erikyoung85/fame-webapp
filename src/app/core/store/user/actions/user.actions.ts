@@ -5,6 +5,7 @@ import {
   RafflePreview,
   TeamPagePreview,
 } from 'src/app/core/models/PagePreview.model';
+import { Raffle } from 'src/app/core/models/Raffle.model';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
 import { PatchUserProfileRequestDtoV1 } from 'src/app/core/services/user-profile/dtos/requests/patch-user-profile.request.dto.v1';
 import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/requests/signup-with-password.request.dto.v1';
@@ -50,6 +51,10 @@ export const userActions = createActionGroup({
     'Patch User Profile': props<{ request: PatchUserProfileRequestDtoV1 }>(),
     'Patch User Profile Success': props<{ userProfile: UserProfile }>(),
     'Patch User Profile Failure': props<{ message: string }>(),
+
+    'Fetch User Entered Raffles': emptyProps(),
+    'Fetch User Entered Raffles Success': props<{ raffles: Raffle[] }>(),
+    'Fetch User Entered Raffles Failure': props<{ message: string }>(),
 
     'Fetch User Managed Pages': emptyProps(),
     'Fetch User Managed Pages Success': props<{

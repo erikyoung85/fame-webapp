@@ -172,6 +172,29 @@ export const userReducer = createReducer(
     };
   }),
 
+  on(userActions.fetchUserEnteredRaffles, (state): UserState => {
+    return {
+      ...state,
+      enteredRaffles: wrapAsAsyncData([], AsyncDataStatus.Loading),
+    };
+  }),
+  on(userActions.fetchUserEnteredRafflesSuccess, (state, action): UserState => {
+    return {
+      ...state,
+      enteredRaffles: wrapAsAsyncData(action.raffles, AsyncDataStatus.Success),
+    };
+  }),
+  on(userActions.fetchUserEnteredRafflesFailure, (state, action): UserState => {
+    return {
+      ...state,
+      enteredRaffles: wrapAsAsyncData(
+        [],
+        AsyncDataStatus.Error,
+        action.message
+      ),
+    };
+  }),
+
   on(userActions.fetchUserManagedPages, (state): UserState => {
     return {
       ...state,
