@@ -77,6 +77,7 @@
     @if (isEnteredRafflesLoading) {
     <ion-card *ngFor="let _ of [0, 0]" class="custom-card" style="
       --card-width: 10rem;
+      --card-min-width: 10rem;
       --card-padding: 0.75rem;
       --card-items-gap: 0.5rem;
       --card-title-size: 1rem;
@@ -96,6 +97,7 @@
     <ion-text *ngIf="enteredRaffles.length === 0" class="ion-padding">No active raffles</ion-text>
     <ion-card *ngFor="let raffle of enteredRaffles" class="custom-card" style="
       --card-width: 10rem;
+      --card-min-width: 10rem;
       --card-padding: 0.75rem;
       --card-items-gap: 0.5rem;
       --card-title-size: 1rem;

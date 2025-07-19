@@ -4,7 +4,7 @@
       <app-back-button></app-back-button>
     </ion-buttons>
     <ion-title>{{ raffleResource.value()?.title }}</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="canUserEdit$ | ngrxPush">
       <toolbar-text-button (click)="onEditClicked()">Edit</toolbar-text-button>
     </ion-buttons>
   </ion-toolbar>
@@ -41,7 +41,7 @@
       <ion-text>{{ raffle.description }}</ion-text>
 
       <div class="w-100 flex-row gap-1 ion-padding-vertical">
-        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)">
+        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color);">
           <ion-card-header>
             <ion-card-title>Start</ion-card-title>
           </ion-card-header>

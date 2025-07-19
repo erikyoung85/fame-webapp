@@ -95,9 +95,14 @@ export class UserProfileViewPage implements OnInit {
     return this.enteredRafflesAsync$().status === AsyncDataStatus.Loading;
   });
   readonly enteredRafflesSorted$ = computed(() => {
-    return [...this.enteredRafflesAsync$().data].sort((a, b) =>
-      compareDesc(a.endDate, b.endDate)
-    );
+    return [
+      ...this.enteredRafflesAsync$().data,
+      ...this.enteredRafflesAsync$().data,
+      ...this.enteredRafflesAsync$().data,
+      ...this.enteredRafflesAsync$().data,
+      ...this.enteredRafflesAsync$().data,
+      ...this.enteredRafflesAsync$().data,
+    ].sort((a, b) => compareDesc(a.endDate, b.endDate));
   });
 
   readonly managedAthletePages$ = this.store.selectSignal(

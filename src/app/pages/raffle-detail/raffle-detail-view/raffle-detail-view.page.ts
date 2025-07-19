@@ -5,7 +5,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, toObservable } from '@angular/core/rxjs-interop';
 import {
   IonButton,
   IonButtons,
@@ -24,12 +24,13 @@ import {
 } from '@ionic/angular/standalone';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { filter, map } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
 import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
+import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { DistanceToNowPipe } from 'src/app/shared/pipes/distance-to-now/distance-to-now.pipe';
@@ -83,6 +84,12 @@ export class RaffleDetailViewPage {
         );
     },
   });
+
+  readonly canUserEdit$ = toObservable(this.raffleId).pipe(
+    switchMap((raffleId) =>
+      this.store.select(userFeature.selectIsRaffleManager(raffleId))
+    )
+  );
 
   onEditClicked() {
     this.store.dispatch(

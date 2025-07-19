@@ -1,5 +1,6 @@
 .custom-card {
   --card-width: 9rem;
+  --card-min-width: unset;
   --card-padding: 0.75rem;
   --card-items-gap: 0.5rem;
   --card-title-size: 1rem;
@@ -8,7 +9,7 @@
   margin: 0;
   padding: var(--card-padding);
   width: var(--card-width);
-  min-width: var(--card-width);
+  min-width: var(--card-min-width);
 
   ion-img {
     margin-bottom: var(--card-items-gap);
