@@ -16,5 +16,9 @@ export const rafflesActions = createActionGroup({
     'Create Raffle': props<{ request: CreateRaffleRequestDtoV1 }>(),
     'Create Raffle Success': props<{ raffle: Raffle }>(),
     'Create Raffle Failure': props<{ message?: string }>(),
+
+    'Update Raffle': props<{ request: Raffle }>(),
+    'Update Raffle Success': props<{ raffle: Raffle }>(),
+    'Update Raffle Failure': props<{ message?: string }>(),
   },
 });

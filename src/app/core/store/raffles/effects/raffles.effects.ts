@@ -1,10 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { isNil } from 'ramda';
+import { catchError, from, map, of, switchMap, tap } from 'rxjs';
 import { RaffleFactory } from 'src/app/core/models/Raffle.model';
 import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
+import { UpdateRaffleRequestDtoV1 } from 'src/app/core/services/raffle/dtos/requests/update-raffle.request.dto.v1';
 import { RaffleService } from 'src/app/core/services/raffle/raffle.service';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
+import { FilePickerFileUrlType } from 'src/app/shared/components/form-file-picker/form-file-picker.component';
 import { rafflesActions } from '../actions/raffles.actions';
 
 @Injectable()
@@ -13,6 +18,8 @@ export class RafflesEffects {
   private readonly toastController = inject(ToastController);
   private readonly raffleService = inject(RaffleService);
   private readonly modalController = inject(ModalController);
+  private readonly storageService = inject(StorageService);
+  private readonly httpClient = inject(HttpClient);
 
   failureMessages$ = createEffect(
     () =>
@@ -20,7 +27,8 @@ export class RafflesEffects {
         ofType(
           rafflesActions.fetchRaffleFailure,
           rafflesActions.fetchRafflesForAthleteFailure,
-          rafflesActions.createRaffleFailure
+          rafflesActions.createRaffleFailure,
+          rafflesActions.updateRaffleFailure
         ),
         tap(async (action) => {
           if (action.message !== undefined) {
@@ -137,6 +145,84 @@ export class RafflesEffects {
             .then((toast) => toast.present());
 
           this.modalController.dismiss(true, ModalDismissRole.Confirm);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateRaffle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(rafflesActions.updateRaffle),
+      switchMap((action) => {
+        const prizeVideoUrl$ =
+          action.request.prizeVideo.urlType === FilePickerFileUrlType.Local
+            ? from(
+                this.storageService.uploadRafflePrize(
+                  action.request.id,
+                  action.request.prizeVideo
+                )
+              )
+            : of(action.request.prizeVideo.url);
+
+        return prizeVideoUrl$.pipe(
+          switchMap((prizeVideoUrl) => {
+            console.log('New prize video url:', prizeVideoUrl);
+            if (isNil(prizeVideoUrl) || prizeVideoUrl instanceof Error) {
+              return of(
+                rafflesActions.updateRaffleFailure({
+                  message: 'Failed to upload prize video.',
+                })
+              );
+            }
+
+            const updatedRequest: UpdateRaffleRequestDtoV1 = {
+              id: action.request.id,
+              athletes_id: action.request.athlete.id,
+              title: action.request.title,
+              description: action.request.description ?? null,
+              start_date: action.request.startDate,
+              end_date: action.request.endDate,
+              prize_thumbnail: action.request.prizeThumbnail as string,
+              prize_video_url: prizeVideoUrl,
+            };
+            return this.raffleService.updateRaffle(updatedRequest).pipe(
+              map((response) => {
+                if (response.error !== null) {
+                  return rafflesActions.updateRaffleFailure({
+                    message: response.error.message,
+                  });
+                }
+
+                return rafflesActions.updateRaffleSuccess({
+                  raffle: RaffleFactory.fromDtoV1(response.data),
+                });
+              }),
+              catchError((error: Error) => {
+                return of(
+                  rafflesActions.updateRaffleFailure({
+                    message: error.message,
+                  })
+                );
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+
+  updateRaffleSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(rafflesActions.updateRaffleSuccess),
+        tap(async () => {
+          await this.toastController
+            .create({
+              message: 'Successfully updated raffle!',
+              duration: 2000,
+              color: 'success',
+            })
+            .then((toast) => toast.present());
         })
       ),
     { dispatch: false }

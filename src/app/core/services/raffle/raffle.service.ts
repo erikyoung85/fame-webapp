@@ -3,6 +3,7 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 import { CreateRaffleRequestDtoV1 } from './dtos/requests/create-raffle.request.dto.v1';
+import { UpdateRaffleRequestDtoV1 } from './dtos/requests/update-raffle.request.dto.v1';
 import {
   RaffleResponseDtoV1,
   raffleSelectStr,
@@ -61,6 +62,21 @@ export class RaffleService {
       this.supabaseService.client
         .from('raffles')
         .insert(request)
+        .select(raffleSelectStr)
+        .single()
+    );
+
+    return response;
+  }
+
+  updateRaffle(
+    request: UpdateRaffleRequestDtoV1
+  ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1>> {
+    const response = from(
+      this.supabaseService.client
+        .from('raffles')
+        .update(request)
+        .eq('id', request.id)
         .select(raffleSelectStr)
         .single()
     );

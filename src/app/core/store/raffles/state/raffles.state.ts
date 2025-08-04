@@ -4,4 +4,6 @@ import { Raffle } from 'src/app/core/models/Raffle.model';
 
 export interface RafflesState {
   raffleDict: Dictionary<AsyncData<Raffle | undefined>>;
+
+  isSavingRaffle: boolean;
 }

@@ -2,8 +2,8 @@ import type { CapacitorConfig } from '@capacitor/cli';
 import { KeyboardResize, KeyboardStyle } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-  appId: 'app.fame.starter',
-  appName: 'FAME',
+  appId: 'com.thefamesports.fame',
+  appName: 'FAME Sports',
   webDir: 'www/browser',
   ios: {
     buildOptions: {},

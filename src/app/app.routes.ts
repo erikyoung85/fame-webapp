@@ -5,7 +5,6 @@ import { SessionGuard } from './core/guards/session/session.guard';
 import { InviteLinkRedirect } from './core/redirect-functions/invite-link/invite-link.redirect';
 import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
 import { sessionResolver } from './core/resolvers/session/session.resolver';
-import { userManagedPagesResolver } from './core/resolvers/user-managed-pages/user-managed-pages.resolver';
 import { userProfileResolver } from './core/resolvers/user-profile/user-profile.resolver';
 import { TabsPage } from './pages/tabs/tabs.page';
 
@@ -78,7 +77,6 @@ export const routes: Routes = [
     resolve: {
       session: sessionResolver,
       userProfile: userProfileResolver,
-      userManagedPages: userManagedPagesResolver,
       favoriteTeam: favoriteTeamResolver,
     },
     children: [

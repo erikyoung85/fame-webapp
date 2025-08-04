@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
+  inject,
   Input,
   signal,
 } from '@angular/core';
@@ -15,8 +16,6 @@ import {
   IonImg,
   IonText,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { cameraOutline, imagesOutline, trashOutline } from 'ionicons/icons';
 import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control-value-accessor.interface';
 
 @Component({
@@ -36,6 +35,8 @@ import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control
 export class FormPhotoComponent
   implements TypedControlValueAccessor<string | undefined>
 {
+  private readonly alertController = inject(AlertController);
+
   @Input() placeholder = 'Select photo';
   @Input() alt = 'Selected photo';
   @Input({ transform: booleanAttribute }) readonly = false;
@@ -50,10 +51,6 @@ export class FormPhotoComponent
 
   private onChange: (value: string | undefined) => void = () => {};
   private onTouched: () => void = () => {};
-
-  constructor(private alertController: AlertController) {
-    addIcons({ cameraOutline, imagesOutline, trashOutline });
-  }
 
   writeValue(value: string | undefined): void {
     this._value.set(value);

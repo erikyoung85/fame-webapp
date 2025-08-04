@@ -433,6 +433,14 @@ export class UserEffects {
     )
   );
 
+  getUserManagedPagesOnUserIdChange$ = createEffect(() =>
+    this.store.select(userFeature.selectUserId).pipe(
+      distinctUntilChanged(),
+      filter(isNotNil),
+      map(() => userActions.fetchUserManagedPages())
+    )
+  );
+
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.logout),

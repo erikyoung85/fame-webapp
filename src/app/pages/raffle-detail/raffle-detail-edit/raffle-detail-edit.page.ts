@@ -24,6 +24,7 @@ import {
   IonHeader,
   IonInput,
   IonModal,
+  IonProgressBar,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -34,17 +35,25 @@ import { isNotNil } from 'ramda';
 import { filter, map, Subject, take, takeUntil } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { Raffle } from 'src/app/core/models/Raffle.model';
 import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
 import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
+import {
+  FilePickerFile,
+  FilePickerFileType,
+  FormFilePickerComponent,
+} from 'src/app/shared/components/form-file-picker/form-file-picker.component';
 import { FormPhotoComponent } from 'src/app/shared/components/form-photo/form-photo.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
+import { validateRequiredFields } from 'src/app/shared/utils/validate-required-fields.util';
 
 @Component({
   templateUrl: './raffle-detail-edit.page.html',
   styleUrls: ['./raffle-detail-edit.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonProgressBar,
     CommonModule,
     IonButton,
     IonCard,
@@ -63,14 +72,21 @@ import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-te
     FormPhotoComponent,
     IonInput,
     IonTextarea,
+    FormFilePickerComponent,
   ],
 })
 export class RaffleDetailEditPage implements OnInit, OnDestroy {
+  protected readonly FilePickerFileType = FilePickerFileType;
   private readonly unsubscribe$ = new Subject<void>();
   private readonly store = inject(Store);
   private readonly fb = inject(NonNullableFormBuilder);
 
   readonly raffleId = input.required<number>();
+  raffle: Raffle | undefined = undefined;
+
+  readonly isSavingRaffle$ = this.store.selectSignal(
+    rafflesFeature.selectIsSavingRaffle
+  );
 
   readonly form = this.fb.group({
     title: this.fb.control<string>('', Validators.required),
@@ -83,8 +99,14 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
       formatISO(startOfTomorrow()),
       Validators.required
     ),
-    prizeThumbnailUrl: this.fb.control<string>('', Validators.required),
-    prizeVideoUrl: this.fb.control<string>('', Validators.required),
+    prizeThumbnail: this.fb.control<string | undefined>(
+      undefined,
+      Validators.required
+    ),
+    prizeVideo: this.fb.control<FilePickerFile | undefined>(
+      undefined,
+      Validators.required
+    ),
   });
 
   ngOnDestroy(): void {
@@ -109,9 +131,9 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe((raffle) => {
+        this.raffle = raffle;
         this.form.patchValue({
           ...raffle,
-          prizeThumbnailUrl: raffle.prizeThumbnail,
           startDate: formatISO(raffle.startDate),
           endDate: formatISO(raffle.endDate),
         });
@@ -120,8 +142,36 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
   }
 
   onSaveClicked() {
+    const formValue = this.form.getRawValue();
+
+    if (
+      this.raffle === undefined ||
+      this.form.invalid ||
+      !validateRequiredFields(formValue, 'prizeVideo', 'prizeThumbnail')
+    ) {
+      this.form.markAllAsTouched();
+      console.error('Form is invalid', formValue);
+      return;
+    }
+
+    const newRaffle: Raffle = {
+      id: this.raffle.id,
+      athlete: this.raffle.athlete,
+      teamName: this.raffle.teamName,
+      sport: this.raffle.sport,
+      favorited: this.raffle.favorited,
+      title: formValue.title,
+      description: formValue.description,
+      startDate: formValue.startDate,
+      endDate: formValue.endDate,
+      prizeThumbnail: formValue.prizeThumbnail,
+      prizeVideo: formValue.prizeVideo,
+    };
+
     this.store.dispatch(
-      RouterActions.routeToFormAction({ formAction: FormActionRoutes.View })
+      rafflesActions.updateRaffle({
+        request: newRaffle,
+      })
     );
   }
 

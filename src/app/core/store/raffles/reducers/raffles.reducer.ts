@@ -67,14 +67,54 @@ export const rafflesReducer = createReducer(
     }
   ),
 
+  on(rafflesActions.createRaffle, (state): RafflesState => {
+    return {
+      ...state,
+      isSavingRaffle: true,
+    };
+  }),
   on(rafflesActions.createRaffleSuccess, (state, action): RafflesState => {
-    const asyncRaffle = wrapAsAsyncData(action.raffle, AsyncDataStatus.Success);
+    return {
+      ...state,
+      isSavingRaffle: false,
+      raffleDict: {
+        ...state.raffleDict,
+        [action.raffle.id]: wrapAsAsyncData(
+          action.raffle,
+          AsyncDataStatus.Success
+        ),
+      },
+    };
+  }),
+  on(rafflesActions.createRaffleFailure, (state): RafflesState => {
+    return {
+      ...state,
+      isSavingRaffle: false,
+    };
+  }),
+
+  on(rafflesActions.updateRaffle, (state): RafflesState => {
+    return {
+      ...state,
+      isSavingRaffle: true,
+    };
+  }),
+  on(rafflesActions.updateRaffleSuccess, (state, action): RafflesState => {
     return {
       ...state,
       raffleDict: {
         ...state.raffleDict,
-        [action.raffle.id]: asyncRaffle,
+        [action.raffle.id]: wrapAsAsyncData(
+          action.raffle,
+          AsyncDataStatus.Success
+        ),
       },
+    };
+  }),
+  on(rafflesActions.updateRaffleFailure, (state, action): RafflesState => {
+    return {
+      ...state,
+      isSavingRaffle: false,
     };
   })
 );
