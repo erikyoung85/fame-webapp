@@ -10,6 +10,7 @@
     "start:web": "ng serve",
     "start:web:dev": "ng serve --configuration=development",
     "start:web:prod": "ng serve --configuration=production",
+    "build": "ng build",
     "build:web": "ng build",
     "build:web:dev": "ng build --configuration=development",
     "build:web:prod": "ng build --configuration=production",
