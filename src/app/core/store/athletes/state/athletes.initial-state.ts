@@ -1,3 +1,4 @@
+import { wrapAsAsyncData } from 'src/app/core/async-data';
 import { athletesEntityAdapter, AthletesState } from './athletes.state';
 
 export const INITIAL_ATHLETES_STATE: AthletesState =
@@ -6,4 +7,6 @@ export const INITIAL_ATHLETES_STATE: AthletesState =
     error: undefined,
 
     athleteDetailsDict: {},
+
+    trendingAthletes: wrapAsAsyncData([]),
   });

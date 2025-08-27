@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
+  IonAvatar,
   IonContent,
   IonHeader,
   IonItem,
@@ -17,6 +18,7 @@ import {
   IonNote,
   IonProgressBar,
   IonSearchbar,
+  IonSkeletonText,
   IonText,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -31,6 +33,8 @@ import {
 } from 'src/app/core/models/SearchItem.model';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
+import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
+import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { searchActions } from 'src/app/core/store/search/actions/search.actions';
 import { searchFeature } from 'src/app/core/store/search/feature/search.feature';
@@ -40,6 +44,7 @@ import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
 import { RafflePreviewCardLoadingComponent } from './raffle-preview-card/raffle-preview-card-loading/raffle-preview-card-loading.component';
 import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
+import { TeamPreviewCardLoadingComponent } from './team-preview-card/team-preview-card-loading/team-preview-card-loading.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
 
 @Component({
@@ -47,6 +52,8 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
   styleUrls: ['./search.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    IonSkeletonText,
+    IonAvatar,
     IonProgressBar,
     IonNote,
     IonText,
@@ -68,6 +75,7 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     FormsModule,
     IsAsyncLoadingPipe,
     RafflePreviewCardLoadingComponent,
+    TeamPreviewCardLoadingComponent,
   ],
 })
 export class SearchPage implements OnInit, OnDestroy {
@@ -87,22 +95,20 @@ export class SearchPage implements OnInit, OnDestroy {
 
   readonly userProfile$ = this.store.select(userFeature.selectUserProfile);
 
-  readonly allTeams$ = this.store.select(teamsFeature.selectAll);
-  readonly isTeamsLoading$ = this.store.select(teamsFeature.selectIsLoading);
-
-  readonly allAthletes$ = this.store.select(athletesFeature.selectAll);
-  readonly isAthletesLoading$ = this.store.select(
-    athletesFeature.selectIsLoading
+  readonly trendingTeams$ = this.store.selectSignal(
+    teamsFeature.selectTrendingTeams
   );
-
+  readonly trendingAthletes$ = this.store.selectSignal(
+    athletesFeature.selectTrendingAthletes
+  );
   readonly trendingRaffles$ = this.store.selectSignal(
-    searchFeature.selectTrendingRaffles
+    rafflesFeature.selectTrendingRaffles
   );
 
   ngOnInit(): void {
-    this.store.dispatch(teamsActions.fetchTeams());
-    this.store.dispatch(athletesActions.fetchAthletes());
-    this.store.dispatch(searchActions.fetchTrendingRaffles());
+    this.store.dispatch(teamsActions.fetchTrendingTeams());
+    this.store.dispatch(athletesActions.fetchTrendingAthletes());
+    this.store.dispatch(rafflesActions.fetchTrendingRaffles());
 
     this.searchQueryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(500))

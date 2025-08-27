@@ -3,8 +3,14 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
 import { UpdateTeamRequestDtoV1 } from './dtos/requests/update-team.request.dto.v1';
-import { TeamDetailResponseDtoV1 } from './dtos/responses/team-detail.response.dto.v1';
-import { TeamResponseDtoV1 } from './dtos/responses/team.response.dto.v1';
+import {
+  SELECT_TEAM_DETAIL_V1,
+  TeamDetailResponseDtoV1,
+} from './dtos/responses/team-detail.response.dto.v1';
+import {
+  SELECT_TEAM_V1,
+  TeamResponseDtoV1,
+} from './dtos/responses/team.response.dto.v1';
 
 @Injectable({
   providedIn: 'root',
@@ -14,16 +20,17 @@ export class TeamsService {
 
   getAllTeams(): Observable<PostgrestSingleResponse<TeamResponseDtoV1[]>> {
     return from(
-      this.supabaseService.client
-        .from('teams')
-        .select(
-          'id, season_year, name, logo_url, schools(id, name, abbreviation, city, state, logo_url), sports(id, name, gender)'
-        )
+      this.supabaseService.client.from('teams').select(SELECT_TEAM_V1)
     );
   }
 
-  private readonly teamDetailsSelect =
-    'id, season_year, name, banner_url, logo_url, schools(id, name, abbreviation, city, state, logo_url), sports(id, name, gender), roster_entries(id, position, jersey_number, athletes(id, avatar_url, first_name, last_name, gender, grade))';
+  getTrendingTeams(): Observable<PostgrestSingleResponse<TeamResponseDtoV1[]>> {
+    const response = from(
+      this.supabaseService.client.from('teams').select(SELECT_TEAM_V1).limit(10)
+    );
+
+    return response;
+  }
 
   getTeamDetails(
     teamId: number
@@ -31,7 +38,7 @@ export class TeamsService {
     return from(
       this.supabaseService.client
         .from('teams')
-        .select(this.teamDetailsSelect)
+        .select(SELECT_TEAM_DETAIL_V1)
         .eq('id', teamId)
         .single()
     );
@@ -45,7 +52,7 @@ export class TeamsService {
         .from('teams')
         .update(request)
         .eq('id', request.id)
-        .select(this.teamDetailsSelect)
+        .select(SELECT_TEAM_DETAIL_V1)
         .single()
     );
 

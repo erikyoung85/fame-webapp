@@ -9,6 +9,8 @@ export interface TeamsState extends EntityState<Team> {
   }>;
   isLoading: boolean;
   error: string | undefined;
+
+  trendingTeams: AsyncData<Team[]>;
 }
 
 export const teamsEntityAdapter = createEntityAdapter<Team>({

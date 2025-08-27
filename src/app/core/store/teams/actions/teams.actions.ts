@@ -17,5 +17,9 @@ export const teamsActions = createActionGroup({
     'Update Team': props<{ request: UpdateTeamRequestDtoV1 }>(),
     'Update Team Success': props<{ teamDetails: TeamDetail }>(),
     'Update Team Failure': props<{ teamId: number; message?: string }>(),
+
+    'Fetch Trending Teams': emptyProps(),
+    'Fetch Trending Teams Success': props<{ teams: Team[] }>(),
+    'Fetch Trending Teams Failure': props<{ message: string }>(),
   },
 });

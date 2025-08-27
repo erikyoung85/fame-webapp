@@ -10,6 +10,8 @@ export interface AthletesState extends EntityState<Athlete> {
   athleteDetailsDict: Partial<{
     [athleteId: number]: AsyncData<AthleteDetail | undefined>;
   }>;
+
+  trendingAthletes: AsyncData<Athlete[]>;
 }
 
 export const athletesEntityAdapter = createEntityAdapter<Athlete>({

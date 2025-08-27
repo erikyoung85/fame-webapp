@@ -98,5 +98,24 @@ export const teamsReducer = createReducer(
         ),
       },
     };
+  }),
+
+  on(teamsActions.fetchTrendingTeams, (state): TeamsState => {
+    return {
+      ...state,
+      trendingTeams: wrapAsAsyncData([], AsyncDataStatus.Loading),
+    };
+  }),
+  on(teamsActions.fetchTrendingTeamsSuccess, (state, action): TeamsState => {
+    return {
+      ...state,
+      trendingTeams: wrapAsAsyncData(action.teams, AsyncDataStatus.Success),
+    };
+  }),
+  on(teamsActions.fetchTrendingTeamsFailure, (state, action): TeamsState => {
+    return {
+      ...state,
+      trendingTeams: wrapAsAsyncData([], AsyncDataStatus.Error, action.message),
+    };
   })
 );

@@ -1,6 +1,9 @@
 import { Gender } from 'src/app/core/enums/Gender.enum';
 import { Grade } from 'src/app/core/enums/Grade.enum';
 
+export const SELECT_ATHLETE_V1 =
+  'id, avatar_url, first_name, last_name, date_of_birth, gender, grade, schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, sports(id, name)))';
+
 export interface AthleteResponseDtoV1 {
   id: number;
   avatar_url: string | null;

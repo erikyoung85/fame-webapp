@@ -1,6 +1,11 @@
 import { Gender } from 'src/app/core/enums/Gender.enum';
 import { Grade } from 'src/app/core/enums/Grade.enum';
-import { RaffleResponseDtoV1 } from '../../../raffle/dtos/responses/raffle.response.dto.v1';
+import {
+  RaffleResponseDtoV1,
+  raffleSelectStr,
+} from '../../../raffle/dtos/responses/raffle.response.dto.v1';
+
+export const SELECT_ATHLETE_DETAIL_V1 = `id, avatar_url, first_name, last_name, date_of_birth, gender, grade, hometown, raffles(${raffleSelectStr}), schools(id, name, abbreviation), roster_entries(id, jersey_number, position, teams(id, name, banner_url, sports(id, name)))`;
 
 export interface AthleteDetailResponseDtoV1 {
   id: number;

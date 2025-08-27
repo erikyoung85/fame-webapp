@@ -181,4 +181,32 @@ export class AthletesEffects {
       })
     )
   );
+
+  fetchTrendingAthletes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(athletesActions.fetchTrendingAthletes),
+      switchMap(() => {
+        return this.athletesService.getTrendingAthletes().pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return athletesActions.fetchTrendingAthletesFailure({
+                message: response.error.message,
+              });
+            }
+
+            return athletesActions.fetchTrendingAthletesSuccess({
+              athletes: response.data.map(AthleteFactory.fromDtoV1),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              athletesActions.fetchTrendingAthletesFailure({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
 }

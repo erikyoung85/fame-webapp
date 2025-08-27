@@ -104,5 +104,37 @@ export const athletesReducer = createReducer(
         ),
       },
     };
-  })
+  }),
+
+  on(athletesActions.fetchTrendingAthletes, (state): AthletesState => {
+    return {
+      ...state,
+      trendingAthletes: wrapAsAsyncData([], AsyncDataStatus.Loading),
+    };
+  }),
+  on(
+    athletesActions.fetchTrendingAthletesSuccess,
+    (state, action): AthletesState => {
+      return {
+        ...state,
+        trendingAthletes: wrapAsAsyncData(
+          action.athletes,
+          AsyncDataStatus.Success
+        ),
+      };
+    }
+  ),
+  on(
+    athletesActions.fetchTrendingAthletesFailure,
+    (state, action): AthletesState => {
+      return {
+        ...state,
+        trendingAthletes: wrapAsAsyncData(
+          [],
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  )
 );

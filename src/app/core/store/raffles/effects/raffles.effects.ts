@@ -235,4 +235,32 @@ export class RafflesEffects {
       })
     )
   );
+
+  fetchTrendingRaffles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(rafflesActions.fetchTrendingRaffles),
+      switchMap(() => {
+        return this.raffleService.getTrendingRaffles().pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return rafflesActions.fetchTrendingRafflesFailure({
+                message: response.error.message,
+              });
+            }
+
+            return rafflesActions.fetchTrendingRafflesSuccess({
+              raffles: response.data.map(RaffleFactory.fromDtoV1),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              rafflesActions.fetchTrendingRafflesFailure({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
 }

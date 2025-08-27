@@ -188,4 +188,32 @@ export class TeamsEffects {
       })
     )
   );
+
+  fetchTrendingTeams$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(teamsActions.fetchTrendingTeams),
+      switchMap(() => {
+        return this.teamsService.getTrendingTeams().pipe(
+          map((response) => {
+            if (response.error !== null) {
+              return teamsActions.fetchTrendingTeamsFailure({
+                message: response.error.message,
+              });
+            }
+
+            return teamsActions.fetchTrendingTeamsSuccess({
+              teams: response.data.map(TeamFactory.fromDtoV1),
+            });
+          }),
+          catchError((error: Error) => {
+            return of(
+              teamsActions.fetchTrendingTeamsFailure({
+                message: error.message,
+              })
+            );
+          })
+        );
+      })
+    )
+  );
 }

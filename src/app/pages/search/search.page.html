@@ -33,8 +33,10 @@
         <app-raffle-preview-card-loading></app-raffle-preview-card-loading>
         <app-raffle-preview-card-loading></app-raffle-preview-card-loading>
       }
+      @else if (raffles.length === 0) {
+        <ion-text class="ion-padding">No active raffles</ion-text>
+      }
       @else {
-        <ion-text *ngIf="raffles.length === 0" class="ion-padding">No active raffles</ion-text>
         @for (raffle of raffles; track raffle.id) {
           <app-raffle-preview-card [raffle]="raffle"></app-raffle-preview-card>
         }
@@ -46,22 +48,60 @@
       <ion-label>Trending Teams</ion-label>
     </ion-list-header>
     <div class="ion-padding flex-row gap-2 scroll-x">
-      <app-team-preview-card *ngFor="let team of ((allTeams$ | ngrxPush) ?? [])" [team]="team"
-        (click)="onTeamClicked(team.id)"></app-team-preview-card>
+      @let teams = trendingTeams$().data;
+      @let isTeamsLoading = trendingTeams$() | isAsyncLoading;
+      @if (isTeamsLoading) {
+        <app-team-preview-card-loading></app-team-preview-card-loading>
+        <app-team-preview-card-loading></app-team-preview-card-loading>
+      }
+      @else if (teams.length === 0) {
+        <ion-text class="ion-padding">No trending teams</ion-text>
+      }
+      @else {
+        @for (team of teams; track team.id) {
+          <app-team-preview-card
+            [team]="team"
+            (click)="onTeamClicked(team.id)"
+          ></app-team-preview-card>
+        }
+      }
     </div>
 
     <!-- Trending Athletes -->
     <ion-list-header>
       <ion-label>Trending Athletes</ion-label>
     </ion-list-header>
+    @let athletes = trendingAthletes$().data;
+    @let isAthletesLoading = trendingAthletes$() | isAsyncLoading;
+
     <ion-list [inset]="true" class="list-color-card">
-      <ion-item *ngFor="let athlete of ((allAthletes$ | ngrxPush) ?? [])" button (click)="onAthleteClicked(athlete.id)">
-        <app-user-profile-avatar size="small" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
-        <ion-label>
-          <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
-          <ion-text><ion-note color="medium">{{ athlete.schoolName }}</ion-note></ion-text>
-        </ion-label>
-      </ion-item>
+      @if (isAthletesLoading) {
+        <ion-item *ngFor="let _ of [0, 0, 0, 0, 0]">
+          <ion-avatar slot="start">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-avatar>
+          <ion-label>
+            <ion-skeleton-text animated></ion-skeleton-text>
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      }
+      @else if (athletes.length === 0) {
+        <ion-item>
+          <ion-text class="ion-padding">No trending athletes</ion-text>
+        </ion-item>
+      }
+      @else {
+        @for (athlete of athletes; track athlete.id) {
+          <ion-item button (click)="onAthleteClicked(athlete.id)">
+            <app-user-profile-avatar size="small" slot="start" [avatarSrc]="athlete.avatarUrl"></app-user-profile-avatar>
+            <ion-label>
+              <ion-text><b>{{ athlete.firstName }} {{ athlete.lastName }}</b></ion-text><br />
+              <ion-text><ion-note color="medium">{{ athlete.schoolName }}</ion-note></ion-text>
+            </ion-label>
+          </ion-item>
+        }
+      }
     </ion-list>
   </div>
 </ion-content>

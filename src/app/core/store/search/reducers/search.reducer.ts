@@ -54,37 +54,5 @@ export const searchReducer = createReducer(
         },
       },
     };
-  }),
-
-  on(searchActions.fetchTrendingRaffles, (state): SearchState => {
-    return {
-      ...state,
-      trendingRaffles: wrapAsAsyncData([], AsyncDataStatus.Loading),
-    };
-  }),
-  on(
-    searchActions.fetchTrendingRafflesSuccess,
-    (state, action): SearchState => {
-      return {
-        ...state,
-        trendingRaffles: wrapAsAsyncData(
-          action.raffles,
-          AsyncDataStatus.Success
-        ),
-      };
-    }
-  ),
-  on(
-    searchActions.fetchTrendingRafflesFailure,
-    (state, action): SearchState => {
-      return {
-        ...state,
-        trendingRaffles: wrapAsAsyncData(
-          [],
-          AsyncDataStatus.Error,
-          action.message
-        ),
-      };
-    }
-  )
+  })
 );

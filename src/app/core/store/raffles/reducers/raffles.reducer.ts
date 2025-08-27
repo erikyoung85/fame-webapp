@@ -109,5 +109,37 @@ export const rafflesReducer = createReducer(
     return {
       ...state,
     };
-  })
+  }),
+
+  on(rafflesActions.fetchTrendingRaffles, (state): RafflesState => {
+    return {
+      ...state,
+      trendingRaffles: wrapAsAsyncData([], AsyncDataStatus.Loading),
+    };
+  }),
+  on(
+    rafflesActions.fetchTrendingRafflesSuccess,
+    (state, action): RafflesState => {
+      return {
+        ...state,
+        trendingRaffles: wrapAsAsyncData(
+          action.raffles,
+          AsyncDataStatus.Success
+        ),
+      };
+    }
+  ),
+  on(
+    rafflesActions.fetchTrendingRafflesFailure,
+    (state, action): RafflesState => {
+      return {
+        ...state,
+        trendingRaffles: wrapAsAsyncData(
+          [],
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  )
 );

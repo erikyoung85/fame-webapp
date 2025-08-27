@@ -20,5 +20,9 @@ export const athletesActions = createActionGroup({
     'Update Athlete': props<{ request: UpdateAthleteRequestDtoV1 }>(),
     'Update Athlete Success': props<{ athleteDetails: AthleteDetail }>(),
     'Update Athlete Failure': props<{ athleteId: number; message?: string }>(),
+
+    'Fetch Trending Athletes': emptyProps(),
+    'Fetch Trending Athletes Success': props<{ athletes: Athlete[] }>(),
+    'Fetch Trending Athletes Failure': props<{ message: string }>(),
   },
 });
