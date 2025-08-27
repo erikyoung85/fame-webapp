@@ -14,6 +14,9 @@ export const environment = {
     publishableKey:
       'pk_test_51RLqgZR9NSc5rYHD2VMCJZj3WVUFPozpYCtM0A36XWw1YPuUyBsktBUO7rWa9sh889yxqOtUspcS10Zq7V8xJzlR00Z230SO1J',
   },
+  applePay: {
+    merchantId: 'merchant.thefamesports.fame',
+  },
 };
 
 /*

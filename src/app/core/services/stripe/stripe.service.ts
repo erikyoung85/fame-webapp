@@ -43,6 +43,8 @@ export class StripeService {
         customerId: options.customerId,
         customerEphemeralKeySecret: options.customerEphemeralKeySecret,
         merchantDisplayName: 'FAME Sports LLC',
+        enableApplePay: true,
+        applePayMerchantId: environment.applePay.merchantId,
       })
       .catch((error) => {
         console.error('Error creating payment sheet:', error);
