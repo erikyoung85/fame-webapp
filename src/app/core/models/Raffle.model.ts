@@ -1,3 +1,4 @@
+import { isAfter } from 'date-fns';
 import {
   FilePickerFile,
   FilePickerFileType,
@@ -11,6 +12,9 @@ export interface Raffle {
   description: string | undefined;
   startDate: string;
   endDate: string;
+  isStarted: boolean;
+  isEnded: boolean;
+  isActive: boolean;
   sport: string;
   teamName: string;
   prizeThumbnail: string;
@@ -24,12 +28,19 @@ export interface Raffle {
 
 export class RaffleFactory {
   static fromDtoV1(dto: RaffleResponseDtoV1): Raffle {
+    const now = new Date();
+    const isStarted = isAfter(now, dto.start_date);
+    const isEnded = isAfter(now, dto.end_date);
+    const isActive = isStarted && !isEnded;
     return {
       id: dto.id,
       title: dto.title,
       description: dto.description ?? undefined,
       startDate: dto.start_date,
       endDate: dto.end_date,
+      isStarted: isStarted,
+      isEnded: isEnded,
+      isActive: isActive,
       sport: dto.athletes.roster_entries[0]?.teams.sports.name ?? '',
       teamName: dto.athletes.roster_entries[0]?.teams.name ?? '',
       prizeThumbnail: dto.prize_thumbnail,

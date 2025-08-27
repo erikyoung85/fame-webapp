@@ -1,3 +1,4 @@
+import { compareDesc } from 'date-fns';
 import { Gender } from '../enums/Gender.enum';
 import { Grade } from '../enums/Grade.enum';
 import { AthleteDetailResponseDtoV1 } from '../services/athletes/dtos/responses/athleteDetail.response.dto.v1';
@@ -36,7 +37,9 @@ export class AthleteDetailFactory {
       teamName: dto.roster_entries[0]?.teams.name ?? undefined,
       grade: Grade[dto.grade],
       hometown: dto.hometown ?? undefined,
-      raffles: dto.raffles.map((raffle) => RaffleFactory.fromDtoV1(raffle)),
+      raffles: dto.raffles
+        .map((raffle) => RaffleFactory.fromDtoV1(raffle))
+        .sort((a, b) => compareDesc(a.endDate, b.endDate)),
     };
   }
 }

@@ -1,6 +1,8 @@
 import {
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
 import { IonButton } from '@ionic/angular/standalone';
@@ -13,4 +15,6 @@ import { IonButton } from '@ionic/angular/standalone';
   imports: [IonButton],
   encapsulation: ViewEncapsulation.None,
 })
-export class ToolbarTextButtonComponent {}
+export class ToolbarTextButtonComponent {
+  readonly disabled = input(false, { transform: booleanAttribute });
+}

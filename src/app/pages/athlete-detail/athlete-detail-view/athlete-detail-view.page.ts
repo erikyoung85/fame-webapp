@@ -5,7 +5,6 @@ import {
   inject,
   input,
   numberAttribute,
-  OnInit,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -33,8 +32,6 @@ import { FormActionRoutes } from 'src/app/app.routes';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
-import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
-import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
@@ -76,7 +73,7 @@ import { RafflePreviewCardComponent } from '../../search/raffle-preview-card/raf
     ToolbarTextButtonComponent,
   ],
 })
-export class AthleteDetailViewPage implements OnInit {
+export class AthleteDetailViewPage {
   private readonly store = inject(Store);
   private readonly modalService = inject(ModalService);
 
@@ -96,18 +93,6 @@ export class AthleteDetailViewPage implements OnInit {
       this.store.select(userFeature.selectIsAthleteManager(athleteId))
     )
   );
-
-  readonly athleteRaffles$ = toObservable(this.athleteId).pipe(
-    switchMap((athleteId) =>
-      this.store.select(rafflesFeature.selectRafflesForAthlete(athleteId))
-    )
-  );
-
-  ngOnInit(): void {
-    this.store.dispatch(
-      rafflesActions.fetchRafflesForAthlete({ athleteId: this.athleteId() })
-    );
-  }
 
   onCreateRaffleClicked() {
     this.modalService.openCreateRaffle(this.athleteId());

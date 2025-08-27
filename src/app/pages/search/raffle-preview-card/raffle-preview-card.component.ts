@@ -16,6 +16,7 @@ import {
   IonCardTitle,
   IonText,
 } from '@ionic/angular/standalone';
+import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 import { interval, Subject, takeUntil, takeWhile } from 'rxjs';
@@ -23,6 +24,7 @@ import { PageRoutes } from 'src/app/app.routes';
 import { Raffle } from 'src/app/core/models/Raffle.model';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
+import { DistanceToNowPipe } from 'src/app/shared/pipes/distance-to-now/distance-to-now.pipe';
 
 @Component({
   selector: 'app-raffle-preview-card',
@@ -37,6 +39,8 @@ import { RouterActions } from 'src/app/core/store/router/actions/router.actions'
     IonCardTitle,
     IonCardHeader,
     IonCard,
+    DistanceToNowPipe,
+    PushPipe,
   ],
 })
 export class RafflePreviewCardComponent implements OnInit, OnDestroy {

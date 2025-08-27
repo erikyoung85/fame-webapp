@@ -19,9 +19,9 @@
   </ion-card-content>
 
   <div style="display: flex; justify-content: space-between; align-items: center">
-    <ion-button size="small" [fill]="'solid'" (click)="onJoinRaffleClicked($event)">Join</ion-button>
-    <ion-text color="dark">
-      {{ countdownString() }}
+    <ion-button size="small" [fill]="'solid'" (click)="onJoinRaffleClicked($event)" [disabled]="!raffle.isActive">Join</ion-button>
+    <ion-text color="medium">
+      {{ raffle.endDate | distanceToNow: true | ngrxPush }}
     </ion-text>
   </div>
 </ion-card>

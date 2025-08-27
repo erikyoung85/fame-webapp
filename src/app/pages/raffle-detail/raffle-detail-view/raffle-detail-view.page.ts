@@ -27,6 +27,8 @@ import { Store } from '@ngrx/store';
 import { filter, map, switchMap } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { Raffle } from 'src/app/core/models/Raffle.model';
+import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
 import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
@@ -63,6 +65,7 @@ import { DistanceToNowPipe } from 'src/app/shared/pipes/distance-to-now/distance
 })
 export class RaffleDetailViewPage {
   private readonly store = inject(Store);
+  private readonly modalService = inject(ModalService);
 
   readonly raffleId = input.required<number>();
 
@@ -95,5 +98,9 @@ export class RaffleDetailViewPage {
     this.store.dispatch(
       RouterActions.routeToFormAction({ formAction: FormActionRoutes.Edit })
     );
+  }
+
+  onJoinRaffleClicked(raffle: Raffle) {
+    this.modalService.openPaymentModal(raffle);
   }
 }

@@ -1,17 +1,20 @@
+@let isRaffleLoading = raffleResource.isLoading();
+@let raffle = raffleResource.value();
+
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <app-back-button></app-back-button>
     </ion-buttons>
-    <ion-title>{{ raffleResource.value()?.title }}</ion-title>
+    <ion-title>{{ raffle?.title }}</ion-title>
     <ion-buttons slot="end" *ngIf="canUserEdit$ | ngrxPush">
-      <toolbar-text-button (click)="onEditClicked()">Edit</toolbar-text-button>
+      <toolbar-text-button (click)="onEditClicked()" [disabled]="raffle?.isStarted">Edit</toolbar-text-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  @if (raffleResource.isLoading()) {
+  @if (isRaffleLoading) {
   <ion-card>
     <ion-skeleton-text [animated]="true" style="margin: 0; height: 265px;"></ion-skeleton-text>
     <ion-card-header>
@@ -27,7 +30,6 @@
   </ion-card>
   }
 
-  @let raffle = raffleResource.value();
   @if (raffle) {
   <ion-card>
     <ion-img [src]="raffle.prizeThumbnail" alt="Raffle Prize Thumbnail"></ion-img>
@@ -67,7 +69,7 @@
         </ion-card>
       </div>
 
-      <ion-button fill="outline">Join Raffle</ion-button>
+      <ion-button fill="outline" [disabled]="!raffle.isActive" (click)="onJoinRaffleClicked(raffle)">Join Raffle</ion-button>
     </ion-card-content>
 
   </ion-card>

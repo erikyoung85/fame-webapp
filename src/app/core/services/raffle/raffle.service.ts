@@ -43,14 +43,20 @@ export class RaffleService {
   }
 
   getRafflesForAthlete(
-    athleteId: number
+    athleteId: number,
+    activeOnly = false
   ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1[]>> {
-    const response = from(
-      this.supabaseService.client
-        .from('raffles')
-        .select(raffleSelectStr)
-        .eq('athletes_id', athleteId)
-    );
+    const request = this.supabaseService.client
+      .from('raffles')
+      .select(raffleSelectStr)
+      .eq('athletes_id', athleteId);
+
+    if (activeOnly) {
+      request.gt('start_date', new Date().toISOString());
+      request.lt('end_date', new Date().toISOString());
+    }
+
+    const response = from(request);
 
     return response;
   }

@@ -30,7 +30,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
-import { formatISO, startOfTomorrow } from 'date-fns';
+import { formatISO, isAfter, startOfTomorrow } from 'date-fns';
 import { isNotNil } from 'ramda';
 import { filter, map, Subject, take, takeUntil } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
@@ -154,6 +154,10 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
       return;
     }
 
+    const now = new Date();
+    const isStarted = isAfter(now, formValue.startDate);
+    const isEnded = isAfter(now, formValue.endDate);
+    const isActive = isStarted && !isEnded;
     const newRaffle: Raffle = {
       id: this.raffle.id,
       athlete: this.raffle.athlete,
@@ -164,6 +168,9 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
       description: formValue.description,
       startDate: formValue.startDate,
       endDate: formValue.endDate,
+      isStarted: isStarted,
+      isEnded: isEnded,
+      isActive: isActive,
       prizeThumbnail: formValue.prizeThumbnail,
       prizeVideo: formValue.prizeVideo,
     };
