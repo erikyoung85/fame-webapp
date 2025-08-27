@@ -42,6 +42,7 @@ export class StripeService {
         paymentIntentClientSecret: options.paymentIntentClientSecret,
         customerId: options.customerId,
         customerEphemeralKeySecret: options.customerEphemeralKeySecret,
+        merchantDisplayName: 'FAME Sports LLC',
       })
       .catch((error) => {
         console.error('Error creating payment sheet:', error);

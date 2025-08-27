@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { PaymentSheetEventsEnum } from '@capacitor-community/stripe';
 import { ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -151,9 +152,12 @@ export class PaymentEffects {
           })
         ).pipe(
           map((response) => {
-            if (response === undefined) {
+            if (
+              response === undefined ||
+              response !== PaymentSheetEventsEnum.Completed
+            ) {
               return paymentActions.collectPaymentFailure({
-                message: 'responded with undefined for payment status',
+                message: 'Failed to complete payment.',
               });
             }
             return paymentActions.collectPaymentSuccess({

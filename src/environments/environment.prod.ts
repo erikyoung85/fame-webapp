@@ -8,6 +8,6 @@ export const environment = {
   },
   stripe: {
     publishableKey:
-      'pk_test_51RLWKOReZNkJB8y7RLOKn8uqYqAfYpXCtgZ9BxJPIQkZzbvllpdxMafWEXBg9f8I79wtuY2EeloTWsL2Ovtgsfli00QFHTqayA',
+      'pk_test_51RLqgZR9NSc5rYHD2VMCJZj3WVUFPozpYCtM0A36XWw1YPuUyBsktBUO7rWa9sh889yxqOtUspcS10Zq7V8xJzlR00Z230SO1J',
   },
 };

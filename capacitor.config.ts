@@ -5,9 +5,6 @@ const config: CapacitorConfig = {
   appId: 'com.thefamesports.fame',
   appName: 'FAME Sports',
   webDir: 'www/browser',
-  ios: {
-    buildOptions: {},
-  },
   plugins: {
     CapacitorHttp: {
       enabled: true,
