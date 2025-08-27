@@ -19,14 +19,23 @@
 
 <!-- If athlete, give option to show either view -->
 @if (userProfile().isAthlete) {
-<ion-content [scrollY]="false">
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-segment-view>
     <ion-segment-content id="user-transactions">
-      <app-user-transactions-view></app-user-transactions-view>
+      <app-user-transactions-view
+        [transactions]="userTransactions$()"
+        [transactionSummary]="userTransactionSummary$()"
+      ></app-user-transactions-view>
     </ion-segment-content>
 
     <ion-segment-content id="managed-athletes-transactions">
-      <app-athlete-transactions-view></app-athlete-transactions-view>
+      <app-athlete-transactions-view
+        [transactions]="managedAthletesTransactions$()"
+        [raffleSummary]="managedAthletesRaffleSummary$()"
+      ></app-athlete-transactions-view>
     </ion-segment-content>
   </ion-segment-view>
 </ion-content>
@@ -34,6 +43,12 @@
 <!-- Just show user transactions if there isnt anything to switch between -->
 @else {
 <ion-content class="ion-padding">
-  <app-user-transactions-view></app-user-transactions-view>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <app-user-transactions-view
+    [transactions]="userTransactions$()"
+    [transactionSummary]="userTransactionSummary$()"
+  ></app-user-transactions-view>
 </ion-content>
 }
