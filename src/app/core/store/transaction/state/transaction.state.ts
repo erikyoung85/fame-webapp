@@ -1,4 +1,4 @@
-import { AsyncData } from 'src/app/core/models/AsyncData.model';
+import { AsyncData } from 'src/app/core/async-data';
 import { AthleteRaffleSummary } from 'src/app/core/models/AthleteRaffleSummary.model';
 import { RaffleTransaction } from 'src/app/core/models/RaffleTransaction.model';
 import { RaffleTransactionSummary } from 'src/app/core/models/RaffleTransactionSummary.model';

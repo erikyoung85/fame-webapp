@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AsyncData } from 'src/app/core/models/AsyncData.model';
+import { AsyncData } from 'src/app/core/async-data';
 
 @Pipe({
   name: 'unwrapAsync',

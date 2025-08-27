@@ -5,7 +5,7 @@ import {
   AsyncData,
   AsyncDataStatus,
   wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+} from 'src/app/core/async-data';
 
 /**
  * Combines multiple observables or signals into a single signal that indicates

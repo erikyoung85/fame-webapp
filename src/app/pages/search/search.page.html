@@ -26,10 +26,18 @@
     <ion-list-header>
       <ion-label>Open Raffles</ion-label>
     </ion-list-header>
-    <div class="ion-padding flex-row gap-2 scroll-x" *ngrxLet="allRaffles$ as allRaffles">
-      <ion-text *ngIf="allRaffles.length === 0" class="ion-padding">No active raffles</ion-text>
-      @for (raffle of allRaffles; track raffle.id) {
-      <app-raffle-preview-card [raffle]="raffle"></app-raffle-preview-card>
+    @let raffles = trendingRaffles$().data;
+    @let isRafflesLoading = trendingRaffles$() | isAsyncLoading;
+    <div class="ion-padding flex-row gap-2 scroll-x">
+      @if (isRafflesLoading) {
+        <app-raffle-preview-card-loading></app-raffle-preview-card-loading>
+        <app-raffle-preview-card-loading></app-raffle-preview-card-loading>
+      }
+      @else {
+        <ion-text *ngIf="raffles.length === 0" class="ion-padding">No active raffles</ion-text>
+        @for (raffle of raffles; track raffle.id) {
+          <app-raffle-preview-card [raffle]="raffle"></app-raffle-preview-card>
+        }
       }
     </div>
 

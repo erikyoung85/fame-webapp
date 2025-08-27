@@ -1,4 +1,4 @@
-import { wrapAsAsyncData } from 'src/app/core/models/AsyncData.model';
+import { wrapAsAsyncData } from 'src/app/core/async-data';
 import { TransactionState } from './transaction.state';
 
 export const INITIAL_TRANSACTION_STATE: TransactionState = {

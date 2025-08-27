@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
-import { AsyncDataStatus } from '../../models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { TeamDetail } from '../../models/TeamDetail.model';
 import { teamsFeature } from '../../store/teams/feature/teams.feature';
 

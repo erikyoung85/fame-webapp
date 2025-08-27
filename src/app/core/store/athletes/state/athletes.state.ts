@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { AsyncData } from 'src/app/core/models/AsyncData.model';
+import { AsyncData } from 'src/app/core/async-data';
 import { Athlete } from 'src/app/core/models/Athlete.model';
 import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
 

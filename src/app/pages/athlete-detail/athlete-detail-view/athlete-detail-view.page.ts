@@ -29,6 +29,7 @@ import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { switchMap } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
+import { IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
@@ -37,7 +38,6 @@ import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { RafflePreviewCardComponent } from '../../search/raffle-preview-card/raffle-preview-card.component';
 

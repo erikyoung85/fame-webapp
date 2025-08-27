@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, switchMap, tap } from 'rxjs';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 

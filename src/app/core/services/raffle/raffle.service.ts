@@ -29,6 +29,22 @@ export class RaffleService {
     return response;
   }
 
+  getTrendingRaffles(): Observable<
+    PostgrestSingleResponse<RaffleResponseDtoV1[]>
+  > {
+    const response = from(
+      this.supabaseService.client
+        .from('raffles')
+        .select(raffleSelectStr)
+        .lt('start_date', new Date().toISOString())
+        .gt('end_date', new Date().toISOString())
+        .order('end_date', { ascending: false })
+        .limit(10)
+    );
+
+    return response;
+  }
+
   getUserEnteredRaffles(
     userProfileId: string
   ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1[]>> {
@@ -44,7 +60,7 @@ export class RaffleService {
 
   getRafflesForAthlete(
     athleteId: number,
-    activeOnly = false
+    activeOnly = true
   ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1[]>> {
     const request = this.supabaseService.client
       .from('raffles')
@@ -52,8 +68,8 @@ export class RaffleService {
       .eq('athletes_id', athleteId);
 
     if (activeOnly) {
-      request.gt('start_date', new Date().toISOString());
-      request.lt('end_date', new Date().toISOString());
+      request.lt('start_date', new Date().toISOString());
+      request.gt('end_date', new Date().toISOString());
     }
 
     const response = from(request);

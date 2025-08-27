@@ -17,7 +17,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { RaffleFactory } from 'src/app/core/models/Raffle.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
 import { RaffleService } from 'src/app/core/services/raffle/raffle.service';

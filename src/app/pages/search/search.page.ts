@@ -22,17 +22,15 @@ import {
 } from '@ionic/angular/standalone';
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { isNotNil } from 'ramda';
-import { debounceTime, map, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { PageRoutes } from 'src/app/app.routes';
+import { IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import {
   SearchItem,
   SearchItemType,
 } from 'src/app/core/models/SearchItem.model';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
 import { athletesFeature } from 'src/app/core/store/athletes/feature/athletes.feature';
-import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
-import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { searchActions } from 'src/app/core/store/search/actions/search.actions';
 import { searchFeature } from 'src/app/core/store/search/feature/search.feature';
@@ -40,6 +38,7 @@ import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { UserProfileAvatarComponent } from '../../shared/components/user-profile-avatar/user-profile-avatar.component';
+import { RafflePreviewCardLoadingComponent } from './raffle-preview-card/raffle-preview-card-loading/raffle-preview-card-loading.component';
 import { RafflePreviewCardComponent } from './raffle-preview-card/raffle-preview-card.component';
 import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.component';
 
@@ -67,6 +66,8 @@ import { TeamPreviewCardComponent } from './team-preview-card/team-preview-card.
     LetDirective,
     PushPipe,
     FormsModule,
+    IsAsyncLoadingPipe,
+    RafflePreviewCardLoadingComponent,
   ],
 })
 export class SearchPage implements OnInit, OnDestroy {
@@ -94,20 +95,14 @@ export class SearchPage implements OnInit, OnDestroy {
     athletesFeature.selectIsLoading
   );
 
-  readonly allRaffles$ = this.store
-    .select(rafflesFeature.selectAllRaffles)
-    .pipe(
-      map((raffleAsyncs) =>
-        raffleAsyncs.map((async) => async?.data).filter(isNotNil)
-      )
-    );
+  readonly trendingRaffles$ = this.store.selectSignal(
+    searchFeature.selectTrendingRaffles
+  );
 
   ngOnInit(): void {
     this.store.dispatch(teamsActions.fetchTeams());
     this.store.dispatch(athletesActions.fetchAthletes());
-    this.store.dispatch(
-      rafflesActions.fetchRafflesForAthlete({ athleteId: 1 })
-    );
+    this.store.dispatch(searchActions.fetchTrendingRaffles());
 
     this.searchQueryControl.valueChanges
       .pipe(takeUntil(this.unsubscribe$), debounceTime(500))

@@ -24,7 +24,6 @@ import {
   IonHeader,
   IonInput,
   IonModal,
-  IonProgressBar,
   IonTextarea,
   IonTitle,
   IonToolbar,
@@ -34,7 +33,7 @@ import { formatISO, isAfter, startOfTomorrow } from 'date-fns';
 import { isNotNil } from 'ramda';
 import { filter, map, Subject, take, takeUntil } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { Raffle } from 'src/app/core/models/Raffle.model';
 import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
 import { rafflesFeature } from 'src/app/core/store/raffles/feature/raffles.feature';
@@ -53,7 +52,6 @@ import { validateRequiredFields } from 'src/app/shared/utils/validate-required-f
   styleUrls: ['./raffle-detail-edit.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonProgressBar,
     CommonModule,
     IonButton,
     IonCard,
@@ -83,10 +81,6 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
 
   readonly raffleId = input.required<number>();
   raffle: Raffle | undefined = undefined;
-
-  readonly isSavingRaffle$ = this.store.selectSignal(
-    rafflesFeature.selectIsSavingRaffle
-  );
 
   readonly form = this.fb.group({
     title: this.fb.control<string>('', Validators.required),

@@ -37,7 +37,7 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { compareDesc } from 'date-fns';
 import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';

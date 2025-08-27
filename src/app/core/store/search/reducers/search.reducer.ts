@@ -1,8 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, wrapAsAsyncData } from 'src/app/core/async-data';
 import { searchActions } from '../actions/search.actions';
 import { INITIAL_SEARCH_STATE } from '../state/search.initial-state';
 import { SearchState } from '../state/search.state';
@@ -57,5 +54,37 @@ export const searchReducer = createReducer(
         },
       },
     };
-  })
+  }),
+
+  on(searchActions.fetchTrendingRaffles, (state): SearchState => {
+    return {
+      ...state,
+      trendingRaffles: wrapAsAsyncData([], AsyncDataStatus.Loading),
+    };
+  }),
+  on(
+    searchActions.fetchTrendingRafflesSuccess,
+    (state, action): SearchState => {
+      return {
+        ...state,
+        trendingRaffles: wrapAsAsyncData(
+          action.raffles,
+          AsyncDataStatus.Success
+        ),
+      };
+    }
+  ),
+  on(
+    searchActions.fetchTrendingRafflesFailure,
+    (state, action): SearchState => {
+      return {
+        ...state,
+        trendingRaffles: wrapAsAsyncData(
+          [],
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  )
 );

@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, map, tap } from 'rxjs';
-import { AsyncDataStatus } from '../../models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import {
   AthletePagePreview,
   RafflePreview,

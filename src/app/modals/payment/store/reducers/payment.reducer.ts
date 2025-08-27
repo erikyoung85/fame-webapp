@@ -1,8 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, wrapAsAsyncData } from 'src/app/core/async-data';
 import { paymentActions } from '../actions/payment.actions';
 import { INITIAL_PAYMENT_STATE } from '../state/payment.initial-state';
 import { PaymentState } from '../state/payment.state';

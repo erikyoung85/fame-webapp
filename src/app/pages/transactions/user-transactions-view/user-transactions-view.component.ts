@@ -11,10 +11,7 @@ import {
   IonRow,
   IonSkeletonText,
 } from '@ionic/angular/standalone';
-import {
-  AsyncData,
-  AsyncDataStatus,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncData, AsyncDataStatus } from 'src/app/core/async-data';
 import { RaffleTransaction } from 'src/app/core/models/RaffleTransaction.model';
 import { RaffleTransactionSummary } from 'src/app/core/models/RaffleTransactionSummary.model';
 import { TransactionsListComponent } from '../transactions-list/transactions-list.component';

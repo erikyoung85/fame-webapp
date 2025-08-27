@@ -1,9 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { indexBy } from 'ramda';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { wrapAsAsyncData } from 'src/app/core/async-data';
+import { AsyncDataStatus } from 'src/app/core/async-data/async-data.model';
 import { rafflesActions } from '../actions/raffles.actions';
 import { INITIAL_RAFFLES_STATE } from '../state/raffles.initial-state';
 import { RafflesState } from '../state/raffles.state';
@@ -70,13 +68,11 @@ export const rafflesReducer = createReducer(
   on(rafflesActions.createRaffle, (state): RafflesState => {
     return {
       ...state,
-      isSavingRaffle: true,
     };
   }),
   on(rafflesActions.createRaffleSuccess, (state, action): RafflesState => {
     return {
       ...state,
-      isSavingRaffle: false,
       raffleDict: {
         ...state.raffleDict,
         [action.raffle.id]: wrapAsAsyncData(
@@ -89,14 +85,12 @@ export const rafflesReducer = createReducer(
   on(rafflesActions.createRaffleFailure, (state): RafflesState => {
     return {
       ...state,
-      isSavingRaffle: false,
     };
   }),
 
   on(rafflesActions.updateRaffle, (state): RafflesState => {
     return {
       ...state,
-      isSavingRaffle: true,
     };
   }),
   on(rafflesActions.updateRaffleSuccess, (state, action): RafflesState => {
@@ -114,7 +108,6 @@ export const rafflesReducer = createReducer(
   on(rafflesActions.updateRaffleFailure, (state, action): RafflesState => {
     return {
       ...state,
-      isSavingRaffle: false,
     };
   })
 );

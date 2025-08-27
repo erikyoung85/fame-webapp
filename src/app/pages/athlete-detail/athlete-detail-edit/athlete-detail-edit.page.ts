@@ -38,11 +38,11 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
+import { AsyncDataStatus, IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import { genderOptions } from 'src/app/core/constants/gender-options';
 import { gradeOptions } from 'src/app/core/constants/grade-options';
 import { Gender } from 'src/app/core/enums/Gender.enum';
 import { Grade } from 'src/app/core/enums/Grade.enum';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
 import { UpdateAthleteRequestDtoV1 } from 'src/app/core/services/athletes/dtos/requests/updateAthlete.request.dto.v1';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { athletesActions } from 'src/app/core/store/athletes/actions/athletes.actions';
@@ -51,7 +51,6 @@ import { RouterActions } from 'src/app/core/store/router/actions/router.actions'
 import { DatePickerComponent } from 'src/app/shared/components/date-picker/date-picker.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { validateRequiredFields } from 'src/app/shared/utils/validate-required-fields.util';
 
 @Component({

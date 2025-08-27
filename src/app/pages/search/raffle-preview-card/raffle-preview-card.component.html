@@ -7,7 +7,7 @@
     --card-title-size: 1rem;
     --card-content-size: 0.875rem;
   "
-  (click)="onRaffleClicked()"
+  (click)="onRaffleClicked(raffle)"
 >
   <ion-card-header>
     <ion-card-title>{{ raffle.title }}</ion-card-title>
@@ -19,7 +19,7 @@
   </ion-card-content>
 
   <div style="display: flex; justify-content: space-between; align-items: center">
-    <ion-button size="small" [fill]="'solid'" (click)="onJoinRaffleClicked($event)" [disabled]="!raffle.isActive">Join</ion-button>
+    <ion-button size="small" [fill]="'solid'" (click)="onJoinRaffleClicked($event, raffle)" [disabled]="!raffle.isActive">Join</ion-button>
     <ion-text color="medium">
       {{ raffle.endDate | distanceToNow: true | ngrxPush }}
     </ion-text>

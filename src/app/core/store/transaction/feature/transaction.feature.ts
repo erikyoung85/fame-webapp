@@ -1,8 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, wrapAsAsyncData } from 'src/app/core/async-data';
 import { transactionReducer } from '../reducers/transaction.reducer';
 
 export const transactionFeature = createFeature({
@@ -23,10 +20,9 @@ export const transactionFeature = createFeature({
           const transactions = athleteIds.flatMap(
             (id) => transactionsByAthleteId[id]?.data ?? []
           );
-          return wrapAsAsyncData(
-            transactions,
-            isLoading ? AsyncDataStatus.Loading : AsyncDataStatus.Success
-          );
+          return isLoading
+            ? wrapAsAsyncData(transactions, AsyncDataStatus.Loading)
+            : wrapAsAsyncData(transactions, AsyncDataStatus.Success);
         }
       );
 

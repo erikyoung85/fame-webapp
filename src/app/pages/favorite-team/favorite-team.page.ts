@@ -13,13 +13,12 @@ import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { combineLatest, map } from 'rxjs';
 import { TabRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { TabsService } from 'src/app/core/services/tabs/tabs.service';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { TeamDetailViewComponent } from 'src/app/shared/components/team-detail/team-detail-view.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 import { ToolbarIconButtonComponent } from '../../shared/components/toolbar-icon-button/toolbar-icon-button.component';
 

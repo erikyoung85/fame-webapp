@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Session } from '@supabase/supabase-js';
 import { filter, map, tap } from 'rxjs';
-import { AsyncDataStatus } from '../../models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { userActions } from '../../store/user/actions/user.actions';
 import { userFeature } from '../../store/user/feature/user.feature';
 

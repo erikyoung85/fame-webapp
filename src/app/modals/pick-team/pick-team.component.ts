@@ -27,7 +27,7 @@ import {
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, Subject, take, takeUntil, timer } from 'rxjs';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { Team } from 'src/app/core/models/Team.model';
 import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';

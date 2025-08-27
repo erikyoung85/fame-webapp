@@ -22,7 +22,7 @@ import {
 import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AsyncData } from 'src/app/core/models/AsyncData.model';
+import { AsyncData } from 'src/app/core/async-data';
 import { AthleteDetail } from 'src/app/core/models/AthleteDetail.model';
 import { Raffle } from 'src/app/core/models/Raffle.model';
 import { StripePaymentIntent } from 'src/app/core/models/StripePaymentIntent.model';

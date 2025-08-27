@@ -27,14 +27,13 @@ import { LetDirective } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, Subject, switchMap, take, takeUntil } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import { UpdateTeamRequestDtoV1 } from 'src/app/core/services/teams/dtos/requests/update-team.request.dto.v1';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
 @Component({

@@ -1,8 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, wrapAsAsyncData } from 'src/app/core/async-data';
 import { athletesActions } from '../actions/athletes.actions';
 import { INITIAL_ATHLETES_STATE } from '../state/athletes.initial-state';
 import { athletesEntityAdapter, AthletesState } from '../state/athletes.state';

@@ -3,7 +3,7 @@ import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { AppRoutes, PageRoutes, TabRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from '../../models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { userFeature } from '../../store/user/feature/user.feature';
 
 export const isNotLoggedInGuard: CanActivateFn = (route, state) => {

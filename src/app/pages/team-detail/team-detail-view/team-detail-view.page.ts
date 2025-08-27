@@ -19,6 +19,7 @@ import { LetDirective, PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { filter, switchMap } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
+import { IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { teamsActions } from 'src/app/core/store/teams/actions/teams.actions';
 import { teamsFeature } from 'src/app/core/store/teams/feature/teams.feature';
@@ -26,7 +27,6 @@ import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { BackButtonComponent } from 'src/app/shared/components/back-button/back-button.component';
 import { TeamDetailViewComponent } from 'src/app/shared/components/team-detail/team-detail-view.component';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 import { UnwrapAsyncPipe } from 'src/app/shared/pipes/unwrap-async/unwrap-async.pipe';
 
 @Component({

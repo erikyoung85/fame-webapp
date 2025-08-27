@@ -1,8 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, wrapAsAsyncData } from 'src/app/core/async-data';
 import { userFeature } from '../../user/feature/user.feature';
 import { teamsReducer } from '../reducers/teams.reducer';
 import { teamsEntityAdapter } from '../state/teams.state';

@@ -5,6 +5,10 @@ const config: CapacitorConfig = {
   appId: 'com.thefamesports.fame',
   appName: 'FAME Sports',
   webDir: 'www/browser',
+  server: {
+    url: 'http://192.168.1.78:4200',
+    cleartext: true,
+  },
   plugins: {
     CapacitorHttp: {
       enabled: true,

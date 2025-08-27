@@ -1,8 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  AsyncDataStatus,
-  wrapAsAsyncData,
-} from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus, wrapAsAsyncData } from 'src/app/core/async-data';
 import { stripeActions } from '../actions/stripe.actions';
 import { INITIAL_STRIPE_STATE } from '../state/stripe.initial-state';
 import { StripeState } from '../state/stripe.state';

@@ -1,5 +1,5 @@
 import { Session } from '@supabase/supabase-js';
-import { AsyncData } from 'src/app/core/models/AsyncData.model';
+import { AsyncData } from 'src/app/core/async-data';
 import {
   AthletePagePreview,
   RafflePreview,

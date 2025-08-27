@@ -28,13 +28,13 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { Subject, take, takeUntil } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
+import { IsAsyncLoadingPipe } from 'src/app/core/async-data';
 import { UserProfile } from 'src/app/core/models/UserProfile.model';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
 import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 import { ToolbarTextButtonComponent } from 'src/app/shared/components/toolbar-text-button/toolbar-text-button.component';
 import { UserProfileAvatarComponent } from 'src/app/shared/components/user-profile-avatar/user-profile-avatar.component';
-import { IsAsyncLoadingPipe } from 'src/app/shared/pipes/is-async-loading/is-async-loading.pipe';
 
 @Component({
   templateUrl: './user-profile-edit.page.html',

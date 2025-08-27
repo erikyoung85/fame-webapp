@@ -1,5 +1,5 @@
 import { createFeature, createSelector } from '@ngrx/store';
-import { AsyncDataStatus } from 'src/app/core/models/AsyncData.model';
+import { AsyncDataStatus } from 'src/app/core/async-data';
 import { userReducer } from '../reducers/user.reducer';
 
 export const userFeature = createFeature({

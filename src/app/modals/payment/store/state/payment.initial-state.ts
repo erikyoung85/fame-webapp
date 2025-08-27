@@ -1,4 +1,4 @@
-import { wrapAsAsyncData } from 'src/app/core/models/AsyncData.model';
+import { wrapAsAsyncData } from 'src/app/core/async-data';
 import { PaymentTab } from '../../payment.routes';
 import { PaymentState } from './payment.state';
 
