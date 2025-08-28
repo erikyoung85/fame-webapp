@@ -1,4 +1,5 @@
 export interface CreateRaffleRequestDtoV1 {
+  id: string;
   athletes_id: number;
   title: string;
   description: string | null;

@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -63,6 +63,54 @@ export type Database = {
             columns: ["school_id"]
             isOneToOne: false
             referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          created_at: string
+          created_by: string
+          email: string
+          id: string
+          invite_data: Json | null
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          created_by: string
+          email: string
+          id?: string
+          invite_data?: Json | null
+          token?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          created_by?: string
+          email?: string
+          id?: string
+          invite_data?: Json | null
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invites_accepted_by_fkey"
+            columns: ["accepted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invites_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -217,28 +265,28 @@ export type Database = {
           created_at: string
           id: number
           is_prize_claimed: boolean
-          raffle_id: number
+          raffle_id: string
           winner_profile_id: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           is_prize_claimed?: boolean
-          raffle_id: number
+          raffle_id: string
           winner_profile_id?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           is_prize_claimed?: boolean
-          raffle_id?: number
+          raffle_id?: string
           winner_profile_id?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "raffle_results_raffle_id_fkey"
             columns: ["raffle_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "raffles"
             referencedColumns: ["id"]
           },
@@ -282,7 +330,7 @@ export type Database = {
           profile_id: string
           purchased_at: string
           quantity: number
-          raffle_id: number
+          raffle_id: string
           stripe_payment_id: string
         }
         Insert: {
@@ -291,7 +339,7 @@ export type Database = {
           profile_id: string
           purchased_at: string
           quantity: number
-          raffle_id: number
+          raffle_id: string
           stripe_payment_id: string
         }
         Update: {
@@ -300,7 +348,7 @@ export type Database = {
           profile_id?: string
           purchased_at?: string
           quantity?: number
-          raffle_id?: number
+          raffle_id?: string
           stripe_payment_id?: string
         }
         Relationships: [
@@ -327,7 +375,7 @@ export type Database = {
           created_by: string
           description: string | null
           end_date: string
-          id: number
+          id: string
           prize_thumbnail: string
           prize_video_url: string
           raffle_results_id: number | null
@@ -340,7 +388,7 @@ export type Database = {
           created_by?: string
           description?: string | null
           end_date: string
-          id?: number
+          id?: string
           prize_thumbnail: string
           prize_video_url: string
           raffle_results_id?: number | null
@@ -353,7 +401,7 @@ export type Database = {
           created_by?: string
           description?: string | null
           end_date?: string
-          id?: number
+          id?: string
           prize_thumbnail?: string
           prize_video_url?: string
           raffle_results_id?: number | null
@@ -587,7 +635,7 @@ export type Database = {
     }
     Functions: {
       has_raffle_started: {
-        Args: { target_raffle_id: number }
+        Args: { target_raffle_id: string }
         Returns: boolean
       }
       is_athlete_manager: {
@@ -595,11 +643,11 @@ export type Database = {
         Returns: boolean
       }
       is_raffle_manager: {
-        Args: { target_raffle_id: number }
+        Args: { target_raffle_id: string }
         Returns: boolean
       }
       is_raffle_winner: {
-        Args: { target_raffle_id: number }
+        Args: { target_raffle_id: string }
         Returns: boolean
       }
       is_team_manager: {
@@ -607,16 +655,16 @@ export type Database = {
         Returns: boolean
       }
       search_all_entities_v2: {
-        Args: { query: string; page_limit?: number; page_offset?: number }
+        Args: { page_limit?: number; page_offset?: number; query: string }
         Returns: {
-          entity_type: string
-          id: number
-          display_title: string
-          display_subtitle: string
           display_img_src: string
+          display_subtitle: string
+          display_title: string
+          entity_type: string
+          final_score: number
+          id: number
           popularity_score: number
           similarity_score: number
-          final_score: number
         }[]
       }
     }

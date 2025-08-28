@@ -67,7 +67,7 @@ export class RaffleDetailViewPage {
   private readonly store = inject(Store);
   private readonly modalService = inject(ModalService);
 
-  readonly raffleId = input.required<number>();
+  readonly raffleId = input.required<string>();
 
   readonly raffleResource = rxResource({
     request: () => ({ raffleId: this.raffleId() }),

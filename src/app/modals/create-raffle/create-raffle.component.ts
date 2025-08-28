@@ -29,10 +29,16 @@ import {
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { addDays, formatISO, startOfTomorrow } from 'date-fns';
+import { CreateRaffle } from 'src/app/core/models/Raffle.model';
 import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
-import { CreateRaffleRequestDtoV1 } from 'src/app/core/services/raffle/dtos/requests/create-raffle.request.dto.v1';
 import { rafflesActions } from 'src/app/core/store/raffles/actions/raffles.actions';
+import {
+  FilePickerFile,
+  FilePickerFileType,
+  FormFilePickerComponent,
+} from 'src/app/shared/components/form-file-picker/form-file-picker.component';
 import { FormPhotoComponent } from 'src/app/shared/components/form-photo/form-photo.component';
+import { generateUUID } from 'src/app/shared/utils/generate-uuid.util';
 import { validateRequiredFields } from 'src/app/shared/utils/validate-required-fields.util';
 
 const MAX_RAFFLE_DURATION_DAYS = 30; // Maximum duration for a raffle in days
@@ -59,14 +65,19 @@ const MAX_RAFFLE_DURATION_DAYS = 30; // Maximum duration for a raffle in days
     IonModal,
     IonCardTitle,
     FormPhotoComponent,
+    FormFilePickerComponent,
   ],
 })
 export class CreateRaffleModalComponent {
+  protected readonly FilePickerFileType = FilePickerFileType;
+
   private readonly store = inject(Store);
   private readonly modalController = inject(ModalController);
   private readonly fb = inject(NonNullableFormBuilder);
 
   @Input({ required: true }) athleteId!: number;
+
+  private readonly _newRaffleId = generateUUID();
 
   protected readonly minStartDate = formatISO(new Date());
   protected readonly maxStartDate = formatISO(
@@ -88,11 +99,11 @@ export class CreateRaffleModalComponent {
       this.minExpirationDate,
       Validators.required
     ),
-    prizeThumbnailUrl: this.fb.control<string | undefined>(
+    prizeThumbnail: this.fb.control<string | undefined>(
       undefined,
       Validators.required
     ),
-    prizeVideoUrl: this.fb.control<string | undefined>(
+    prizeVideo: this.fb.control<FilePickerFile | undefined>(
       undefined,
       Validators.required
     ),
@@ -104,6 +115,7 @@ export class CreateRaffleModalComponent {
 
   onCreateClicked() {
     const formValues = this.form.getRawValue();
+
     if (
       this.form.invalid ||
       !validateRequiredFields(
@@ -111,24 +123,25 @@ export class CreateRaffleModalComponent {
         'title',
         'startDate',
         'endDate',
-        'prizeThumbnailUrl',
-        'prizeVideoUrl'
+        'prizeThumbnail',
+        'prizeVideo'
       )
     ) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const request: CreateRaffleRequestDtoV1 = {
-      athletes_id: this.athleteId,
+    const request: CreateRaffle = {
+      id: this._newRaffleId,
       title: formValues.title,
-      description: formValues.description ?? null,
-      start_date: formatISO(formValues.startDate),
-      end_date: formatISO(formValues.endDate),
-      prize_thumbnail: formValues.prizeThumbnailUrl,
-      prize_video_url: formValues.prizeVideoUrl,
+      description: formValues.description,
+      startDate: formatISO(formValues.startDate),
+      endDate: formatISO(formValues.endDate),
+      prizeThumbnail: formValues.prizeThumbnail,
+      prizeVideo: formValues.prizeVideo,
+      athleteId: this.athleteId,
     };
 
-    this.store.dispatch(rafflesActions.createRaffle({ request }));
+    this.store.dispatch(rafflesActions.createRaffle({ request: request }));
   }
 }

@@ -16,7 +16,7 @@ export class RaffleService {
   private readonly supabaseService = inject(SupabaseService);
 
   getRaffle(
-    raffleId: number
+    raffleId: string
   ): Observable<PostgrestSingleResponse<RaffleResponseDtoV1>> {
     const response = from(
       this.supabaseService.client

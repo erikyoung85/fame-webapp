@@ -6,8 +6,19 @@ import {
 } from 'src/app/shared/components/form-file-picker/form-file-picker.component';
 import { RaffleResponseDtoV1 } from '../services/raffle/dtos/responses/raffle.response.dto.v1';
 
+export interface CreateRaffle {
+  id?: string;
+  title: string;
+  description: string | undefined;
+  startDate: string;
+  endDate: string;
+  prizeThumbnail: string;
+  prizeVideo: FilePickerFile;
+  athleteId: number;
+}
+
 export interface Raffle {
-  id: number;
+  id: string;
   title: string;
   description: string | undefined;
   startDate: string;

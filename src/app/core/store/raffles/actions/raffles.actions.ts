@@ -1,19 +1,18 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Raffle } from 'src/app/core/models/Raffle.model';
-import { CreateRaffleRequestDtoV1 } from 'src/app/core/services/raffle/dtos/requests/create-raffle.request.dto.v1';
+import { CreateRaffle, Raffle } from 'src/app/core/models/Raffle.model';
 
 export const rafflesActions = createActionGroup({
   source: 'Raffles',
   events: {
-    'Fetch Raffle': props<{ raffleId: number }>(),
+    'Fetch Raffle': props<{ raffleId: string }>(),
     'Fetch Raffle Success': props<{ raffle: Raffle }>(),
-    'Fetch Raffle Failure': props<{ raffleId: number; message?: string }>(),
+    'Fetch Raffle Failure': props<{ raffleId: string; message?: string }>(),
 
     'Fetch Raffles For Athlete': props<{ athleteId: number }>(),
     'Fetch Raffles For Athlete Success': props<{ raffles: Raffle[] }>(),
     'Fetch Raffles For Athlete Failure': props<{ message?: string }>(),
 
-    'Create Raffle': props<{ request: CreateRaffleRequestDtoV1 }>(),
+    'Create Raffle': props<{ request: CreateRaffle }>(),
     'Create Raffle Success': props<{ raffle: Raffle }>(),
     'Create Raffle Failure': props<{ message?: string }>(),
 

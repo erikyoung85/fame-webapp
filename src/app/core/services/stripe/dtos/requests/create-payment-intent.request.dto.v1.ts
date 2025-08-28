@@ -1,5 +1,5 @@
 export interface CreatePaymentIntentRequestDtoV1 {
-  raffleId: number;
+  raffleId: string;
   customerId: string;
   amount: number;
   message: string;

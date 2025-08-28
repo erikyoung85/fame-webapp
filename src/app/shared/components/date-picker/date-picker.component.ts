@@ -13,6 +13,7 @@ import {
 import { formatISO, parseISO } from 'date-fns';
 import { isNotNil } from 'ramda';
 import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control-value-accessor.interface';
+import { generateUUID } from '../../utils/generate-uuid.util';
 
 @Component({
   selector: 'shared-date-picker',
@@ -31,7 +32,7 @@ import { TypedControlValueAccessor } from 'src/app/core/interfaces/typed-control
 export class DatePickerComponent
   implements TypedControlValueAccessor<string | undefined>
 {
-  protected readonly _id = `datetime-${crypto.randomUUID()}`;
+  protected readonly _id = `datetime-${generateUUID()}`;
 
   protected readonly _value = signal<string | undefined>(
     formatISO(new Date(), { representation: 'date' })

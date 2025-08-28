@@ -10,7 +10,7 @@ export const rafflesFeature = createFeature({
       Object.values(raffleDict).filter((async) => isNotNil(async?.data))
     );
 
-    const selectRaffleById = (raffleId: number) =>
+    const selectRaffleById = (raffleId: string) =>
       createSelector(selectRaffleDict, (raffleDict) => raffleDict[raffleId]);
 
     const selectRafflesForAthlete = (athleteId: number) =>

@@ -51,10 +51,6 @@ export class TransactionsPage {
 
   readonly userProfile = input.required<UserProfile>();
 
-  ionViewWillEnter() {
-    console.log('TransactionsPage ionViewWillEnter');
-  }
-
   readonly userTransactions$ = this.store.selectSignal(
     transactionFeature.selectTransactions
   );

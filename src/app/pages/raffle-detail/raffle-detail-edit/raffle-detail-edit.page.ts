@@ -79,7 +79,7 @@ export class RaffleDetailEditPage implements OnInit, OnDestroy {
   private readonly store = inject(Store);
   private readonly fb = inject(NonNullableFormBuilder);
 
-  readonly raffleId = input.required<number>();
+  readonly raffleId = input.required<string>();
   raffle: Raffle | undefined = undefined;
 
   readonly form = this.fb.group({

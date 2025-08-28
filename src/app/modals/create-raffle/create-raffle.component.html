@@ -5,37 +5,39 @@
     </ion-buttons>
     <ion-title>Create a Raffle</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="onCreateClicked()" [strong]="true" [disabled]="form.invalid">Confirm</ion-button>
+      <ion-button (click)="onCreateClicked()" [strong]="true" [disabled]="false && form.invalid">Confirm</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content style="--ion-background-color: black">
   <ion-card>
-    <shared-form-photo
-      [formControl]="form.controls.prizeThumbnailUrl"
+    <shared-form-photo 
+      [formControl]="form.controls.prizeThumbnail" 
       [placeholder]="'Select a photo for the prize'"
-      [readonly]="false"
-      [alt]="'Raffle Prize Thumbnail'"
+      [readonly]="false" 
+      alt="Raffle Prize Thumbnail"
     ></shared-form-photo>
+
+    <!-- Video Upload Section -->
+    <shared-form-file-picker 
+      [formControl]="form.controls.prizeVideo" 
+      [fileType]="FilePickerFileType.Video"
+      fileTypeLabel="Prize Video"
+    ></shared-form-file-picker>
 
     <ion-card-header>
       <ion-card-title>
-        <ion-input 
-          [formControl]="form.controls.title"
-          placeholder="Raffle Title"
-        ></ion-input>
+        <ion-input [formControl]="form.controls.title" placeholder="Raffle Title"></ion-input>
       </ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-textarea
-        [formControl]="form.controls.description"
-        placeholder="Raffle description"
-        [autoGrow]="true"
-      ></ion-textarea>
+      <ion-textarea [formControl]="form.controls.description" placeholder="Raffle description"
+        [autoGrow]="true"></ion-textarea>
 
       <div class="w-100 flex-row gap-1 ion-padding-vertical">
-        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)" id="start-date-modal-trigger">
+        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)"
+          id="start-date-modal-trigger">
           <ion-card-header>
             <ion-card-title>Start</ion-card-title>
           </ion-card-header>
@@ -50,10 +52,8 @@
                 <ion-button (click)="startDateModal.dismiss()">Done</ion-button>
               </ion-buttons>
             </ion-toolbar>
-            <ion-datetime
-              [formControl]="form.controls.startDate"
-              [min]="minStartDate"
-              [max]="maxStartDate"
+            <ion-datetime 
+              [formControl]="form.controls.startDate" 
               presentation="date-time" 
               [preferWheel]="true"
               size="cover"
@@ -61,12 +61,16 @@
           </ng-template>
         </ion-modal>
 
-        <ion-card class="custom-card flex-fill ion-text-center" style="background-color: var(--ion-background-color)" id="end-date-modal-trigger">
+        <ion-card 
+          class="custom-card flex-fill ion-text-center" 
+          style="background-color: var(--ion-background-color)"
+          id="end-date-modal-trigger"
+        >
           <ion-card-header>
             <ion-card-title>End</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            {{ form.value.endDate | date: 'shortDate' }}<br/>{{ form.value.endDate | date: 'shortTime' }}
+            {{ form.value.endDate | date: 'shortDate' }}<br />{{ form.value.endDate | date: 'shortTime' }}
           </ion-card-content>
         </ion-card>
         <ion-modal #endDateModal trigger="end-date-modal-trigger">
@@ -76,18 +80,12 @@
                 <ion-button (click)="endDateModal.dismiss()">Done</ion-button>
               </ion-buttons>
             </ion-toolbar>
-            <ion-datetime
-              [formControl]="form.controls.endDate"
-              [min]="form.value.startDate"
-              [max]="maxExpirationDate"
-              presentation="date-time" 
-              [preferWheel]="true"
-              size="cover"
-            ></ion-datetime>
+            <ion-datetime [formControl]="form.controls.endDate" presentation="date-time" [preferWheel]="true"
+              size="cover"></ion-datetime>
           </ng-template>
         </ion-modal>
       </div>
     </ion-card-content>
-    
+
   </ion-card>
 </ion-content>

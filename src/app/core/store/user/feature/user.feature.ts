@@ -67,7 +67,7 @@ export const userFeature = createFeature({
           isAdmin || managedTeamPages.some((team) => team.id === teamId)
       );
 
-    const selectIsRaffleManager = (raffleId: number) =>
+    const selectIsRaffleManager = (raffleId: string) =>
       createSelector(
         selectManagedRaffles,
         selectIsUserAdmin,

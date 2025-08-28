@@ -2,15 +2,20 @@ import { inject, Injectable } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular/standalone';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { isNil } from 'ramda';
-import { catchError, from, map, of, switchMap, tap } from 'rxjs';
+import { catchError, combineLatest, from, map, of, switchMap, tap } from 'rxjs';
 import { FormActionRoutes } from 'src/app/app.routes';
 import { RaffleFactory } from 'src/app/core/models/Raffle.model';
 import { LoadingOverlayService } from 'src/app/core/services/loading-overlay/loading-overlay.service';
 import { ModalDismissRole } from 'src/app/core/services/modal-service/modal.service';
+import { CreateRaffleRequestDtoV1 } from 'src/app/core/services/raffle/dtos/requests/create-raffle.request.dto.v1';
 import { UpdateRaffleRequestDtoV1 } from 'src/app/core/services/raffle/dtos/requests/update-raffle.request.dto.v1';
 import { RaffleService } from 'src/app/core/services/raffle/raffle.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { FilePickerFileUrlType } from 'src/app/shared/components/form-file-picker/form-file-picker.component';
+import dataUrlToBlob, {
+  isDataUrl,
+} from 'src/app/shared/utils/data-url-to-blob.util';
+import { generateUUID } from 'src/app/shared/utils/generate-uuid.util';
 import { RouterActions } from '../../router/actions/router.actions';
 import { rafflesActions } from '../actions/raffles.actions';
 
@@ -111,22 +116,74 @@ export class RafflesEffects {
       ofType(rafflesActions.createRaffle),
       switchMap((action) => {
         this.loadingService.showLoadingOverlay();
-        return this.raffleService.createRaffle(action.request).pipe(
-          map((response) => {
-            if (response.error !== null) {
-              return rafflesActions.createRaffleFailure({
-                message: response.error.message,
-              });
+
+        const newRaffleId = action.request.id ?? generateUUID();
+
+        const thumbnailUrl$ = isDataUrl(action.request.prizeThumbnail)
+          ? this.storageService
+              .uploadRaffleThumbnail(
+                newRaffleId,
+                dataUrlToBlob(action.request.prizeThumbnail)
+              )
+              .pipe(
+                catchError(() => of(new Error('Failed to upload thumbnail')))
+              )
+          : of(action.request.prizeThumbnail);
+
+        const prizeVideoUrl$ =
+          action.request.prizeVideo.urlType === FilePickerFileUrlType.Local
+            ? from(
+                this.storageService
+                  .uploadRafflePrize(newRaffleId, action.request.prizeVideo)
+                  .catch(() => new Error('Failed to upload prize video'))
+              )
+            : of(action.request.prizeVideo.url);
+
+        return combineLatest([prizeVideoUrl$, thumbnailUrl$]).pipe(
+          switchMap(([prizeVideoUrl, thumbnailUrl]) => {
+            if (isNil(thumbnailUrl) || thumbnailUrl instanceof Error) {
+              return of(
+                rafflesActions.createRaffleFailure({
+                  message: 'Failed to upload thumbnail.',
+                })
+              );
+            }
+            if (isNil(prizeVideoUrl) || prizeVideoUrl instanceof Error) {
+              return of(
+                rafflesActions.createRaffleFailure({
+                  message: 'Failed to upload prize video.',
+                })
+              );
             }
 
-            return rafflesActions.createRaffleSuccess({
-              raffle: RaffleFactory.fromDtoV1(response.data),
-            });
-          }),
-          catchError((error: Error) => {
-            return of(
-              rafflesActions.createRaffleFailure({
-                message: error.message,
+            const request: CreateRaffleRequestDtoV1 = {
+              id: newRaffleId,
+              title: action.request.title,
+              description: action.request.description ?? null,
+              start_date: action.request.startDate,
+              end_date: action.request.endDate,
+              athletes_id: action.request.athleteId,
+              prize_thumbnail: thumbnailUrl,
+              prize_video_url: prizeVideoUrl,
+            };
+            return this.raffleService.createRaffle(request).pipe(
+              map((response) => {
+                if (response.error !== null) {
+                  return rafflesActions.createRaffleFailure({
+                    message: response.error.message,
+                  });
+                }
+
+                return rafflesActions.createRaffleSuccess({
+                  raffle: RaffleFactory.fromDtoV1(response.data),
+                });
+              }),
+              catchError((error: Error) => {
+                return of(
+                  rafflesActions.createRaffleFailure({
+                    message: error.message,
+                  })
+                );
               })
             );
           })
@@ -159,6 +216,18 @@ export class RafflesEffects {
       ofType(rafflesActions.updateRaffle),
       switchMap((action) => {
         this.loadingService.showLoadingOverlay();
+
+        const thumbnailUrl$ = isDataUrl(action.request.prizeThumbnail)
+          ? this.storageService
+              .uploadRaffleThumbnail(
+                action.request.id,
+                dataUrlToBlob(action.request.prizeThumbnail)
+              )
+              .pipe(
+                catchError(() => of(new Error('Failed to upload thumbnail')))
+              )
+          : of(action.request.prizeThumbnail);
+
         const prizeVideoUrl$ =
           action.request.prizeVideo.urlType === FilePickerFileUrlType.Local
             ? from(
@@ -169,9 +238,15 @@ export class RafflesEffects {
               )
             : of(action.request.prizeVideo.url);
 
-        return prizeVideoUrl$.pipe(
-          switchMap((prizeVideoUrl) => {
-            console.log('New prize video url:', prizeVideoUrl);
+        return combineLatest([prizeVideoUrl$, thumbnailUrl$]).pipe(
+          switchMap(([prizeVideoUrl, thumbnailUrl]) => {
+            if (isNil(thumbnailUrl) || thumbnailUrl instanceof Error) {
+              return of(
+                rafflesActions.updateRaffleFailure({
+                  message: 'Failed to upload thumbnail.',
+                })
+              );
+            }
             if (isNil(prizeVideoUrl) || prizeVideoUrl instanceof Error) {
               return of(
                 rafflesActions.updateRaffleFailure({
@@ -187,7 +262,7 @@ export class RafflesEffects {
               description: action.request.description ?? null,
               start_date: action.request.startDate,
               end_date: action.request.endDate,
-              prize_thumbnail: action.request.prizeThumbnail as string,
+              prize_thumbnail: thumbnailUrl,
               prize_video_url: prizeVideoUrl,
             };
             return this.raffleService.updateRaffle(updatedRequest).pipe(

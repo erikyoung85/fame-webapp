@@ -90,10 +90,6 @@ export class UserProfileEditPage implements OnInit, OnDestroy {
           this.form.patchValue(userProfile.data);
         }
       });
-
-    this.form.controls.avatarUrl.valueChanges.subscribe((value) => {
-      console.log('Avatar source changed:', value);
-    });
   }
 
   ngOnDestroy(): void {

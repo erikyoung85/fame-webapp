@@ -153,7 +153,7 @@ export class UserProfileViewPage implements OnInit {
     );
   }
 
-  onRaffleClicked(raffleId: number) {
+  onRaffleClicked(raffleId: string) {
     this.store.dispatch(
       RouterActions.routeInCurrentTab({
         url: [PageRoutes.RaffleDetail, raffleId],

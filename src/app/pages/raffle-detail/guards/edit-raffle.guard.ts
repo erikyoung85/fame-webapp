@@ -9,7 +9,7 @@ import { userFeature } from 'src/app/core/store/user/feature/user.feature';
 export const editRaffleGuard: CanActivateFn = (route, state) => {
   const store = inject(Store);
 
-  const raffleId: number = Number(route.params['raffleId']);
+  const raffleId: string = route.params['raffleId'];
 
   return store.select(userFeature.selectManagedPages).pipe(
     tap((async) => {

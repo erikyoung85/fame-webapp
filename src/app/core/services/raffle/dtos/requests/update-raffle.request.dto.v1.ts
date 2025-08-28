@@ -1,5 +1,5 @@
 export interface UpdateRaffleRequestDtoV1 {
-  id: number;
+  id: string;
   athletes_id: number;
   title: string;
   description: string | null;

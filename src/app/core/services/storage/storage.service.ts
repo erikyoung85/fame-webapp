@@ -92,7 +92,7 @@ export class StorageService {
   }
 
   async uploadRafflePrize(
-    raffleId: number,
+    raffleId: string,
     videoFile: FilePickerFile
   ): Promise<string | Error> {
     const bucketId = 'raffle-prizes';
@@ -107,8 +107,6 @@ export class StorageService {
       throw new Error('Failed to get signed URL');
     }
 
-    console.log('Signed URL response:', signedUrlRes);
-
     // Step 2: Read the local video file
     const fileBlob = await Filesystem.readFile({
       path: videoFile.url,
@@ -117,8 +115,6 @@ export class StorageService {
         typeof file.data === 'string' ? b64toBlob(file.data) : file.data
       )
       .catch(() => new Error('Failed to read local video file'));
-
-    console.log('File blob:', fileBlob);
 
     if (fileBlob instanceof Error) {
       return fileBlob;
@@ -134,8 +130,6 @@ export class StorageService {
       )
       .catch(() => new Error('Failed to upload file'));
 
-    console.log('Upload result:', uploadRes);
-
     if (uploadRes instanceof Error || uploadRes.data === null)
       return new Error('Failed to upload file');
 
@@ -144,8 +138,6 @@ export class StorageService {
       .from(bucketId)
       .getPublicUrl(uploadRes.data.path);
 
-    console.log('Public URL:', publicUrlRes.data.publicUrl);
-
     return publicUrlRes.data.publicUrl;
   }
 
@@ -153,7 +145,6 @@ export class StorageService {
     const bucketId = 'raffle-prizes';
 
     const filePath = prizeVideoUrl.split(bucketId)[1];
-    console.log('File path:', filePath);
 
     const response = await this.supabaseService.client.storage
       .from(bucketId)
@@ -168,5 +159,33 @@ export class StorageService {
     await FileViewer.previewMediaContentFromUrl({
       url: signedUrl,
     });
+  }
+
+  uploadRaffleThumbnail(
+    raffleId: string,
+    image: Blob
+  ): Observable<string | Error> {
+    const bucketId = 'raffle-thumbnails';
+    const filePath = `${raffleId}/${new Date().getTime()}.jpg`;
+
+    return from(
+      this.supabaseService.client.storage
+        .from(bucketId)
+        .upload(filePath, image, {
+          cacheControl: '3600',
+          upsert: true,
+        })
+    ).pipe(
+      map((result) => {
+        if (result.error) return new Error(result.error.message);
+
+        // Step 4: Get Public URL
+        const response = this.supabaseService.client.storage
+          .from(bucketId)
+          .getPublicUrl(result.data.path);
+
+        return response.data.publicUrl;
+      })
+    );
   }
 }
