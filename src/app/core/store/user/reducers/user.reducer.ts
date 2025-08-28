@@ -10,7 +10,7 @@ export const userReducer = createReducer(
   on(userActions.loadSession, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
+      session: wrapAsAsyncData(state.session.data, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.loadSessionSuccess, (state, action): UserState => {
@@ -23,7 +23,7 @@ export const userReducer = createReducer(
     return {
       ...state,
       session: wrapAsAsyncData(
-        undefined,
+        state.session.data,
         AsyncDataStatus.Error,
         action.message
       ),
@@ -33,7 +33,7 @@ export const userReducer = createReducer(
   on(userActions.loginWithPassword, (state): UserState => {
     return {
       ...state,
-      session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
+      session: wrapAsAsyncData(state.session.data, AsyncDataStatus.Loading),
     };
   }),
   on(userActions.loginSuccess, (state, action): UserState => {
@@ -43,29 +43,6 @@ export const userReducer = createReducer(
     };
   }),
   on(userActions.loginFailure, (state, action): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(
-        state.session.data,
-        AsyncDataStatus.Error,
-        action.message
-      ),
-    };
-  }),
-
-  on(userActions.signupWithPassword, (state): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(undefined, AsyncDataStatus.Loading),
-    };
-  }),
-  on(userActions.signupSuccess, (state, action): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
-    };
-  }),
-  on(userActions.signupFailure, (state, action): UserState => {
     return {
       ...state,
       session: wrapAsAsyncData(

@@ -10,16 +10,18 @@ import {
   filter,
   from,
   map,
+  mergeMap,
   Observable,
   of,
   switchMap,
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { FormActionRoutes } from 'src/app/app.routes';
+import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/async-data';
 import { RaffleFactory } from 'src/app/core/models/Raffle.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
+import { ModalService } from 'src/app/core/services/modal-service/modal.service';
 import { RaffleService } from 'src/app/core/services/raffle/raffle.service';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { SupabaseService } from 'src/app/core/services/supabase/supabase.service';
@@ -44,6 +46,7 @@ export class UserEffects {
   private readonly router = inject(Router);
   private readonly storageService = inject(StorageService);
   private readonly raffleService = inject(RaffleService);
+  private readonly modalService = inject(ModalService);
 
   failureMessages$ = createEffect(
     () =>
@@ -158,19 +161,13 @@ export class UserEffects {
       switchMap((action) => {
         return this.userService.signupWithPassword(action.request).pipe(
           map((response) => {
-            if (
-              response.error ||
-              !response.data.session ||
-              !response.data.user
-            ) {
+            if (response.error) {
               return userActions.signupFailure({
-                message: response.error?.message || 'Sign up failed',
+                message: response.error.message || 'Sign up failed',
               });
             }
 
-            return userActions.signupSuccess({
-              session: response.data.session,
-            });
+            return userActions.signupSuccess();
           }),
           catchError((error: Error) => {
             return of(
@@ -184,23 +181,18 @@ export class UserEffects {
     )
   );
 
-  signupSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(userActions.signupSuccess),
-        tap(async () => {
-          await this.toastController
-            .create({
-              message: 'Successfully created your account!',
-              duration: 2000,
-              color: 'success',
-            })
-            .then((toast) => toast.present());
+  signupSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.signupSuccess),
+      mergeMap(async () => {
+        await this.modalService.openConfirmEmailDialog();
 
-          await this.router.navigate(['']);
-        })
-      ),
-    { dispatch: false }
+        return RouterActions.routeInCurrentTab({
+          url: PageRoutes.Login,
+          replaceUrl: true,
+        });
+      })
+    )
   );
 
   resetPassword$ = createEffect(() =>

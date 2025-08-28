@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
 import { AcceptedInviteModalComponent } from 'src/app/modals/accepted-invite/accepted-invite.component';
+import { ConfirmEmailDialogComponent } from 'src/app/modals/confirm-email-dialog/confirm-email-dialog.component';
 import { CreateRaffleModalComponent } from 'src/app/modals/create-raffle/create-raffle.component';
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { PickCityModalComponent } from 'src/app/modals/pick-city/pick-city.component';
@@ -93,6 +94,16 @@ export class ModalService {
       componentProps: {
         acceptedInvite: acceptedInvite,
       },
+    });
+    modal.present();
+
+    await modal.onWillDismiss<void>();
+  }
+
+  async openConfirmEmailDialog(): Promise<void> {
+    const modal = await this.modalController.create({
+      component: ConfirmEmailDialogComponent,
+      cssClass: 'custom-dialog',
     });
     modal.present();
 
