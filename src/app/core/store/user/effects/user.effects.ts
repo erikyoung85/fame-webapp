@@ -76,6 +76,14 @@ export class UserEffects {
     { dispatch: false }
   );
 
+  listenForTokenRefresh$ = createEffect(() =>
+    this.supabaseService.tokenRefreshed$.pipe(
+      map((session) => {
+        return userActions.setSession({ session });
+      })
+    )
+  );
+
   loadSession$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.loadSession),

@@ -7,6 +7,13 @@ import { UserState } from '../state/user.state';
 export const userReducer = createReducer(
   INITIAL_USER_STATE,
 
+  on(userActions.setSession, (state, action): UserState => {
+    return {
+      ...state,
+      session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
+    };
+  }),
+
   on(userActions.loadSession, (state): UserState => {
     return {
       ...state,

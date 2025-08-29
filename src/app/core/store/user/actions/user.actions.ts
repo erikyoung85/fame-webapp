@@ -13,6 +13,8 @@ import { SignupWithPasswordRequestDtoV1 } from 'src/app/core/services/user/dtos/
 export const userActions = createActionGroup({
   source: 'User',
   events: {
+    'Set Session': props<{ session: Session }>(),
+
     'Load Session': emptyProps(),
     'Load Session Success': props<{ session: Session | undefined }>(),
     'Load Session Failure': props<{ message?: string }>(),
