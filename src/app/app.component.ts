@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
@@ -23,6 +24,10 @@ export class AppComponent implements OnInit {
 
   constructor() {
     addIcons({ ...ionIcons });
+
+    App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+      console.log('App URL Open Event', event);
+    });
   }
 
   ngOnInit(): void {
