@@ -117,9 +117,11 @@ export type Database = {
       }
       profiles: {
         Row: {
+          apns_token: string | null
           avatar_url: string | null
           created_at: string
           favorite_team_id: number | null
+          fcm_token: string | null
           first_name: string
           id: string
           is_athlete: boolean
@@ -128,9 +130,11 @@ export type Database = {
           stripe_customer_id: string | null
         }
         Insert: {
+          apns_token?: string | null
           avatar_url?: string | null
           created_at?: string
           favorite_team_id?: number | null
+          fcm_token?: string | null
           first_name: string
           id?: string
           is_athlete?: boolean
@@ -139,9 +143,11 @@ export type Database = {
           stripe_customer_id?: string | null
         }
         Update: {
+          apns_token?: string | null
           avatar_url?: string | null
           created_at?: string
           favorite_team_id?: number | null
+          fcm_token?: string | null
           first_name?: string
           id?: string
           is_athlete?: boolean
@@ -256,6 +262,38 @@ export type Database = {
             columns: ["teams_id"]
             isOneToOne: false
             referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      push_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          platform: Database["public"]["Enums"]["Platform"]
+          profile_id: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          platform: Database["public"]["Enums"]["Platform"]
+          profile_id: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          platform?: Database["public"]["Enums"]["Platform"]
+          profile_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_tokens_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -634,12 +672,20 @@ export type Database = {
       }
     }
     Functions: {
+      has_raffle_ended: {
+        Args: { target_raffle_id: string }
+        Returns: boolean
+      }
       has_raffle_started: {
         Args: { target_raffle_id: string }
         Returns: boolean
       }
       is_athlete_manager: {
         Args: { target_athlete_id: number }
+        Returns: boolean
+      }
+      is_raffle_active: {
+        Args: { target_raffle_id: string }
         Returns: boolean
       }
       is_raffle_manager: {
@@ -671,6 +717,7 @@ export type Database = {
     Enums: {
       Gender: "Male" | "Female"
       Grade: "Senior" | "Junior" | "Sophomore" | "Freshman"
+      Platform: "ios" | "android" | "web"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -800,6 +847,7 @@ export const Constants = {
     Enums: {
       Gender: ["Male", "Female"],
       Grade: ["Senior", "Junior", "Sophomore", "Freshman"],
+      Platform: ["ios", "android", "web"],
     },
   },
 } as const

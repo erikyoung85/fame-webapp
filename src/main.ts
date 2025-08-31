@@ -21,6 +21,8 @@ import { athletesFeature } from './app/core/store/athletes/feature/athletes.feat
 import { InviteEffects } from './app/core/store/invite/effects/invite.effects';
 import { inviteFeature } from './app/core/store/invite/feature/invite.feature';
 import { getMetaReducers } from './app/core/store/meta-reducers/meta-reducers';
+import { PushNotificationsEffects } from './app/core/store/push-notifications/effects/push-notifications.effects';
+import { pushNotificationsFeature } from './app/core/store/push-notifications/feature/push-notifications.feature';
 import { RafflesEffects } from './app/core/store/raffles/effects/raffles.effects';
 import { rafflesFeature } from './app/core/store/raffles/feature/raffles.feature';
 import { rootReducer } from './app/core/store/root.reducer';
@@ -73,6 +75,8 @@ bootstrapApplication(AppComponent, {
     provideEffects(TransactionEffects),
     provideState(inviteFeature),
     provideEffects(InviteEffects),
+    provideState(pushNotificationsFeature),
+    provideEffects(PushNotificationsEffects),
 
     provideRouterStore(),
     provideHttpClient(withInterceptors([authInterceptor])),
