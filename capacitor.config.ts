@@ -6,6 +6,9 @@ const config: CapacitorConfig = {
   appName: 'FAME Sports',
   webDir: 'www/browser',
   plugins: {
+    SplashScreen: {
+      launchShowDuration: 20000,
+    },
     CapacitorHttp: {
       enabled: true,
     },

@@ -2,16 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
 } from '@angular/core';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
-import {
-  IonApp,
-  IonContent,
-  IonImg,
-  IonRouterOutlet,
-} from '@ionic/angular/standalone';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
@@ -26,13 +23,13 @@ import { userFeature } from './core/store/user/feature/user.feature';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonImg, IonContent, IonApp, IonRouterOutlet],
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
   readonly fcmService = inject(FCMService);
   readonly store = inject(Store);
 
-  readonly showLoadingScreen = computed(() => {
+  readonly isEverythingLoaded = computed(() => {
     const isSessionLoaded = isAsyncLoaded(
       this.store.selectSignal(userFeature.selectSession)()
     );
@@ -42,10 +39,18 @@ export class AppComponent {
     const isFavoriteTeamLoaded = isAsyncLoaded(
       this.store.selectSignal(teamsFeature.selectFavoriteTeam)()
     );
-    return !(isSessionLoaded && isProfileLoaded && isFavoriteTeamLoaded);
+
+    return isSessionLoaded && isProfileLoaded && isFavoriteTeamLoaded;
   });
 
   constructor() {
+    // Hide splash screen when app is ready
+    effect(async () => {
+      if (this.isEverythingLoaded()) {
+        await SplashScreen.hide();
+      }
+    });
+
     // Ionicons
     addIcons({ ...ionIcons });
 

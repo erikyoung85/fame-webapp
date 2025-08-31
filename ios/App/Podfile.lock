@@ -27,6 +27,8 @@ PODS:
     - Capacitor
   - CapacitorPushNotifications (7.0.2):
     - Capacitor
+  - CapacitorSplashScreen (7.0.2):
+    - Capacitor
   - CapacitorStatusBar (7.0.1):
     - Capacitor
   - CapawesomeCapacitorFilePicker (7.2.0):
@@ -120,6 +122,7 @@ DEPENDENCIES:
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorPreferences (from `../../node_modules/@capacitor/preferences`)"
   - "CapacitorPushNotifications (from `../../node_modules/@capacitor/push-notifications`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
   - FirebaseMessaging
@@ -169,6 +172,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/preferences"
   CapacitorPushNotifications:
     :path: "../../node_modules/@capacitor/push-notifications"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
   CapawesomeCapacitorFilePicker:
@@ -187,6 +192,7 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: 09fd91dcde4f8a37313e7f11bde553ad1ed52036
   CapacitorPreferences: 65107ed7437d96ee72583df5763985e3c0ff2bc2
   CapacitorPushNotifications: 7c0659b349b149ee3936a682da31a9d269de9582
+  CapacitorSplashScreen: 157947576b59d913792063a8d442a79e6d283ee5
   CapacitorStatusBar: 6e7af040d8fc4dd655999819625cae9c2d74c36f
   CapawesomeCapacitorFilePicker: 0f4a913a00e39dd77213449f0d917e92f35a5ca9
   FirebaseCore: efb3893e5b94f32b86e331e3bd6dadf18b66568e
@@ -207,6 +213,6 @@ SPEC CHECKSUMS:
   StripePaymentsUI: 9b84384e81adc9c24f599f1a8991fb52c767fc62
   StripeUICore: 186f245526e86ab02578abcc6bb6d27cc34084c6
 
-PODFILE CHECKSUM: f765710a51a44f1d02f26f8345c0599365339146
+PODFILE CHECKSUM: 249534e779d8fc6c8f8392ca867177e76ba4080e
 
 COCOAPODS: 1.16.2
