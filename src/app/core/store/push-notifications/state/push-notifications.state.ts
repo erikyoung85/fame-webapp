@@ -1,3 +1,3 @@
 export interface PushNotificationsState {
-  fcmToken: string | null;
+  token: string | undefined;
 }

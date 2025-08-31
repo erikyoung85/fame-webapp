@@ -1,5 +1,5 @@
 import { PushNotificationsState } from './push-notifications.state';
 
 export const INITIAL_PUSH_NOTIFICATIONS_STATE: PushNotificationsState = {
-  fcmToken: null,
+  token: undefined,
 };

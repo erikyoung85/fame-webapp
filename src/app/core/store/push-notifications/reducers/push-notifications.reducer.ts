@@ -6,11 +6,11 @@ import { PushNotificationsState } from '../state/push-notifications.state';
 export const pushNotificationsReducer = createReducer(
   INITIAL_PUSH_NOTIFICATIONS_STATE,
   on(
-    pushNotificationsActions.saveFCMToken,
+    pushNotificationsActions.saveToken,
     (state, action): PushNotificationsState => {
       return {
         ...state,
-        fcmToken: action.token,
+        token: action.token,
       };
     }
   )

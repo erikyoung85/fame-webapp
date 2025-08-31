@@ -271,21 +271,21 @@ export type Database = {
           created_at: string
           id: string
           platform: Database["public"]["Enums"]["Platform"]
-          profile_id: string
+          profile_id: string | null
           token: string
         }
         Insert: {
           created_at?: string
           id?: string
           platform: Database["public"]["Enums"]["Platform"]
-          profile_id: string
+          profile_id?: string | null
           token: string
         }
         Update: {
           created_at?: string
           id?: string
           platform?: Database["public"]["Enums"]["Platform"]
-          profile_id?: string
+          profile_id?: string | null
           token?: string
         }
         Relationships: [
@@ -698,6 +698,10 @@ export type Database = {
       }
       is_team_manager: {
         Args: { target_team_id: number }
+        Returns: boolean
+      }
+      is_user_admin_v1: {
+        Args: { i_user_id: string }
         Returns: boolean
       }
       search_all_entities_v2: {

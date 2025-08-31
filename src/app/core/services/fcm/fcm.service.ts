@@ -35,14 +35,17 @@ export class FCMService {
       return;
     }
 
-    // Register with APNs/FCM
-    await PushNotifications.register();
-
     // Listen for token
     PushNotifications.addListener('registration', async (token: Token) => {
       console.log('Device token (APNs or FCM):', token.value);
       this.store.dispatch(
-        pushNotificationsActions.saveFCMToken({ token: token.value })
+        pushNotificationsActions.saveToken({ token: token.value })
+      );
+    });
+    PushNotifications.addListener('registrationError', (error) => {
+      console.error(
+        'Error occurred while registering for push notifications:',
+        error
       );
     });
 
@@ -60,20 +63,29 @@ export class FCMService {
         console.log('Push tapped:', notification.notification);
       }
     );
+
+    // Register with APNs/FCM
+    PushNotifications.register();
   }
 
-  saveTokenToSupabase(
-    userId: string,
-    token: string
-  ): Observable<PostgrestSingleResponse<null>> {
-    const platform = Capacitor.getPlatform();
+  saveTokenToSupabase(request: {
+    token: string;
+    userId?: string | undefined;
+    platform?: Platform;
+  }): Observable<PostgrestSingleResponse<null>> {
+    const platform = request.platform ?? Capacitor.getPlatform();
     const platformEnum =
       Platform[platform as keyof typeof Platform] || Platform.web;
 
     const response = from(
-      this.supabaseService.client
-        .from('push_tokens')
-        .insert({ profile_id: userId, token: token, platform: platformEnum })
+      this.supabaseService.client.from('push_tokens').upsert(
+        {
+          token: request.token,
+          profile_id: request.userId ?? null,
+          platform: platformEnum,
+        },
+        { ignoreDuplicates: false, onConflict: 'token' }
+      )
     );
 
     return response;
