@@ -3,7 +3,7 @@ import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 import { AppRoutes, PageRoutes, TabRoutes } from 'src/app/app.routes';
-import { AsyncDataStatus } from 'src/app/core/async-data';
+import { isAsyncLoaded } from 'src/app/core/async-data';
 import { userFeature } from '../../store/user/feature/user.feature';
 
 export const isLoggedInGuard: CanActivateFn = (route, state) => {
@@ -11,7 +11,7 @@ export const isLoggedInGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return store.select(userFeature.selectSession).pipe(
-    filter((async) => async.status === AsyncDataStatus.Success),
+    filter(isAsyncLoaded),
     map((sessionAsync) => {
       // Allow access if the user is logged in
       if (sessionAsync.data !== undefined) return true;
