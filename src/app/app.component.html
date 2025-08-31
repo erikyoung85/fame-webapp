@@ -1,3 +1,13 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  @if (showLoadingScreen()) {
+    <ion-content>
+      <div class="h-100 flex-col ion-justify-content-center ion-align-items-center">
+        <ion-img src="assets/logo.png"></ion-img>
+        <div>Loading ...</div>
+      </div>
+
+    </ion-content>
+  } @else {
+    <ion-router-outlet></ion-router-outlet>
+  }
 </ion-app>

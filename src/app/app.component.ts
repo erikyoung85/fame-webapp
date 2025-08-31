@@ -1,10 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import {
+  IonApp,
+  IonContent,
+  IonImg,
+  IonRouterOutlet,
+} from '@ionic/angular/standalone';
+import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import * as ionIcons from 'ionicons/icons';
+import { isAsyncLoaded } from './core/async-data';
 import { FCMService } from './core/services/fcm/fcm.service';
+import { teamsFeature } from './core/store/teams/feature/teams.feature';
+import { userFeature } from './core/store/user/feature/user.feature';
 
 @Component({
   standalone: true,
@@ -12,10 +26,24 @@ import { FCMService } from './core/services/fcm/fcm.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonApp, IonRouterOutlet],
+  imports: [IonImg, IonContent, IonApp, IonRouterOutlet],
 })
 export class AppComponent {
   readonly fcmService = inject(FCMService);
+  readonly store = inject(Store);
+
+  readonly showLoadingScreen = computed(() => {
+    const isSessionLoaded = isAsyncLoaded(
+      this.store.selectSignal(userFeature.selectSession)()
+    );
+    const isProfileLoaded = isAsyncLoaded(
+      this.store.selectSignal(userFeature.selectUserProfile)()
+    );
+    const isFavoriteTeamLoaded = isAsyncLoaded(
+      this.store.selectSignal(teamsFeature.selectFavoriteTeam)()
+    );
+    return !(isSessionLoaded && isProfileLoaded && isFavoriteTeamLoaded);
+  });
 
   constructor() {
     // Ionicons
