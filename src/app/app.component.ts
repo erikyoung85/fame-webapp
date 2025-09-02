@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
+import { PushNotifications } from '@capacitor/push-notifications';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
@@ -64,6 +65,11 @@ export class AppComponent {
     // Open linked URLs in app
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       console.log('App URL Open Event', event);
+    });
+
+    PushNotifications.getDeliveredNotifications().then((result) => {
+      console.log('Delivered notifications', result);
+      PushNotifications.removeAllDeliveredNotifications();
     });
   }
 }
