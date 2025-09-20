@@ -1,11 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular/standalone';
+import { ComponentRef, ModalOptions } from '@ionic/core';
 import { AcceptedInviteModalComponent } from 'src/app/modals/accepted-invite/accepted-invite.component';
 import { ConfirmEmailDialogComponent } from 'src/app/modals/confirm-email-dialog/confirm-email-dialog.component';
 import { CreateRaffleModalComponent } from 'src/app/modals/create-raffle/create-raffle.component';
 import { PaymentModalComponent } from 'src/app/modals/payment/payment.component';
 import { PickCityModalComponent } from 'src/app/modals/pick-city/pick-city.component';
 import { PickTeamModalComponent } from 'src/app/modals/pick-team/pick-team.component';
+import { IonNavContainerComponent } from 'src/app/shared/components/ion-nav-container/ion-nav-container.component';
 import { Raffle } from '../../models/Raffle.model';
 import { CityResponseDtoV1 } from '../geo-city/dtos/city.response.dto.v1';
 import { AcceptInviteResponseDtoV1 } from '../invite/dtos/responses/accept-invite.response.dto.v1';
@@ -20,6 +22,22 @@ export enum ModalDismissRole {
 })
 export class ModalService {
   private readonly modalController = inject(ModalController);
+
+  async openWithNav<T extends ComponentRef>(
+    opts: ModalOptions<T>
+  ): Promise<HTMLIonModalElement> {
+    const containerOpts: ModalOptions = {
+      ...opts,
+      component: IonNavContainerComponent,
+      componentProps: {
+        rootComponent: opts.component,
+        rootParams: opts.componentProps,
+      },
+    };
+    const modal = await this.modalController.create(containerOpts);
+    await modal.present();
+    return modal;
+  }
 
   async openCityPicker(): Promise<CityResponseDtoV1 | undefined> {
     const modal = await this.modalController.create({
@@ -70,9 +88,7 @@ export class ModalService {
   async openCreateRaffle(athleteId: number): Promise<boolean | undefined> {
     const modal = await this.modalController.create({
       component: CreateRaffleModalComponent,
-      componentProps: {
-        athleteId: athleteId,
-      },
+      componentProps: { athleteId: athleteId },
     });
     modal.present();
 
