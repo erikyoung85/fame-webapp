@@ -3,6 +3,7 @@ import {
   AuthError,
   AuthResponse,
   AuthTokenResponsePassword,
+  EmailOtpType,
   SignInWithPasswordCredentials,
   SignUpWithPasswordCredentials,
 } from '@supabase/supabase-js';
@@ -25,6 +26,18 @@ export class UserService {
       password: password,
     };
     return from(this.supabaseService.client.auth.signInWithPassword(authBody));
+  }
+
+  loginWithTokenHash(
+    tokenHash: string,
+    type: EmailOtpType
+  ): Observable<AuthResponse> {
+    return from(
+      this.supabaseService.client.auth.verifyOtp({
+        token_hash: tokenHash,
+        type: type,
+      })
+    );
   }
 
   signupWithPassword(

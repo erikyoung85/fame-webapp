@@ -144,6 +144,39 @@ export class UserEffects {
     )
   );
 
+  loginWithMagicLink$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.loginWithMagicLink),
+      switchMap((action) => {
+        return this.userService
+          .loginWithTokenHash(action.tokenHash, 'magiclink')
+          .pipe(
+            map((response) => {
+              if (
+                response.error ||
+                !response.data.session ||
+                !response.data.user
+              ) {
+                return userActions.loginFailure({
+                  message: response.error?.message || 'Magic link login failed',
+                });
+              }
+              return userActions.loginSuccess({
+                session: response.data.session,
+              });
+            }),
+            catchError((error: Error) => {
+              return of(
+                userActions.loginFailure({
+                  message: error?.message || 'Magic link login failed',
+                })
+              );
+            })
+          );
+      })
+    )
+  );
+
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(

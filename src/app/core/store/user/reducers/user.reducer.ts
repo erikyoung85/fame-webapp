@@ -37,12 +37,16 @@ export const userReducer = createReducer(
     };
   }),
 
-  on(userActions.loginWithPassword, (state): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(state.session.data, AsyncDataStatus.Loading),
-    };
-  }),
+  on(
+    userActions.loginWithPassword,
+    userActions.loginWithMagicLink,
+    (state): UserState => {
+      return {
+        ...state,
+        session: wrapAsAsyncData(state.session.data, AsyncDataStatus.Loading),
+      };
+    }
+  ),
   on(userActions.loginSuccess, (state, action): UserState => {
     return {
       ...state,

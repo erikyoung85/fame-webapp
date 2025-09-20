@@ -19,6 +19,7 @@ export const userActions = createActionGroup({
     'Load Session Success': props<{ session: Session | undefined }>(),
     'Load Session Failure': props<{ message?: string }>(),
 
+    'Login With Magic Link': props<{ tokenHash: string }>(),
     'Login With Password': props<{ email: string; password: string }>(),
     'Login Success': props<{ session: Session }>(),
     'Login Failure': props<{ message: string }>(),
