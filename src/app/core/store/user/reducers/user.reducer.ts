@@ -39,7 +39,7 @@ export const userReducer = createReducer(
 
   on(
     userActions.loginWithPassword,
-    userActions.loginWithMagicLink,
+    userActions.loginWithTokenHash,
     (state): UserState => {
       return {
         ...state,
@@ -47,22 +47,30 @@ export const userReducer = createReducer(
       };
     }
   ),
-  on(userActions.loginSuccess, (state, action): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
-    };
-  }),
-  on(userActions.loginFailure, (state, action): UserState => {
-    return {
-      ...state,
-      session: wrapAsAsyncData(
-        state.session.data,
-        AsyncDataStatus.Error,
-        action.message
-      ),
-    };
-  }),
+  on(
+    userActions.loginSuccess,
+    userActions.loginWithTokenHashSuccess,
+    (state, action): UserState => {
+      return {
+        ...state,
+        session: wrapAsAsyncData(action.session, AsyncDataStatus.Success),
+      };
+    }
+  ),
+  on(
+    userActions.loginFailure,
+    userActions.loginWithTokenHashFailure,
+    (state, action): UserState => {
+      return {
+        ...state,
+        session: wrapAsAsyncData(
+          state.session.data,
+          AsyncDataStatus.Error,
+          action.message
+        ),
+      };
+    }
+  ),
 
   on(userActions.getUserProfile, (state): UserState => {
     return {

@@ -17,7 +17,12 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { FormActionRoutes, PageRoutes } from 'src/app/app.routes';
+import {
+  AppRoutes,
+  FormActionRoutes,
+  PageRoutes,
+  TabRoutes,
+} from 'src/app/app.routes';
 import { AsyncDataStatus } from 'src/app/core/async-data';
 import { RaffleFactory } from 'src/app/core/models/Raffle.model';
 import { UserProfileFactory } from 'src/app/core/models/UserProfile.model';
@@ -54,12 +59,14 @@ export class UserEffects {
         ofType(
           userActions.loadSessionFailure,
           userActions.loginFailure,
+          userActions.loginWithTokenHashFailure,
           userActions.signupFailure,
           userActions.updateUserProfileFailure,
           userActions.patchUserProfileFailure,
           userActions.getUserProfileFailure,
-          userActions.resetPasswordFailure,
-          userActions.logoutFailure
+          userActions.forgotPasswordFailure,
+          userActions.logoutFailure,
+          userActions.changePasswordFailure
         ),
         tap(async (action) => {
           if (action.message !== undefined) {
@@ -143,40 +150,6 @@ export class UserEffects {
       })
     )
   );
-
-  loginWithMagicLink$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(userActions.loginWithMagicLink),
-      switchMap((action) => {
-        return this.userService
-          .loginWithTokenHash(action.tokenHash, 'magiclink')
-          .pipe(
-            map((response) => {
-              if (
-                response.error ||
-                !response.data.session ||
-                !response.data.user
-              ) {
-                return userActions.loginFailure({
-                  message: response.error?.message || 'Magic link login failed',
-                });
-              }
-              return userActions.loginSuccess({
-                session: response.data.session,
-              });
-            }),
-            catchError((error: Error) => {
-              return of(
-                userActions.loginFailure({
-                  message: error?.message || 'Magic link login failed',
-                })
-              );
-            })
-          );
-      })
-    )
-  );
-
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -191,6 +164,52 @@ export class UserEffects {
             .then((toast) => toast.present());
 
           await this.router.navigate(['']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loginWithTokenHash$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.loginWithTokenHash),
+      switchMap((action) => {
+        return this.userService
+          .loginWithTokenHash(action.tokenHash, action.otpType)
+          .pipe(
+            map((response) => {
+              if (
+                response.error ||
+                !response.data.session ||
+                !response.data.user
+              ) {
+                return userActions.loginWithTokenHashFailure({
+                  message: response.error?.message || 'Token login failed',
+                });
+              }
+              return userActions.loginWithTokenHashSuccess({
+                session: response.data.session,
+                redirectUrl: action.redirectUrl,
+              });
+            }),
+            catchError((error: Error) => {
+              return of(
+                userActions.loginWithTokenHashFailure({
+                  message: error?.message || 'Token login failed',
+                })
+              );
+            })
+          );
+      })
+    )
+  );
+  loginWithTokenHashSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.loginWithTokenHashSuccess),
+        tap(async (action) => {
+          if (action.redirectUrl !== undefined) {
+            await this.router.navigate([action.redirectUrl]);
+          }
         })
       ),
     { dispatch: false }
@@ -236,22 +255,22 @@ export class UserEffects {
     )
   );
 
-  resetPassword$ = createEffect(() =>
+  forgotPassword$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(userActions.resetPassword),
+      ofType(userActions.forgotPassword),
       switchMap((action) => {
         return this.userService.resetPasswordForEmail(action.email).pipe(
           map((response) => {
             if (response.error) {
-              return userActions.resetPasswordFailure({
+              return userActions.forgotPasswordFailure({
                 message: response.error?.message || 'Password reset failed',
               });
             }
-            return userActions.resetPasswordSuccess();
+            return userActions.forgotPasswordSuccess();
           }),
           catchError((error: Error) => {
             return of(
-              userActions.resetPasswordFailure({
+              userActions.forgotPasswordFailure({
                 message: error?.message || 'Password reset failed',
               })
             );
@@ -261,10 +280,10 @@ export class UserEffects {
     )
   );
 
-  resetPasswordSuccess$ = createEffect(
+  forgotPasswordSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(userActions.resetPasswordSuccess),
+        ofType(userActions.forgotPasswordSuccess),
         tap(async () => {
           await this.toastController
             .create({
@@ -276,6 +295,49 @@ export class UserEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  changePassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.changePassword),
+      switchMap((action) => {
+        return this.userService.changePassword(action.newPassword).pipe(
+          map((response) => {
+            if (response.error) {
+              return userActions.changePasswordFailure({
+                message: response.error?.message || 'Password change failed',
+              });
+            }
+            return userActions.changePasswordSuccess();
+          }),
+          catchError((error: Error) => {
+            return of(
+              userActions.changePasswordFailure({
+                message: error?.message || 'Password change failed',
+              })
+            );
+          })
+        );
+      })
+    )
+  );
+  changePasswordSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.changePasswordSuccess),
+      switchMap(async () => {
+        await this.toastController
+          .create({
+            message: 'Your password has been changed successfully',
+            duration: 4000,
+            color: 'success',
+          })
+          .then((toast) => toast.present());
+
+        return RouterActions.route({
+          url: [AppRoutes.Tabs, TabRoutes.Account],
+        });
+      })
+    )
   );
 
   getUserProfile$ = createEffect(() =>

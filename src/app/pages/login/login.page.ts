@@ -95,7 +95,7 @@ export class LoginPage {
 
   onForgotPasswordClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({ url: [PageRoutes.PasswordReset] })
+      RouterActions.routeInCurrentTab({ url: [PageRoutes.ForgotPassword] })
     );
   }
 }

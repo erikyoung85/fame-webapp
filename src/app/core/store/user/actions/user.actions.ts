@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Session } from '@supabase/supabase-js';
+import { EmailOtpType, Session } from '@supabase/supabase-js';
 import {
   AthletePagePreview,
   RafflePreview,
@@ -19,7 +19,17 @@ export const userActions = createActionGroup({
     'Load Session Success': props<{ session: Session | undefined }>(),
     'Load Session Failure': props<{ message?: string }>(),
 
-    'Login With Magic Link': props<{ tokenHash: string }>(),
+    'Login With Token Hash': props<{
+      tokenHash: string;
+      otpType: EmailOtpType;
+      redirectUrl?: string;
+    }>(),
+    'Login With Token Hash Success': props<{
+      session: Session;
+      redirectUrl?: string;
+    }>(),
+    'Login With Token Hash Failure': props<{ message: string }>(),
+
     'Login With Password': props<{ email: string; password: string }>(),
     'Login Success': props<{ session: Session }>(),
     'Login Failure': props<{ message: string }>(),
@@ -34,9 +44,13 @@ export const userActions = createActionGroup({
     'Signup Success': emptyProps(),
     'Signup Failure': props<{ message: string }>(),
 
-    'Reset Password': props<{ email: string }>(),
-    'Reset Password Success': emptyProps(),
-    'Reset Password Failure': props<{ message: string }>(),
+    'Forgot Password': props<{ email: string }>(),
+    'Forgot Password Success': emptyProps(),
+    'Forgot Password Failure': props<{ message: string }>(),
+
+    'Change Password': props<{ newPassword: string }>(),
+    'Change Password Success': emptyProps(),
+    'Change Password Failure': props<{ message: string }>(),
 
     'Get User Profile': emptyProps(),
     'Get User Profile Success': props<{ userProfile: UserProfile }>(),

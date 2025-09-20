@@ -5,31 +5,26 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NavController } from '@ionic/angular';
 import {
-  IonBackButton,
   IonButton,
-  IonButtons,
   IonCol,
   IonContent,
   IonGrid,
-  IonHeader,
   IonIcon,
   IonInput,
+  IonInputPasswordToggle,
   IonRow,
   IonText,
-  IonToolbar,
 } from '@ionic/angular/standalone';
 import { Store } from '@ngrx/store';
-import { PageRoutes } from 'src/app/app.routes';
 import { RouterActions } from 'src/app/core/store/router/actions/router.actions';
 import { userActions } from 'src/app/core/store/user/actions/user.actions';
+import { confirmPasswordValidator } from 'src/app/shared/validators/confirm-password.validator';
 @Component({
-  templateUrl: './password-reset.page.html',
-  styleUrls: ['./password-reset.page.scss'],
+  templateUrl: './reset-password.page.html',
+  styleUrls: ['./reset-password.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonBackButton,
     IonIcon,
     IonText,
     IonCol,
@@ -39,39 +34,43 @@ import { userActions } from 'src/app/core/store/user/actions/user.actions';
     ReactiveFormsModule,
     IonButton,
     IonInput,
-    IonButtons,
     IonContent,
-    IonToolbar,
-    IonHeader,
+    IonInputPasswordToggle,
   ],
 })
-export class PasswordResetPage {
+export class ResetPasswordPage {
   private readonly store = inject(Store);
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly navController = inject(NavController);
 
-  readonly resetPasswordForm = this.fb.group({
-    email: this.fb.control('', [Validators.required, Validators.email]),
+  readonly form = this.fb.group({
+    password: this.fb.control('', [
+      Validators.required,
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/),
+    ]),
+    confirmPassword: this.fb.control('', [
+      Validators.required,
+      confirmPasswordValidator('password'),
+    ]),
   });
 
   async resetPasswordClicked() {
-    if (this.resetPasswordForm.invalid) {
+    if (this.form.invalid) {
       return;
     }
 
-    const formValue = this.resetPasswordForm.getRawValue();
+    const formValue = this.form.getRawValue();
 
     this.store.dispatch(
-      userActions.resetPassword({
-        email: formValue.email,
+      userActions.changePassword({
+        newPassword: formValue.password,
       })
     );
   }
 
-  onLoginClicked() {
+  onCancelClicked() {
     this.store.dispatch(
-      RouterActions.routeInCurrentTab({
-        url: [PageRoutes.Login],
+      RouterActions.route({
+        url: '/',
         direction: 'back',
       })
     );

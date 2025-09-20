@@ -3,7 +3,7 @@ import { isLoggedInGuard } from './core/guards/is-logged-in/is-logged-in.guard';
 import { isNotLoggedInGuard } from './core/guards/is-not-logged-in/is-not-logged-in.guard';
 import { SessionGuard } from './core/guards/session/session.guard';
 import { InviteLinkRedirect } from './core/redirect-functions/invite-link/invite-link.redirect';
-import { MagicLoginLinkRedirect } from './core/redirect-functions/magic-login-link/magic-login-link.redirect';
+import { TokenLoginLinkRedirect } from './core/redirect-functions/token-login/token-login.redirect';
 import { favoriteTeamResolver } from './core/resolvers/favorite-team/favorite-team.resolver';
 import { sessionResolver } from './core/resolvers/session/session.resolver';
 import { userProfileResolver } from './core/resolvers/user-profile/user-profile.resolver';
@@ -11,7 +11,8 @@ import { TabsPage } from './pages/tabs/tabs.page';
 
 export enum AppRoutes {
   Invite = 'invite',
-  MagicLogin = 'magic-login',
+  AuthTokenLogin = 'auth/token-login',
+  ResetPassword = 'auth/reset-password',
   Tabs = 'tabs',
 }
 
@@ -29,7 +30,7 @@ export enum PageRoutes {
   UserProfile = 'user-profile',
   Login = 'login',
   Register = 'register',
-  PasswordReset = 'password-reset',
+  ForgotPassword = 'forgot-password',
   Search = 'search',
   Payment = 'payment',
   Transactions = 'transactions',
@@ -73,8 +74,17 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: AppRoutes.MagicLogin,
-    redirectTo: MagicLoginLinkRedirect,
+    path: AppRoutes.ResetPassword,
+    pathMatch: 'full',
+    canActivate: [isLoggedInGuard],
+    loadComponent: () =>
+      import('./pages/reset-password/reset-password.page').then(
+        (m) => m.ResetPasswordPage
+      ),
+  },
+  {
+    path: AppRoutes.AuthTokenLogin,
+    redirectTo: TokenLoginLinkRedirect,
     pathMatch: 'full',
   },
   {
@@ -174,10 +184,10 @@ export const routes: Routes = [
             canActivate: [isNotLoggedInGuard],
           },
           {
-            path: PageRoutes.PasswordReset,
+            path: PageRoutes.ForgotPassword,
             loadComponent: () =>
-              import('./pages/password-reset/password-reset.page').then(
-                (m) => m.PasswordResetPage
+              import('./pages/forgot-password/forgot-password.page').then(
+                (m) => m.ForgotPasswordPage
               ),
             canActivate: [isNotLoggedInGuard],
           },

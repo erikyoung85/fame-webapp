@@ -8,6 +8,13 @@ export const RouterActions = createActionGroup({
       tab: TabRoutes;
     }>(),
 
+    Route: props<{
+      url: string | any[];
+      direction?: 'forward' | 'back';
+      animated?: boolean;
+      replaceUrl?: boolean;
+    }>(),
+
     'Route in current tab': props<{
       url: string | any[];
       direction?: 'forward' | 'back';

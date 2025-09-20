@@ -53,6 +53,34 @@ export class RouterEffects {
     { dispatch: false }
   );
 
+  route$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(RouterActions.route),
+        map(async (action) => {
+          let url = Array.isArray(action.url)
+            ? action.url.join('/')
+            : action.url;
+
+          if (url.at(0) === '/') {
+            url = url.slice(1);
+          }
+
+          const options = {
+            animated: action.animated,
+            replaceUrl: action.replaceUrl,
+          };
+
+          if (action.direction === 'back') {
+            return this.navController.navigateBack([url], options);
+          }
+
+          return this.navController.navigateForward([url], options);
+        })
+      ),
+    { dispatch: false }
+  );
+
   routeToFormAction$ = createEffect(
     () =>
       this.actions$.pipe(

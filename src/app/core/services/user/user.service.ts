@@ -6,6 +6,7 @@ import {
   EmailOtpType,
   SignInWithPasswordCredentials,
   SignUpWithPasswordCredentials,
+  UserResponse,
 } from '@supabase/supabase-js';
 import { from, Observable } from 'rxjs';
 import { SupabaseService } from '../supabase/supabase.service';
@@ -36,6 +37,14 @@ export class UserService {
       this.supabaseService.client.auth.verifyOtp({
         token_hash: tokenHash,
         type: type,
+      })
+    );
+  }
+
+  changePassword(newPassword: string): Observable<UserResponse> {
+    return from(
+      this.supabaseService.client.auth.updateUser({
+        password: newPassword,
       })
     );
   }
