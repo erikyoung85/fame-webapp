@@ -14,7 +14,7 @@ const config: CapacitorConfig = {
     },
     Keyboard: {
       resize: KeyboardResize.None,
-      style: KeyboardStyle.Default,
+      style: KeyboardStyle.Dark,
     },
   },
 };
